@@ -321,6 +321,151 @@
       background: linear-gradient(to bottom, #8cf064, #2f8f1f);
       transition: width 0.4s ease-out;
     }
+    /* ===== BOTÓN VOLVER A INICIO ===== */
+    #boton-inicio {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: #d62828;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      padding: 10px 20px;
+      border: 3px solid #ffd23f;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #boton-inicio:hover { background: #ef3b3b; }
+
+    /* ===== JUEGO: MUNDO ===== */
+    #mundo { position: absolute; inset: 0; will-change: transform; }
+    #mundo > div { position: absolute; }
+
+    .s-b, .s-p {
+      background-color: #c9683a;
+      background-image:
+        linear-gradient(rgba(90,35,15,.55) 3px, transparent 3px),
+        linear-gradient(90deg, rgba(90,35,15,.55) 3px, transparent 3px);
+      background-size: 40px 20px, 40px 40px;
+      border: 3px solid #7a3318;
+      border-radius: 3px;
+    }
+    .s-p { background-color: #e0a145; border-color: #8a5a10; }
+    .s-q {
+      background: #ffd23f;
+      border: 3px solid #a06b00;
+      border-radius: 4px;
+      color: #fff;
+      font: 26px/30px Impact, Arial Black, sans-serif;
+      text-align: center;
+      text-shadow: 2px 2px 0 #a06b00;
+      animation: brillo 1s infinite alternate;
+    }
+    .s-q.usado { background: #8d8d8d; border-color: #555; color: #666; text-shadow: none; animation: none; }
+    .s-q.golpe { transform: translateY(-8px); }
+    @keyframes brillo { from { box-shadow: 0 0 4px 1px #fff7a0; } to { box-shadow: 0 0 16px 6px #fff7a0; } }
+
+    .s-tubo {
+      background: linear-gradient(90deg, #1f8a2e, #4fd25a 40%, #1f8a2e);
+      border: 3px solid #0f4d18;
+    }
+    .s-tubo::before {
+      content: "";
+      position: absolute;
+      top: -3px; left: -9px;
+      width: calc(100% + 18px); height: 26px;
+      background: linear-gradient(90deg, #1f8a2e, #5fe36a 40%, #1f8a2e);
+      border: 3px solid #0f4d18;
+      border-radius: 4px;
+    }
+
+    .moneda {
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #fff7b0, #ffd23f 50%, #c98f00);
+      border: 2px solid #a06b00;
+      animation: giro 1s infinite linear;
+    }
+    @keyframes giro { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(.25); } }
+    .corazon { font-size: 24px; line-height: 24px; animation: latido .8s infinite alternate; }
+    @keyframes latido { from { transform: scale(1); } to { transform: scale(1.2); } }
+
+    .meta .mastil { position: absolute; left: 0; bottom: 0; width: 8px; height: 300px; background: #ddd; border: 2px solid #777; }
+    .meta .bandera { position: absolute; left: 8px; bottom: 230px; width: 80px; height: 56px; background:
+      conic-gradient(#000 25%, #fff 0 50%, #000 0 75%, #fff 0) 0 0 / 28px 28px; border: 2px solid #333; }
+    .meta .tira { position: absolute; left: -30px; bottom: 0; width: 70px; height: 10px; background:
+      conic-gradient(#000 25%, #fff 0 50%, #000 0 75%, #fff 0) 0 0 / 10px 10px; }
+    .meta { width: 10px; height: 300px; }
+
+    .en svg, .pr svg { width: 100%; height: 100%; display: block; overflow: visible; }
+    .en-fuego svg { animation: llama .25s infinite alternate; }
+    @keyframes llama { from { transform: scale(1, .94); } to { transform: scale(.94, 1.06); } }
+    .en.muere { transform: scale(1, .2) !important; transform-origin: 50% 100%; opacity: 0; transition: transform .35s, opacity .4s; }
+    .pr-cap svg { animation: rueda .35s infinite linear; }
+    @keyframes rueda { to { transform: rotate(360deg); } }
+    .flot { color: #fff; font: 20px Impact, sans-serif; text-shadow: 2px 2px 0 #000; animation: sube .9s forwards; white-space: nowrap; z-index: 6; }
+    @keyframes sube { to { transform: translateY(-50px); opacity: 0; } }
+
+    /* ===== PERSONAJE ===== */
+    .pjg { z-index: 5; }
+    .pjg .cuerpo {
+      position: absolute; left: 50%; bottom: 0;
+      transform-origin: 50% 100%;
+      transition: transform .12s;
+    }
+    .pjg svg { width: 100%; height: 100%; display: block; overflow: visible; }
+    .pjg .vi { display: none; }
+    .pjg.mira-izq .vd { display: none; }
+    .pjg.mira-izq .vi { display: block; }
+    .pjg.anda .cuerpo { animation: paso .32s infinite; }
+    @keyframes paso {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-4px) rotate(2deg); }
+    }
+    .pjg.salta .cuerpo { transform: scale(.93, 1.08) rotate(calc(-5deg * var(--d, 1))); }
+    .pjg.cae .cuerpo { transform: translateY(4px) scale(1.1, .9) rotate(calc(9deg * var(--d, 1))); }
+    .pjg.agacha .cuerpo { transform: scale(1.12, .62); }
+    .mano { display: none; }
+    .salta .mano { display: inline; }
+    .pjg.parpadeo { opacity: .35; }
+    .pjg.poder { animation: arcoiris 1s infinite linear; filter: drop-shadow(0 0 8px gold); }
+    @keyframes arcoiris { to { filter: drop-shadow(0 0 8px gold) hue-rotate(360deg); } }
+
+    /* ===== HUD ===== */
+    #hud { position: absolute; top: 16px; left: 190px; color: #fff; font-weight: bold; text-shadow: 2px 2px 0 #000; pointer-events: none; z-index: 8; }
+    #hud-vida { font-size: 28px; }
+    #hud-monedas { font-size: 22px; margin-top: 4px; }
+    #hud-poder { font-size: 18px; color: #ffe14d; }
+    #progreso {
+      position: absolute; bottom: 3vh; left: 50%; transform: translateX(-50%);
+      width: min(560px, 70%); height: 28px;
+      background: #222; border: 3px solid #ffd23f; border-radius: 14px; overflow: hidden; z-index: 8;
+    }
+    #progreso-relleno { height: 100%; width: 1%; background: linear-gradient(to bottom, #ffe97a, #ffb300); }
+    #progreso-txt {
+      position: absolute; inset: 0; text-align: center; line-height: 22px;
+      color: #fff; font-weight: bold; font-size: 15px; text-shadow: 1px 1px 2px #000;
+    }
+    #cartel {
+      display: none; position: absolute; top: 30%; width: 100%; text-align: center; z-index: 9;
+      font-family: Impact, Arial Black, sans-serif; font-size: clamp(36px, 7vw, 80px);
+      color: #ffd23f; text-shadow: 4px 4px 0 #d62828, 8px 8px 0 #7a1010;
+    }
+    #derrota {
+      display: none; position: absolute; inset: 0; z-index: 9; background: rgba(0,0,0,.6);
+      flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+    }
+    #derrota h3 { font-family: Impact, Arial Black, sans-serif; font-size: 56px; color: #ff5a5a; text-shadow: 4px 4px 0 #000; }
+    #derrota .btn-grande { width: 260px; }
+
+    /* ===== PANTALLA NEGRA FINAL ===== */
+    #fin {
+      display: none; z-index: 40; background: #000; opacity: 0; transition: opacity .8s;
+      flex-direction: column; align-items: center; justify-content: space-between; padding: 12vh 0 8vh; text-align: center;
+    }
+    #fin-frase { color: #ffd23f; font-family: Impact, Arial Black, sans-serif; font-size: clamp(22px, 3.5vw, 40px); max-width: 80%; letter-spacing: 1px; }
+    #fin-caja { width: min(600px, 80%); color: #fff; font-weight: bold; }
+    #fin-barra { height: 26px; background: #222; border: 3px solid #ffd23f; border-radius: 14px; overflow: hidden; margin-bottom: 8px; }
+    #fin-rel { width: 0%; height: 100%; background: linear-gradient(to bottom, #8cf064, #2f8f1f); transition: width .4s ease-out; }
   </style>
 </head>
 <body>
@@ -381,6 +526,7 @@
 
     <!-- PANTALLA 2: SELECCIÓN DE NIVELES -->
     <div id="niveles" class="pantalla">
+      <button id="boton-inicio" tabindex="-1" onclick="volverAInicio()">← Volver a inicio</button>
       <h2>Selecciona nivel</h2>
 
       <div class="tarjetas">
@@ -478,7 +624,29 @@
 
     <!-- PANTALLA 3: JUEGO (vacía, sin configurar) -->
     <div id="juego" class="pantalla">
-      <button id="boton-volver" onclick="volverANiveles()">← Niveles</button>
+      <div id="mundo"></div>
+      <div id="hud">
+        <div id="hud-vida"></div>
+        <div id="hud-monedas"></div>
+        <div id="hud-poder"></div>
+      </div>
+      <div id="progreso"><div id="progreso-relleno"></div><div id="progreso-txt">1%</div></div>
+      <button id="boton-volver" tabindex="-1" onmousedown="event.preventDefault()" onclick="volverANiveles()">← Niveles</button>
+      <div id="cartel"></div>
+      <div id="derrota">
+        <h3>¡Has perdido!</h3>
+        <button class="btn-grande" onclick="reintentarNivel()">Reintentar</button>
+        <button class="btn-grande" onclick="volverANiveles()">Niveles</button>
+      </div>
+    </div>
+
+    <!-- PANTALLA NEGRA FINAL: NIVEL COMPLETADO -->
+    <div id="fin" class="pantalla">
+      <div id="fin-frase"></div>
+      <div id="fin-caja">
+        <div id="fin-barra"><div id="fin-rel"></div></div>
+        <span id="fin-txt">0%</span>
+      </div>
     </div>
 
     <!-- Aviso rojo -->
@@ -545,6 +713,7 @@
 
     /* ===== NAVEGACIÓN ENTRE PANTALLAS ===== */
     function mostrarNiveles() {
+      if (typeof detenerJuego === "function") detenerJuego();
       document.getElementById("inicio").style.display = "none";
       document.getElementById("juego").style.display = "none";
       document.getElementById("comenzar").style.display = "none";
@@ -623,6 +792,7 @@
       var negro = document.getElementById("negro");
       document.getElementById("niveles").style.display = "none";
       document.getElementById("juego").style.display = "block";
+      arrancarNivel();
       negro.style.opacity = 0;
       setTimeout(function () { negro.style.display = "none"; }, 800);
     }
@@ -935,19 +1105,29 @@
       <path d="M69 42 Q70 8 100 8 Q130 10 131 42Z" fill="#1d4ed8"/>
       <path d="M118 38 L160 42 Q164 50 154 50 L118 46Z" fill="#153a9a"/>`;
 
+    // Brazo levantado (solo se ve al saltar)
+    var MANO_ZIPI = '<g class="mano"><path d="M118 222 L150 146" stroke="#d62828" stroke-width="14" stroke-linecap="round"/><circle cx="152" cy="140" r="10" fill="#f4b98a"/></g>';
+    var MANO_ZAPE = '<g class="mano"><path d="M112 112 L152 74" stroke="#1b8a3b" stroke-width="13" stroke-linecap="round"/><circle cx="156" cy="68" r="9" fill="#f4b98a"/></g>';
+
     // dir = 1 mira a la derecha, dir = -1 mira a la izquierda (las letras no se ven al revés)
-    function dibujarPJ(nombre, dir) {
+    function dibujarPJ(nombre, dir, vb) {
       var giro = (dir === 1) ? "" : ' transform="translate(200,0) scale(-1,1)"';
       var X = function (v) { return dir === 1 ? v : 200 - v; };
       var cuerpo, letra;
       if (nombre === "zipi") {
-        cuerpo = ZIPI;
+        cuerpo = ZIPI + MANO_ZIPI;
         letra = '<text x="' + X(96) + '" y="117" text-anchor="middle" font-family="Impact, Arial Black, sans-serif" font-size="22" fill="#d62828">Z</text>';
       } else {
-        cuerpo = ZAPE;
+        cuerpo = ZAPE + MANO_ZAPE;
         letra = '<text x="' + X(100) + '" y="32" text-anchor="middle" font-family="Impact, Arial Black, sans-serif" font-size="17" fill="#fff">ZA</text>';
       }
-      return '<svg viewBox="0 0 200 320"><g' + giro + '>' + cuerpo + '</g>' + letra + '</svg>';
+      var caja = "0 0 200 320", par = "";
+      if (vb) {
+        var q = vb.split(" ").map(Number);
+        if (dir === -1) q[0] = 200 - (q[0] + q[2]);
+        caja = q.join(" "); par = ' preserveAspectRatio="none"';
+      }
+      return '<svg viewBox="' + caja + '"' + par + '><g' + giro + '>' + cuerpo + '</g>' + letra + '</svg>';
     }
 
     // En el recuadro se ve mirando a la derecha; al pasar el ratón por encima, mira a la izquierda
@@ -956,6 +1136,505 @@
         '<div class="der">' + dibujarPJ(nombre, 1) + '</div>' +
         '<div class="izq">' + dibujarPJ(nombre, -1) + '</div>';
     });
+
+    /* =====================================================================
+       JUEGO: SuperSMR Bros
+       ===================================================================== */
+    function volverAInicio() {
+      document.getElementById("niveles").style.display = "none";
+      document.getElementById("inicio").style.display = "block";
+    }
+
+    (function () {
+      // ---- Frases de la pantalla final (cámbialas por las tuyas) ----
+      // Todas tienen exactamente la misma probabilidad de salir.
+      var FRASES = [
+        "Escribe aquí tu frase 1",
+        "Escribe aquí tu frase 2",
+        "Escribe aquí tu frase 3"
+      ];
+
+      // ---- Personajes: cada uno con su hitbox y sus físicas ----
+      // w/h = hitbox de pie, hAg = hitbox agachado, vel = velocidad, salto = fuerza de salto, grav = gravedad
+      // vw/vh = tamaño del dibujo, vb = zona del dibujo que se recorta, off = ajuste vertical
+      var PJ = {
+        zipi: { w: 46, h: 76,  hAg: 50, vel: 3.9, salto: 14.8, grav: 0.66, vw: 64, vh: 82,  vb: "36 80 128 240", off: -2 },
+        zape: { w: 30, h: 126, hAg: 70, vel: 4.6, salto: 15,   grav: 0.58, vw: 44, vh: 130, vb: "60 0 110 320",  off: -5 }
+      };
+
+      var monedasTotal = 0;      // inventario: solo se pierde al recargar la página
+      var G = null, K = {}, BASE = 120, raf = 0, ultimo = 0, temporizadores = [];
+      var $ = function (id) { return document.getElementById(id); };
+
+      // ---- Dibujos de enemigos y proyectiles ----
+      var SVG_SETA = '<svg viewBox="0 0 40 36"><ellipse cx="20" cy="26" rx="12" ry="9" fill="#f0d2a8"/>' +
+        '<ellipse cx="11" cy="33" rx="9" ry="3.5" fill="#3b2314"/><ellipse cx="29" cy="33" rx="9" ry="3.5" fill="#3b2314"/>' +
+        '<path d="M1 20 Q1 2 20 2 Q39 2 39 20 Q20 15 1 20Z" fill="#8b5a2b" stroke="#4a2c12" stroke-width="1.5"/>' +
+        '<ellipse cx="14" cy="21" rx="4.5" ry="5" fill="#fff"/><ellipse cx="26" cy="21" rx="4.5" ry="5" fill="#fff"/>' +
+        '<circle cx="15" cy="22" r="2.2" fill="#000"/><circle cx="25" cy="22" r="2.2" fill="#000"/>' +
+        '<path d="M7 14 L18 19" stroke="#2a1608" stroke-width="3" stroke-linecap="round"/>' +
+        '<path d="M33 14 L22 19" stroke="#2a1608" stroke-width="3" stroke-linecap="round"/>' +
+        '<path d="M14 31 Q20 26 26 31" stroke="#3b2314" stroke-width="2" fill="none"/></svg>';
+
+      var SVG_KOOPA = '<svg viewBox="0 0 44 64">' +
+        '<rect x="15" y="50" width="8" height="11" fill="#ffd23f"/><rect x="28" y="50" width="8" height="11" fill="#ffd23f"/>' +
+        '<ellipse cx="19" cy="61" rx="9" ry="3.5" fill="#e8890c"/><ellipse cx="33" cy="61" rx="9" ry="3.5" fill="#e8890c"/>' +
+        '<ellipse cx="14" cy="38" rx="13" ry="18" fill="#2f9e44" stroke="#1b5e20" stroke-width="2"/>' +
+        '<path d="M5 30 Q14 24 23 30 M3 40 Q14 33 25 40" stroke="#1b5e20" stroke-width="1.5" fill="none"/>' +
+        '<ellipse cx="24" cy="40" rx="11" ry="15" fill="#ffd23f"/>' +
+        '<rect x="22" y="14" width="9" height="16" rx="4" fill="#ffd23f"/>' +
+        '<ellipse cx="30" cy="12" rx="11" ry="9" fill="#ffd23f"/><ellipse cx="38" cy="15" rx="5" ry="3.5" fill="#ffe27a"/>' +
+        '<circle cx="34" cy="5" r="5.5" fill="#fff" stroke="#333"/><circle cx="36" cy="5" r="2.2" fill="#000"/>' +
+        '<circle cx="25" cy="5" r="4.5" fill="#fff" stroke="#333"/><circle cx="27" cy="5" r="2" fill="#000"/></svg>';
+
+      var SVG_FUEGO = '<svg viewBox="0 0 40 40"><path d="M20 1 Q30 13 34 22 Q38 35 20 38 Q2 35 6 22 Q10 13 20 1Z" fill="#ff7a00"/>' +
+        '<path d="M20 12 Q27 20 28 26 Q28 34 20 35 Q12 34 12 26 Q13 20 20 12Z" fill="#ffd23f"/>' +
+        '<circle cx="15" cy="24" r="2.3" fill="#222"/><circle cx="25" cy="24" r="2.3" fill="#222"/>' +
+        '<path d="M14 29 Q20 35 26 29" stroke="#222" stroke-width="2" fill="none" stroke-linecap="round"/></svg>';
+
+      var SVG_CAP = '<svg viewBox="0 0 22 22"><circle cx="11" cy="11" r="10" fill="#2f9e44" stroke="#1b5e20" stroke-width="2"/>' +
+        '<path d="M11 1 L11 21 M1 11 L21 11" stroke="#fff" stroke-width="2"/><circle cx="11" cy="11" r="4" fill="#ffd23f"/></svg>';
+      var SVG_BOLA = '<svg viewBox="0 0 22 22"><circle cx="11" cy="11" r="10" fill="#ff7a00"/><circle cx="11" cy="11" r="6" fill="#ffe14d"/></svg>';
+
+      // ---- Utilidades ----
+      function div(clase, html) {
+        var d = document.createElement("div");
+        d.className = clase;
+        if (html) d.innerHTML = html;
+        $("mundo").appendChild(d);
+        return d;
+      }
+      function colocar(el, x, y, w, h) {
+        el.style.left = x + "px";
+        el.style.bottom = (BASE + y) + "px";
+        if (w) { el.style.width = w + "px"; el.style.height = h + "px"; }
+      }
+      function sup(a, b) { return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y; }
+      function choca(o) {
+        var s = G.L.solidos;
+        for (var i = 0; i < s.length; i++) if (sup(o, s[i])) return true;
+        return false;
+      }
+      function temporizar(fn, ms) { temporizadores.push(setTimeout(fn, ms)); }
+
+      // El suelo del juego es la línea del césped del fondo
+      function medir() {
+        var s = document.querySelector(".suelo").getBoundingClientRect();
+        var e = document.querySelector(".escena").getBoundingClientRect();
+        var esc = Math.max(s.width / 1600, s.height / 220);
+        BASE = e.bottom - (s.top + 32 * esc);
+      }
+
+      /* ===================== CONSTRUCCIÓN DEL MAPA =====================
+         Todo está pensado para ser accesible:
+         - Salto máximo: Zipi ~166 px, Zape ~194 px.
+         - Muros y tubos: máximo 120 px de alto.
+         - Suelos en el aire: parte de abajo a 90 px, parte de arriba a 126 px.
+         - Segundo piso: sube 90 px más, con 70 px de hueco para tomar impulso.
+         - No hay huecos en el suelo, así que nunca se puede quedar atrapado.   */
+      function construirNivel(n) {
+        var r = semilla(500 + n * 31);
+        var LEN = n === 1 ? 8500 : 10500;
+        var L = { LEN: LEN, meta: LEN - 350, solidos: [], items: [], enemigos: [] };
+
+        function bloque(x, y, w, h, tipo) { var s = { x: x, y: y, w: w, h: h, tipo: tipo, usado: false }; L.solidos.push(s); return s; }
+        function item(tipo, x, y) { L.items.push({ tipo: tipo, x: x, y: y, w: 24, h: 24, rec: false }); }
+        function filaMonedas(x, y, k, sep) { for (var i = 0; i < k; i++) item("moneda", x + i * (sep || 36), y); }
+        function enemigo(tipo, x) {
+          var e = { tipo: tipo, x: x, y: 0, vx: 0, dir: -1, vivo: true, cd: 0, t: 0 };
+          if (tipo === "seta")  { e.w = 40; e.h = 36; }
+          if (tipo === "koopa") { e.w = 44; e.h = 64; e.x0 = x - 130; e.x1 = x + 130; e.cd = 40; e.dir = 1; }
+          if (tipo === "fuego") { e.w = 40; e.h = 40; e.y = 52; e.cd = 60; }
+          L.enemigos.push(e);
+        }
+
+        var modulos = {
+          tubo: function (x) { var h = r() < 0.5 ? 64 : 96; bloque(x, 0, 64, h, "tubo"); filaMonedas(x + 20, h + 25, 1); return 64; },
+          muro: function (x) {
+            var ancho = 40 * (1 + Math.floor(r() * 2)), alto = 40 * (1 + Math.floor(r() * 3));
+            bloque(x, 0, ancho, alto, "b"); filaMonedas(x + ancho / 2 - 12, alto + 25, 1); return ancho;
+          },
+          escalera: function (x) {
+            var k = 2 + Math.floor(r() * 2);
+            for (var i = 0; i < k; i++) bloque(x + i * 40, 0, 40, 40 * (i + 1), "b");
+            filaMonedas(x + (k - 1) * 40 + 8, 40 * k + 25, 1); return k * 40;
+          },
+          plataforma: function (x) {
+            var k = 3 + Math.floor(r() * 3), q = Math.floor(r() * k);
+            for (var i = 0; i < k; i++) bloque(x + i * 40, 90, 40, 36, i === q ? "q" : "p");
+            filaMonedas(x + 8, 150, k, 40); return k * 40;
+          },
+          torre: function (x) {
+            for (var i = 0; i < 3; i++) bloque(x + i * 40, 90, 40, 36, "p");
+            filaMonedas(x + 8, 150, 3, 40);
+            for (var j = 0; j < 3; j++) bloque(x + 190 + j * 40, 180, 40, 36, j === 1 ? "q" : "p");
+            item("corazon", x + 190 + 48, 230);
+            return 310;
+          },
+          monedas: function (x) { for (var i = 0; i < 6; i++) item("moneda", x + i * 38, 30 + Math.sin(i / 5 * Math.PI) * 60); return 230; },
+          corazon: function (x) { item("corazon", x, 30); filaMonedas(x + 50, 30, 3); return 170; },
+          seta: function (x) { var k = 1 + Math.floor(r() * 3); for (var i = 0; i < k; i++) enemigo("seta", x + 60 + i * 100); return k * 100 + 120; },
+          koopa: function (x) { enemigo("koopa", x + 150); return 330; },
+          fuego: function (x) { var k = 1 + Math.floor(r() * (n === 1 ? 1.5 : 2.5)); for (var i = 0; i < k; i++) enemigo("fuego", x + 60 + i * 90); return k * 90 + 100; }
+        };
+
+        var tabla = n === 1
+          ? [["tubo",14],["muro",12],["escalera",8],["plataforma",18],["torre",8],["monedas",10],["corazon",4],["seta",12],["koopa",8],["fuego",6]]
+          : [["tubo",10],["muro",9],["escalera",7],["plataforma",14],["torre",8],["monedas",8],["corazon",4],["seta",16],["koopa",14],["fuego",10]];
+        var total = tabla.reduce(function (a, b) { return a + b[1]; }, 0);
+        function elegir() {
+          var v = r() * total;
+          for (var i = 0; i < tabla.length; i++) { v -= tabla[i][1]; if (v <= 0) return tabla[i][0]; }
+          return "monedas";
+        }
+
+        var x = 750, cont = 0;
+        while (x < LEN - 1000) {
+          cont++;
+          var tipo = (cont % 6 === 0) ? "corazon" : elegir();   // cada 6 zonas hay un corazón seguro
+          x += modulos[tipo](x) + (n === 1 ? 290 : 240) + r() * 160;
+        }
+        return L;
+      }
+
+      /* ===================== ARRANQUE Y DIBUJO ===================== */
+      function arrancarNivel() {
+        detenerJuego();
+        if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+        var nombre = personajeElegido || "zipi", c = PJ[nombre];
+        medir();
+        G = {
+          nombre: nombre, cfg: c, L: construirNivel(nivelActual || 1),
+          x: 80, y: 0, vx: 0, vy: 0, w: c.w, h: c.h, suelo: true, dir: 1, agach: false, saltoListo: false,
+          vidas: 4,                 // siempre se empieza con 4 corazones
+          inv: 90, poder: 0, golpesSeta: 0, fin: false, muerto: false, proy: [], hudKey: ""
+        };
+        montar();
+        $("derrota").style.display = "none";
+        $("cartel").style.display = "none";
+        ultimo = performance.now();
+        raf = requestAnimationFrame(bucle);
+      }
+
+      function montar() {
+        var g = G, c = g.cfg;
+        $("mundo").innerHTML = "";
+        g.L.solidos.forEach(function (s) {
+          s.el = div(s.tipo === "q" ? "s-q" : s.tipo === "tubo" ? "s-tubo" : s.tipo === "p" ? "s-p" : "s-b", s.tipo === "q" ? "?" : "");
+        });
+        g.L.items.forEach(function (i) { i.el = div(i.tipo === "moneda" ? "moneda" : "corazon", i.tipo === "corazon" ? "❤️" : ""); });
+        g.L.metaEl = div("meta", '<div class="mastil"></div><div class="bandera"></div><div class="tira"></div>');
+        g.L.enemigos.forEach(function (e) {
+          e.el = div("en en-" + e.tipo, e.tipo === "seta" ? SVG_SETA : e.tipo === "koopa" ? SVG_KOOPA : SVG_FUEGO);
+        });
+        g.pjEl = div("pjg",
+          '<div class="cuerpo" style="width:' + c.vw + 'px;height:' + c.vh + 'px;margin-left:-' + (c.vw / 2) + 'px;bottom:' + c.off + 'px">' +
+          '<div class="vd" style="height:100%">' + dibujarPJ(g.nombre, 1, c.vb) + '</div>' +
+          '<div class="vi" style="height:100%">' + dibujarPJ(g.nombre, -1, c.vb) + '</div></div>');
+        posEstaticos();
+      }
+
+      function posEstaticos() {
+        var g = G;
+        g.L.solidos.forEach(function (s) { colocar(s.el, s.x, s.y, s.w, s.h); });
+        g.L.items.forEach(function (i) { colocar(i.el, i.x, i.y, i.w, i.h); });
+        colocar(g.L.metaEl, g.L.meta, 0, 10, 300);
+      }
+
+      function bucle(t) {
+        raf = requestAnimationFrame(bucle);
+        if (!G) return;
+        var dt = Math.min(3, (t - ultimo) / 16.667);
+        ultimo = t;
+        while (dt > 0) { var d = Math.min(dt, 1); paso(d); dt -= d; }
+        dibujar();
+      }
+
+      function paso(d) {
+        var g = G;
+        if (g.fin || g.muerto) return;
+        jugador(d);
+        enemigos(d);
+        proyectiles(d);
+        recoger();
+        if (g.inv > 0) g.inv -= d;
+        if (g.poder > 0) g.poder -= d;
+        if (g.x + g.w / 2 >= g.L.meta) ganar();
+      }
+
+      /* ===================== JUGADOR ===================== */
+      function jugador(d) {
+        var g = G, c = g.cfg;
+        var izq = K.KeyA || K.ArrowLeft, der = K.KeyD || K.ArrowRight;
+        var ag = K.ShiftLeft || K.ShiftRight || K.ArrowDown;
+        var sal = K.Space || K.ArrowUp;
+
+        // Agacharse (solo en el suelo). Si hay techo encima, se queda agachado.
+        if (g.suelo && ag && !g.agach) { g.agach = true; g.h = c.hAg; }
+        else if (g.agach && !(g.suelo && ag)) {
+          g.h = c.h;
+          if (choca(g)) g.h = c.hAg; else g.agach = false;
+        }
+
+        var mv = (der ? 1 : 0) - (izq ? 1 : 0);
+        var vel = c.vel * (g.poder > 0 ? 1.3 : 1);
+        g.vx = mv * vel * (g.agach ? 0.45 : 1);
+        if (mv) g.dir = mv;
+
+        if (!sal) g.saltoListo = true;
+        if (sal && g.suelo && g.saltoListo && !g.agach) { g.vy = c.salto; g.suelo = false; g.saltoListo = false; }
+
+        // Gravedad (con Shift en el aire se cae más rápido). No hay daño por caída.
+        g.vy -= c.grav * d;
+        if (!g.suelo && ag) g.vy -= 0.9 * d;
+        var maxCaida = (!g.suelo && ag) ? -22 : -13;
+        if (g.vy < maxCaida) g.vy = maxCaida;
+
+        // Movimiento horizontal
+        g.x += g.vx * d;
+        if (g.x < 0) g.x = 0;
+        if (g.x > g.L.LEN - g.w) g.x = g.L.LEN - g.w;
+        var s = g.L.solidos, i;
+        for (i = 0; i < s.length; i++) {
+          if (sup(g, s[i])) {
+            if (g.vx > 0) g.x = s[i].x - g.w; else if (g.vx < 0) g.x = s[i].x + s[i].w;
+          }
+        }
+
+        // Movimiento vertical
+        g.y += g.vy * d;
+        g.suelo = false;
+        if (g.y <= 0) { g.y = 0; if (g.vy < 0) g.vy = 0; g.suelo = true; }
+        for (i = 0; i < s.length; i++) {
+          if (sup(g, s[i])) {
+            if (g.vy <= 0) { g.y = s[i].y + s[i].h; g.vy = 0; g.suelo = true; }
+            else { g.y = s[i].y - g.h; g.vy = 0; if (s[i].tipo === "q") golpearQ(s[i]); }
+          }
+        }
+      }
+
+      function golpearQ(s) {
+        if (s.usado) return;
+        s.usado = true;
+        s.el.className = "s-q usado golpe";
+        setTimeout(function () { if (s.el) s.el.classList.remove("golpe"); }, 150);
+        var r = Math.random();
+        if (r < 0.6) flotante(s.x, s.y + 44, "Vacío");
+        else if (r < 0.9) { monedasTotal++; flotante(s.x, s.y + 44, "+1 🪙"); }
+        else { G.poder = 3600; flotante(s.x, s.y + 44, "¡PODER! 60s"); }
+      }
+
+      function flotante(x, y, txt) {
+        var f = div("flot", txt);
+        colocar(f, x, y);
+        setTimeout(function () { f.remove(); }, 900);
+      }
+
+      function hurt() {
+        var g = G;
+        if (g.inv > 0 || g.poder > 0 || g.muerto) return;
+        g.vidas--;
+        g.inv = 70;
+        if (g.vidas <= 0) perder();
+      }
+
+      function recoger() {
+        var g = G;
+        g.L.items.forEach(function (it) {
+          if (it.rec || !sup(g, it)) return;
+          if (it.tipo === "moneda") monedasTotal++;
+          else { if (g.vidas >= 6) return; g.vidas++; }   // máximo 6 corazones
+          it.rec = true;
+          it.el.style.display = "none";
+        });
+      }
+
+      /* ===================== ENEMIGOS ===================== */
+      function matar(e) {
+        e.vivo = false;
+        e.el.classList.add("muere");
+        setTimeout(function () { e.el.style.display = "none"; }, 450);
+      }
+
+      function proyectil(tipo, x, y, vx) {
+        var el = div("pr pr-" + tipo, tipo === "cap" ? SVG_CAP : SVG_BOLA);
+        colocar(el, x, y, 22, 22);
+        G.proy.push({ tipo: tipo, x: x, y: y, w: 22, h: 22, vx: vx, x0: x, el: el });
+      }
+
+      function enemigos(d) {
+        var g = G, aire = !g.suelo;
+        for (var k = 0; k < g.L.enemigos.length; k++) {
+          var e = g.L.enemigos[k];
+          if (!e.vivo) continue;
+
+          // Matar saltando encima (también vale mientras se cae)
+          if (sup(g, e) && g.vy < 0 && g.y > e.y + e.h * 0.4) {
+            matar(e); g.vy = 9.5; g.suelo = false; continue;
+          }
+          if (aire) continue;     // con el jugador en el aire, todos quedan quietos y no atacan
+
+          var dx = (g.x + g.w / 2) - (e.x + e.w / 2), dy = g.y - e.y, lado = dx > 0 ? 1 : -1;
+          e.cd -= d;
+
+          if (e.tipo === "seta") {
+            if (Math.abs(dx) < 320 && Math.abs(dy) < 160) { e.vx = lado * 1.7; e.dir = lado; } else e.vx = 0;
+            var ox = e.x; e.x += e.vx * d; if (choca(e)) e.x = ox;
+            if (sup(g, e) && e.cd <= 0 && g.inv <= 0 && g.poder <= 0) {
+              e.cd = 70;
+              g.golpesSeta++;
+              if (g.golpesSeta >= 2) { g.golpesSeta = 0; hurt(); } else g.inv = 25;
+              var ox2 = e.x; e.x -= lado * 18; if (choca(e)) e.x = ox2;
+            }
+          } else if (e.tipo === "koopa") {
+            if (Math.abs(dx) < 400 && g.y < 150) {
+              e.dir = lado;                                   // se queda quieto y mira hacia ti
+              if (e.cd <= 0) {
+                var bajo = Math.random() < 0.5;
+                proyectil("cap", e.dir > 0 ? e.x + e.w : e.x - 22, bajo ? 4 : 82, e.dir * 5.2);
+                e.cd = 110;
+              }
+            } else {
+              e.x += e.dir * 1.0 * d;                         // recorrido de ida y vuelta
+              if (e.x > e.x1) e.dir = -1;
+              if (e.x < e.x0) e.dir = 1;
+              if (e.cd < 40) e.cd = 40;
+            }
+          } else {   // fuego
+            e.t += d;
+            if (Math.abs(dx) < 430 && Math.abs(dy) < 260) { e.dir = lado; e.x += lado * 1.9 * d; }
+            e.y = 52 + Math.sin(e.t / 18) * 8;
+            if (Math.abs(dx) < 260) {
+              if (e.cd <= 0) { proyectil("bola", lado > 0 ? e.x + e.w : e.x - 22, e.y + 8, lado * 5.5); matar(e); }
+            } else if (e.cd < 60) e.cd = 60;
+          }
+        }
+      }
+
+      function proyectiles(d) {
+        var g = G;
+        for (var i = g.proy.length - 1; i >= 0; i--) {
+          var p = g.proy[i];
+          p.x += p.vx * d;
+          var quitar = Math.abs(p.x - p.x0) > 900 || choca(p);
+          if (!quitar && g.suelo && sup(g, p) && g.inv <= 0 && g.poder <= 0) { hurt(); quitar = true; }
+          if (quitar) { p.el.remove(); g.proy.splice(i, 1); }
+        }
+      }
+
+      /* ===================== FINAL Y DERROTA ===================== */
+      function ganar() {
+        var g = G;
+        if (g.fin) return;
+        g.fin = true;
+        $("cartel").textContent = "¡Nivel completado!";
+        $("cartel").style.display = "block";
+        temporizar(pantallaFin, 1600);
+      }
+
+      function cargaFalsa(pintar, alTerminar) {
+        var n = 10, i, s = 0, s2 = 0, sal = [], pau = [], acum = 0, t = 0;
+        for (i = 0; i < n; i++) { sal.push(0.4 + Math.random()); s += sal[i]; pau.push(0.4 + Math.random()); s2 += pau[i]; }
+        for (i = 0; i < n; i++) {
+          acum += sal[i] / s * 100;
+          t += pau[i] / s2 * 5000;
+          (function (p, tt) { temporizar(function () { pintar(p); }, tt); })(i === n - 1 ? 100 : Math.round(acum), t);
+        }
+        temporizar(alTerminar, t + 700);
+      }
+
+      function pantallaFin() {
+        var f = $("fin");
+        $("fin-frase").textContent = FRASES[Math.floor(Math.random() * FRASES.length)];
+        $("fin-rel").style.width = "0%";
+        $("fin-txt").textContent = "0%";
+        f.style.display = "flex";
+        void f.offsetWidth;
+        f.style.opacity = 1;
+        cargaFalsa(function (p) {
+          $("fin-rel").style.width = p + "%";
+          $("fin-txt").textContent = p + "%";
+        }, function () {
+          if (nivelActual === 1) completarNivel1();   // desbloquea el nivel 2
+          mostrarNiveles();
+        });
+      }
+
+      function perder() {
+        G.muerto = true;
+        $("derrota").style.display = "flex";
+      }
+
+      function detenerJuego() {
+        cancelAnimationFrame(raf);
+        temporizadores.forEach(clearTimeout);
+        temporizadores = [];
+        G = null;
+        K = {};
+        var m = $("mundo"); if (m) m.innerHTML = "";
+        $("derrota").style.display = "none";
+        $("cartel").style.display = "none";
+        var f = $("fin"); f.style.display = "none"; f.style.opacity = 0;
+      }
+
+      /* ===================== DIBUJO POR FOTOGRAMA ===================== */
+      function dibujar() {
+        var g = G, ancho = $("juego").clientWidth, i;
+        var cam = Math.max(0, Math.min(g.L.LEN - ancho, g.x + g.w / 2 - ancho * 0.4));
+        $("mundo").style.transform = "translate3d(" + (-cam) + "px,0,0)";
+
+        var p = g.pjEl;
+        colocar(p, g.x, g.y, g.w, g.h);
+        var est = g.agach ? "agacha" : !g.suelo ? (g.vy > 0 ? "salta" : "cae") : (Math.abs(g.vx) > 0.2 ? "anda" : "");
+        p.className = "pjg " + est + (g.dir < 0 ? " mira-izq" : "") + (g.poder > 0 ? " poder" : "") +
+          (g.inv > 0 && Math.floor(g.inv / 5) % 2 ? " parpadeo" : "");
+        p.style.setProperty("--d", g.dir);
+
+        for (i = 0; i < g.L.enemigos.length; i++) {
+          var e = g.L.enemigos[i];
+          colocar(e.el, e.x, e.y, e.w, e.h);
+          if (e.vivo && e.tipo === "koopa") e.el.style.transform = e.dir > 0 ? "none" : "scaleX(-1)";
+        }
+        for (i = 0; i < g.proy.length; i++) colocar(g.proy[i].el, g.proy[i].x, g.proy[i].y);
+
+        // Barra de progreso (sube y baja según avanzas o retrocedes)
+        var pct = Math.max(1, Math.min(100, Math.round(g.x / g.L.meta * 100)));
+        $("progreso-relleno").style.width = pct + "%";
+        $("progreso-txt").textContent = pct + "%";
+
+        // HUD
+        var clave = g.vidas + "|" + g.golpesSeta + "|" + monedasTotal + "|" + Math.ceil(Math.max(0, g.poder) / 60);
+        if (clave !== g.hudKey) {
+          g.hudKey = clave;
+          var s = "", max = Math.max(4, g.vidas);
+          for (i = 0; i < max; i++) s += i < g.vidas ? "❤️" : "🖤";
+          if (g.golpesSeta) s += " 💢";
+          $("hud-vida").textContent = s;
+          $("hud-monedas").textContent = "🪙 " + monedasTotal;
+          $("hud-poder").textContent = g.poder > 0 ? "⭐ Poder " + Math.ceil(g.poder / 60) + "s" : "";
+        }
+      }
+
+      /* ===================== TECLADO ===================== */
+      var TECLAS_JUEGO = ["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+      document.addEventListener("keydown", function (e) {
+        if (!G) return;
+        K[e.code] = true;
+        if (TECLAS_JUEGO.indexOf(e.code) > -1) e.preventDefault();
+      });
+      document.addEventListener("keyup", function (e) {
+        if (!G) return;
+        K[e.code] = false;
+        if (TECLAS_JUEGO.indexOf(e.code) > -1) e.preventDefault();
+      });
+      window.addEventListener("blur", function () { K = {}; });
+      window.addEventListener("resize", function () { if (G) { medir(); posEstaticos(); } });
+
+      // Funciones que usa el resto de la página
+      window.arrancarNivel = arrancarNivel;
+      window.detenerJuego = detenerJuego;
+      window.reintentarNivel = arrancarNivel;
+    })();
 
     // Al cargar la página, comprobar el progreso guardado
     actualizarNiveles();
