@@ -103,7 +103,103 @@
       transform: translateX(-50%) translateY(-3px);
     }
 
+    /* ===== PANTALLA DE NIVELES ===== */
+    #niveles { display: none; }
+
+    #niveles h2 {
+      text-align: center;
+      margin-top: 8vh;
+      font-family: Impact, Arial Black, sans-serif;
+      font-size: clamp(30px, 5vw, 60px);
+      color: #ffd23f;
+      letter-spacing: 3px;
+      text-shadow: 3px 3px 0 #d62828, 6px 6px 0 #7a1010;
+    }
+
+    .tarjetas {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 50px;
+      margin-top: 6vh;
+    }
+
+    .nivel {
+      position: relative;
+      width: 260px;
+      background: #1e1e2f;
+      border: 5px solid #ffd23f;
+      border-radius: 10px;
+      box-shadow: 0 6px 0 #7a1010;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .nivel:hover { transform: translateY(-5px); }
+    .nivel .portada { display: block; width: 100%; height: 160px; }
+    .nivel .etiqueta {
+      padding: 10px;
+      text-align: center;
+      color: white;
+      font-family: Impact, Arial Black, sans-serif;
+      font-size: 24px;
+      letter-spacing: 2px;
+    }
+
+    /* Candado que bloquea el nivel */
+    .bloqueo {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 15, 30, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: not-allowed;
+    }
+    .bloqueo svg { width: 80px; height: 80px; filter: drop-shadow(0 3px 4px rgba(0,0,0,0.6)); }
+    .nivel.desbloqueado .bloqueo { display: none; }
+    .nivel.bloqueado:hover { transform: none; }
+
+    /* Aviso rojo */
+    #aviso {
+      position: absolute;
+      top: 5vh;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #c1121f;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+      text-align: center;
+      padding: 16px 28px;
+      border: 4px solid #ffd6d6;
+      border-radius: 8px;
+      box-shadow: 0 6px 0 #6b0a12;
+      max-width: 90%;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      z-index: 10;
+    }
+    #aviso.visible { opacity: 1; }
+
+    /* ===== PANTALLA DE JUEGO ===== */
     #juego { display: none; }
+
+    #boton-volver {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: #d62828;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      padding: 10px 20px;
+      border: 3px solid #ffd23f;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    #boton-volver:hover { background: #ef3b3b; }
   </style>
 </head>
 <body>
@@ -159,19 +255,174 @@
     <!-- PANTALLA 1: INICIO -->
     <div id="inicio" class="pantalla">
       <h1>SuperSMR Bros</h1>
-      <button id="boton-empezar" onclick="empezar()">Clica aquí para comenzar</button>
+      <button id="boton-empezar" onclick="mostrarNiveles()">Clica aquí para comenzar</button>
     </div>
 
-    <!-- PANTALLA 2: JUEGO (vacía, sin configurar) -->
-    <div id="juego" class="pantalla">
+    <!-- PANTALLA 2: SELECCIÓN DE NIVELES -->
+    <div id="niveles" class="pantalla">
+      <h2>Selecciona nivel</h2>
+
+      <div class="tarjetas">
+
+        <!-- NIVEL 1 (siempre disponible) -->
+        <div class="nivel desbloqueado" id="nivel1" onclick="entrarNivel(1)">
+          <svg class="portada" viewBox="0 0 260 160" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="p1Cielo" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#2f86e8"/>
+                <stop offset="0.6" stop-color="#7cc0f7"/>
+                <stop offset="1" stop-color="#c4e4fb"/>
+              </linearGradient>
+            </defs>
+            <rect width="260" height="160" fill="url(#p1Cielo)"/>
+            <circle cx="220" cy="28" r="16" fill="#ffe14d"/>
+            <g fill="#fff">
+              <ellipse cx="60" cy="30" rx="26" ry="8"/><circle cx="52" cy="25" r="9"/><circle cx="68" cy="22" r="11"/>
+              <ellipse cx="160" cy="48" rx="18" ry="6" opacity="0.9"/><circle cx="156" cy="44" r="7" opacity="0.9"/>
+            </g>
+            <polygon fill="#a3b8d2" points="0,125 40,80 75,105 120,70 170,110 210,85 260,115 260,160 0,160"/>
+            <polygon fill="#8593a6" points="10,130 70,55 115,130"/>
+            <polygon fill="#566177" points="70,55 115,130 88,130 80,95"/>
+            <polygon fill="#f4f8fd" points="70,55 58,76 66,72 72,79 79,72 84,78"/>
+            <polygon fill="#8593a6" points="95,130 160,25 225,130"/>
+            <polygon fill="#566177" points="160,25 225,130 185,130 168,80 172,55"/>
+            <polygon fill="#f4f8fd" points="160,25 143,58 152,52 160,62 169,52 178,58 174,50"/>
+            <path fill="#5c9a50" d="M0,160 L0,132 Q70,118 140,132 T260,128 L260,160Z"/>
+            <rect y="140" width="260" height="20" fill="#4cc233"/>
+            <rect y="152" width="260" height="8" fill="#8a5a34"/>
+          </svg>
+          <div class="etiqueta">Nivel 1</div>
+        </div>
+
+        <!-- NIVEL 2 (bloqueado hasta completar el 1) -->
+        <div class="nivel bloqueado" id="nivel2" onclick="entrarNivel(2)">
+          <svg class="portada" viewBox="0 0 260 160" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="p2Cielo" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#3a2a6b"/>
+                <stop offset="0.6" stop-color="#c0527a"/>
+                <stop offset="1" stop-color="#ffb26b"/>
+              </linearGradient>
+            </defs>
+            <rect width="260" height="160" fill="url(#p2Cielo)"/>
+            <circle cx="60" cy="95" r="18" fill="#ffd27a"/>
+            <polygon fill="#4a3a6a" points="0,120 50,75 100,110 150,60 210,105 260,85 260,160 0,160"/>
+            <polygon fill="#2c2147" points="0,145 60,100 120,140 190,95 260,135 260,160 0,160"/>
+          </svg>
+          <div class="etiqueta">Nivel 2</div>
+
+          <!-- Candado -->
+          <div class="bloqueo">
+            <svg viewBox="0 0 64 64">
+              <path d="M18 28 V20 a14 14 0 0 1 28 0 V28" fill="none" stroke="#c9ccd3" stroke-width="7" stroke-linecap="round"/>
+              <rect x="10" y="28" width="44" height="30" rx="6" fill="#ffd23f" stroke="#a07c10" stroke-width="3"/>
+              <circle cx="32" cy="41" r="5" fill="#5a4308"/>
+              <rect x="30" y="43" width="4" height="9" rx="2" fill="#5a4308"/>
+            </svg>
+          </div>
+        </div>
+
+      </div>
     </div>
+
+    <!-- PANTALLA 3: JUEGO (vacía, sin configurar) -->
+    <div id="juego" class="pantalla">
+      <button id="boton-volver" onclick="volverANiveles()">← Niveles</button>
+    </div>
+
+    <!-- Aviso rojo -->
+    <div id="aviso">Para acceder a este nivel debes completar el anterior</div>
   </div>
 
   <script>
-    // Al pulsar el botón, se oculta el inicio y se muestra la pantalla de juego
-    function empezar() {
+    /* ===== PROGRESO CIFRADO ===== */
+    var CLAVE = "SMR-superbros-2026-x9K";   // cambia este texto por el tuyo
+    var nivelActual = 0;
+
+    // Huella digital del texto: si alguien modifica el progreso a mano, no coincide
+    function firma(texto) {
+      var h = 2166136261;
+      for (var i = 0; i < texto.length; i++) {
+        h ^= texto.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return (h >>> 0).toString(16);
+    }
+
+    // Guarda "nivel 1 completado" cifrado y firmado
+    function guardarProgreso() {
+      try {
+        var datos = "nivel1=completado";
+        localStorage.setItem("smr_p", btoa(datos + "|" + firma(datos + CLAVE)));
+      } catch (e) {}
+    }
+
+    // Lee el progreso y comprueba que la firma sea válida
+    function nivel1Completado() {
+      try {
+        var t = atob(localStorage.getItem("smr_p") || "");
+        var partes = t.split("|");
+        return partes[0] === "nivel1=completado" && partes[1] === firma(partes[0] + CLAVE);
+      } catch (e) {
+        return false;
+      }
+    }
+
+    // Pone o quita el candado del nivel 2 según el progreso
+    function actualizarNiveles() {
+      var n2 = document.getElementById("nivel2");
+      if (nivel1Completado()) {
+        n2.classList.add("desbloqueado");
+        n2.classList.remove("bloqueado");
+      } else {
+        n2.classList.add("bloqueado");
+        n2.classList.remove("desbloqueado");
+      }
+    }
+
+    // Esto se llamará desde el juego cuando se termine el nivel 1
+    function completarNivel1() {
+      guardarProgreso();
+      actualizarNiveles();
+    }
+
+    // Para volver a bloquear el nivel 2 (útil para hacer pruebas)
+    function reiniciarProgreso() {
+      try { localStorage.removeItem("smr_p"); } catch (e) {}
+      actualizarNiveles();
+    }
+
+    /* ===== NAVEGACIÓN ENTRE PANTALLAS ===== */
+    function mostrarNiveles() {
       document.getElementById("inicio").style.display = "none";
+      document.getElementById("juego").style.display = "none";
+      document.getElementById("niveles").style.display = "block";
+      actualizarNiveles();
+    }
+
+    function volverANiveles() {
+      mostrarNiveles();
+    }
+
+    function entrarNivel(n) {
+      if (n === 2 && !nivel1Completado()) {
+        mostrarAviso();
+        return;
+      }
+      nivelActual = n;
+      document.getElementById("niveles").style.display = "none";
       document.getElementById("juego").style.display = "block";
+    }
+
+    /* ===== AVISO ROJO (desaparece a los 3 segundos) ===== */
+    var temporizadorAviso = null;
+    function mostrarAviso() {
+      var aviso = document.getElementById("aviso");
+      aviso.classList.add("visible");
+      clearTimeout(temporizadorAviso);
+      temporizadorAviso = setTimeout(function () {
+        aviso.classList.remove("visible");
+      }, 3000);
     }
 
     // Generador de números "aleatorios" repetibles: misma semilla = mismos resultados siempre
@@ -444,6 +695,9 @@
         el("circle", { cx: fx.toFixed(1), cy: (borde(fx) + 12).toFixed(1), r: 2.6, fill: r() > 0.5 ? "#ffffff" : "#ffe14d" });
       }
     })();
+
+    // Al cargar la página, comprobar el progreso guardado
+    actualizarNiveles();
   </script>
 </body>
 </html>
