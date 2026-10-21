@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SuperBros SMR</title>
+  <title>SuperSMR Bros</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { overflow: hidden; font-family: Verdana, sans-serif; }
@@ -112,7 +112,7 @@
     <div class="sol"></div>
     <div id="nubes"></div>
 
-    <!-- MONTAÑAS -->
+    <!-- MONTAÑAS (se dibujan con el script de abajo) -->
     <div class="montanas">
       <svg viewBox="0 0 1600 500" preserveAspectRatio="xMidYMax slice">
         <defs>
@@ -120,68 +120,16 @@
             <stop offset="0" stop-color="#cfe8fb" stop-opacity="0"/>
             <stop offset="1" stop-color="#cfe8fb" stop-opacity="0.65"/>
           </linearGradient>
-          <polygon id="roca" points="0,0 12,-9 28,-5 33,7 17,13 3,10"/>
+          <linearGradient id="gRoca" gradientUnits="userSpaceOnUse" x1="0" y1="30" x2="0" y2="480">
+            <stop offset="0" stop-color="#7b8798"/>
+            <stop offset="0.6" stop-color="#8593a6"/>
+            <stop offset="1" stop-color="#a3b3c8"/>
+          </linearGradient>
+          <g id="mont-defs"></g>
         </defs>
 
-        <!-- Cordillera lejana (azulada, con bruma) -->
-        <polygon fill="#93abc8" points="0,500 0,300 80,260 140,285 230,210 300,250 380,190 470,260 540,230 640,280 720,220 800,270 900,200 980,255 1060,230 1160,290 1260,215 1340,260 1440,205 1520,250 1600,230 1600,500"/>
-        <polyline fill="none" stroke="#7a93b3" stroke-width="3" points="230,210 250,290 300,250 330,330 380,190 400,300 470,260 480,340"/>
-
-        <!-- Montaña A -->
-        <polygon fill="#8795aa" points="-60,500 50,390 100,360 140,300 200,260 250,190 320,110 345,200 320,260 360,330 340,400 380,500"/>
-        <polygon fill="#5a6679" points="320,110 372,190 355,240 420,290 410,340 490,390 540,440 700,500 380,500 340,400 360,330 320,260 345,200"/>
-        <polygon fill="#ffffff" points="320,110 252,192 278,176 296,202 318,182 338,208 352,196 372,190"/>
-        <polygon fill="#d9e6f5" points="320,110 352,196 338,208 335,160"/>
-
-        <!-- Montaña B (la más alta) -->
-        <polygon fill="#8795aa" points="450,500 540,410 600,370 640,300 700,250 740,170 800,40 830,140 810,210 850,280 830,350 870,420 850,500"/>
-        <polygon fill="#55627a" points="800,40 860,125 900,180 880,240 960,290 1000,350 1080,420 1200,500 850,500 870,420 830,350 850,280 810,210 830,140"/>
-        <polygon fill="#ffffff" points="800,40 740,170 762,152 782,182 806,158 832,188 848,168 860,125"/>
-        <polygon fill="#d9e6f5" points="800,40 860,125 848,168 832,188 826,110"/>
-
-        <!-- Montaña C -->
-        <polygon fill="#8795aa" points="1080,500 1160,420 1210,380 1250,300 1290,220 1330,150 1350,230 1330,290 1370,350 1355,420 1390,500"/>
-        <polygon fill="#5a6679" points="1330,150 1385,220 1420,270 1410,330 1480,380 1530,430 1650,500 1390,500 1355,420 1370,350 1330,290 1350,230"/>
-        <polygon fill="#ffffff" points="1330,150 1292,220 1312,206 1328,232 1344,208 1362,236 1385,220"/>
-
-        <!-- Grietas y relieve -->
-        <g fill="none" stroke="#3b4658" stroke-opacity="0.55" stroke-width="2.5" stroke-linejoin="round">
-          <polyline points="250,230 235,290 262,340 240,400"/>
-          <polyline points="740,230 720,300 745,360 720,430"/>
-          <polyline points="780,200 765,270 790,330"/>
-          <polyline points="900,230 925,300 905,360 940,420"/>
-          <polyline points="1290,280 1275,340 1300,400"/>
-          <polyline points="1440,310 1460,360 1445,420"/>
-          <polyline points="400,300 430,350 415,410 450,450"/>
-        </g>
-
-        <!-- Rocas en las zonas iluminadas -->
-        <g fill="#a3acb9" stroke="#55606e" stroke-width="1.5">
-          <use href="#roca" transform="translate(150 380) scale(.9)"/>
-          <use href="#roca" transform="translate(205 335) scale(.7)"/>
-          <use href="#roca" transform="translate(270 420) scale(1.2)"/>
-          <use href="#roca" transform="translate(260 265) scale(.6)"/>
-          <use href="#roca" transform="translate(620 420) scale(1.1)"/>
-          <use href="#roca" transform="translate(700 335) scale(.8)"/>
-          <use href="#roca" transform="translate(765 265) scale(.7)"/>
-          <use href="#roca" transform="translate(690 445) scale(1.3)"/>
-          <use href="#roca" transform="translate(775 385) scale(.9)"/>
-          <use href="#roca" transform="translate(1200 440) scale(1)"/>
-          <use href="#roca" transform="translate(1285 365) scale(.7)"/>
-          <use href="#roca" transform="translate(1300 425) scale(1.1)"/>
-        </g>
-        <!-- Rocas en las zonas de sombra -->
-        <g fill="#657086" stroke="#2f3744" stroke-width="1.5">
-          <use href="#roca" transform="translate(435 360) scale(.9)"/>
-          <use href="#roca" transform="translate(480 430) scale(1.2)"/>
-          <use href="#roca" transform="translate(520 470) scale(.8)"/>
-          <use href="#roca" transform="translate(880 335) scale(.8)"/>
-          <use href="#roca" transform="translate(950 385) scale(1)"/>
-          <use href="#roca" transform="translate(1000 435) scale(1.3)"/>
-          <use href="#roca" transform="translate(905 455) scale(.9)"/>
-          <use href="#roca" transform="translate(1425 360) scale(.8)"/>
-          <use href="#roca" transform="translate(1500 440) scale(1.1)"/>
-        </g>
+        <g id="mont-lejanas"></g>
+        <g id="mont-principales"></g>
 
         <!-- Colinas verdes al pie -->
         <path fill="#5c9a50" d="M0,500 L0,462 Q150,425 320,462 T640,455 T960,466 T1280,452 T1600,460 L1600,500Z"/>
@@ -210,7 +158,7 @@
 
     <!-- PANTALLA 1: INICIO -->
     <div id="inicio" class="pantalla">
-      <h1>SuperBros SMR</h1>
+      <h1>SuperSMR Bros</h1>
       <button id="boton-empezar" onclick="empezar()">Clica aquí para comenzar</button>
     </div>
 
@@ -274,6 +222,154 @@
         requestAnimationFrame(mover);
       }
       mover();
+    })();
+
+    /* ===== MONTAÑAS: relieve generado con código ===== */
+    (function () {
+      var NS = "http://www.w3.org/2000/svg";
+      var r = semilla(31);   // cambia este número para obtener otras montañas
+      var defs = document.getElementById("mont-defs");
+      var lejos = document.getElementById("mont-lejanas");
+      var cerca = document.getElementById("mont-principales");
+
+      function crear(padre, tipo, atrib) {
+        var e = document.createElementNS(NS, tipo);
+        for (var k in atrib) e.setAttribute(k, atrib[k]);
+        padre.appendChild(e);
+        return e;
+      }
+      function p(x, y) { return x.toFixed(1) + "," + y.toFixed(1); }
+
+      // Ruido suave repetible (da el aspecto irregular y natural)
+      function ruido() {
+        var v = [], i;
+        for (i = 0; i < 256; i++) v.push(r());
+        return function (x) {
+          var i = Math.floor(x), f = x - i;
+          f = f * f * (3 - 2 * f);
+          return v[i & 255] * (1 - f) + v[(i + 1) & 255] * f;
+        };
+      }
+
+      /* --- Cordilleras lejanas (sin detalles, azuladas por la distancia) --- */
+      function cordillera(color, base, amp, esc) {
+        var n1 = ruido(), n2 = ruido(), n3 = ruido();
+        var pts = "0,500", x;
+        for (x = 0; x <= 1600; x += 8) {
+          var c1 = 1 - Math.abs(2 * n1(x / esc) - 1);   // crestas puntiagudas
+          var y = base - amp * c1 - amp * 0.3 * n2(x / (esc / 3)) - amp * 0.08 * n3(x / (esc / 9));
+          pts += " " + p(x, y);
+        }
+        pts += " 1600,500";
+        crear(lejos, "polygon", { points: pts, fill: color });
+      }
+      cordillera("#bccfe4", 305, 120, 170);
+      cordillera("#a3b8d2", 335, 105, 120);
+
+      /* --- Montañas principales --- */
+      function montana(id, px, py, Wl, Wr, base) {
+        var H = base - py;
+        var nA = ruido(), nB = ruido(), nC = ruido(), nS = ruido(), nT = ruido();
+        var i, n, t;
+
+        // Altura de la montaña en cada punto: forma base + relieve irregular
+        function altura(x) {
+          var d = x < px ? (px - x) / Wl : (x - px) / Wr;
+          if (d >= 1) return 0;
+          var h = H * Math.pow(1 - d, 1.3);
+          var k = Math.min(1, d * 4) * Math.min(1, (1 - d) * 3); // la cima y la base se mantienen limpias
+          h += k * H * ((nA(x / 70) - 0.5) * 0.16 + (nB(x / 22) - 0.5) * 0.07 + (nC(x / 7) - 0.5) * 0.025);
+          return Math.max(0, h);
+        }
+
+        // Puntos del contorno
+        var xs = [];
+        n = Math.ceil(Wl / 6);
+        for (i = 0; i < n; i++) xs.push(px - Wl + i * Wl / n);
+        n = Math.ceil(Wr / 6);
+        for (i = 0; i <= n; i++) xs.push(px + i * Wr / n);
+
+        var borde = [];
+        for (i = 0; i < xs.length; i++) borde.push(p(xs[i], base - altura(xs[i])));
+        var sil = p(px - Wl, 500) + " " + borde.join(" ") + " " + p(px + Wr, 500);
+
+        // Todo el detalle se recorta con la silueta: nunca se sale de la montaña
+        var cp = crear(defs, "clipPath", { id: "cpm" + id });
+        crear(cp, "polygon", { points: sil });
+
+        crear(cerca, "polygon", { points: sil, fill: "url(#gRoca)" });
+        var g = crear(cerca, "g", { "clip-path": "url(#cpm" + id + ")" });
+
+        // Cresta que separa la cara iluminada (derecha, hacia el sol) de la de sombra
+        var cresta = [], rx = px + 0.1 * Wr;
+        for (i = 0; i <= 24; i++) {
+          t = i / 24;
+          var cx = px + (rx - px) * t + (nA(t * 7 + 40) - 0.5) * 0.36 * Wl * Math.min(1, t * 4);
+          cresta.push([cx, py + (base + 30 - py) * t]);
+        }
+        var crestaTxt = cresta.map(function (q) { return p(q[0], q[1]); }).join(" ");
+
+        // Nieve de la cima (borde irregular)
+        var nieve = "M" + p(px - Wl, py - 40);
+        for (i = 0; i < xs.length; i++) {
+          var sy = py + H * 0.2 + (nS(xs[i] / 40) - 0.5) * H * 0.13 + (nT(xs[i] / 11) - 0.5) * H * 0.05;
+          nieve += " L" + p(xs[i], sy);
+        }
+        nieve += " L" + p(px + Wr, py - 40) + " Z";
+        crear(g, "path", { d: nieve, fill: "#f4f8fd" });
+
+        // Facetas de roca: sombras y luces suaves, alargadas siguiendo la ladera
+        for (i = 0; i < 80; i++) {
+          var fx = px - Wl * 0.9 + r() * (Wl * 0.9 + Wr * 0.9);
+          var fy = py + r() * (base - py);
+          var s = 14 + r() * 46;
+          var tri = p(fx, fy) + " " +
+                    p(fx + s * (0.3 + r() * 0.6), fy + s * (0.3 + r() * 0.6)) + " " +
+                    p(fx - s * (0.2 + r() * 0.6), fy + s * (0.6 + r() * 0.9));
+          crear(g, "polygon", {
+            points: tri,
+            fill: r() > 0.5 ? "#ffffff" : "#1b2638",
+            "fill-opacity": (0.03 + r() * 0.07).toFixed(3)
+          });
+        }
+
+        // Luz del sol en la cara derecha
+        crear(g, "polygon", {
+          points: crestaTxt + " " + p(px + Wr + 60, base + 30) + " " + p(px + Wr + 60, py - 40) + " " + p(px, py - 40),
+          fill: "rgba(255,240,205,0.13)"
+        });
+
+        // Sombra en la cara izquierda
+        crear(g, "polygon", {
+          points: p(px, py - 40) + " " + crestaTxt + " " + p(px - Wl - 60, base + 30) + " " + p(px - Wl - 60, py - 40),
+          fill: "rgba(28,42,82,0.38)"
+        });
+
+        // Barrancos: canales oscuros que se ensanchan al bajar
+        for (i = 0; i < 9; i++) {
+          var gx = px + (r() - 0.5) * Math.min(Wl, Wr) * 1.0;
+          var gy = py + H * (0.1 + r() * 0.25);
+          var izq = [], der = [];
+          for (t = 0; t <= 1.0001; t += 1 / 14) {
+            var bx = gx + (gx - px) * 0.45 * t + (nA(i * 13 + t * 6) - 0.5) * 40;
+            var by = gy + (base + 20 - gy) * t;
+            var w = 1 + 8 * t;
+            izq.push(p(bx - w, by));
+            der.push(p(bx + w, by));
+          }
+          crear(g, "polygon", {
+            points: izq.concat(der.reverse()).join(" "),
+            fill: "rgba(20,30,50," + (0.14 + r() * 0.12).toFixed(2) + ")"
+          });
+        }
+
+        // Brillo fino sobre la cresta
+        crear(g, "polyline", { points: crestaTxt, fill: "none", stroke: "rgba(255,255,255,0.28)", "stroke-width": 2 });
+      }
+
+      montana(0, 800, 40, 440, 460, 472);    // la más alta (al fondo)
+      montana(1, 300, 135, 330, 340, 472);   // izquierda
+      montana(2, 1330, 150, 330, 300, 472);  // derecha
     })();
 
     /* ===== SUELO: césped, tierra y piedras ===== */
