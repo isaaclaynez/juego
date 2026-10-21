@@ -6,19 +6,17 @@
   <title>SuperBros SMR</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { overflow: hidden; font-family: Verdana, sans-serif; }
 
-    body {
-      overflow: hidden;
-      font-family: Verdana, sans-serif;
-    }
-
-    /* ===== ESCENARIO ===== */
+    /* ===== ESCENARIO + CIELO (varios azules muy parecidos) ===== */
     .escena {
       position: relative;
       width: 100%;
       height: 100vh;
       overflow: hidden;
-      background: linear-gradient(to bottom, #3a9bff 0%, #8fd0ff 60%, #d6f0ff 100%);
+      background: linear-gradient(to bottom,
+        #2f86e8 0%, #3f95ee 18%, #55a6f2 35%,
+        #6fb7f5 52%, #8cc7f8 68%, #a9d6fa 82%, #c4e4fb 100%);
     }
 
     /* Sol */
@@ -33,15 +31,15 @@
       box-shadow: 0 0 40px 20px rgba(255, 225, 77, 0.6);
     }
 
-    /* Nubes */
+    /* Nubes (mismo aspecto de antes; su movimiento lo controla el script) */
     .nube {
       position: absolute;
+      left: 0;
       width: 160px;
       height: 50px;
       background: white;
       border-radius: 50px;
-      opacity: 0.95;
-      animation: mover linear infinite;
+      will-change: transform;
     }
     .nube::before, .nube::after {
       content: "";
@@ -52,43 +50,29 @@
     .nube::before { width: 70px; height: 70px; top: -30px; left: 20px; }
     .nube::after  { width: 90px; height: 90px; top: -45px; left: 70px; }
 
-    .nube1 { top: 12vh; animation-duration: 60s; }
-    .nube2 { top: 25vh; animation-duration: 90s; transform: scale(0.7); }
-    .nube3 { top: 6vh;  animation-duration: 75s; animation-delay: -30s; transform: scale(1.2); }
-
-    @keyframes mover {
-      from { left: -250px; }
-      to   { left: 100%; }
-    }
-
-    /* Montañas */
-    .montana {
+    /* Montañas y suelo (dibujos SVG) */
+    .montanas {
       position: absolute;
-      bottom: 20vh;
-      background: linear-gradient(to bottom, white 0 18%, #6b7f99 18% 100%);
-      clip-path: polygon(50% 0, 100% 100%, 0 100%);
+      left: 0;
+      bottom: 17vh;
+      width: 100%;
+      aspect-ratio: 16 / 5;
+      max-height: 70vh;
+      pointer-events: none;
     }
-    .m1 { left: -5%;  width: 45%; height: 45vh; }
-    .m2 { left: 25%;  width: 50%; height: 55vh; background: linear-gradient(to bottom, white 0 16%, #56698a 16% 100%); }
-    .m3 { left: 60%;  width: 45%; height: 40vh; }
-
-    /* Césped */
-    .cesped {
+    .suelo {
       position: absolute;
+      left: 0;
       bottom: 0;
       width: 100%;
-      height: 22vh;
-      background: linear-gradient(to bottom, #6fdc45, #2f8f1f);
-      border-top: 8px solid #8cf064;
+      height: 24vh;
+      pointer-events: none; /* es solo decoración: no afecta a físicas ni colisiones */
     }
+    .montanas svg, .suelo svg { width: 100%; height: 100%; display: block; }
 
     /* ===== PANTALLAS ===== */
-    .pantalla {
-      position: absolute;
-      inset: 0;
-    }
+    .pantalla { position: absolute; inset: 0; }
 
-    /* Pantalla de inicio */
     #inicio h1 {
       text-align: center;
       margin-top: 12vh;
@@ -96,9 +80,7 @@
       font-size: clamp(40px, 9vw, 110px);
       color: #ffd23f;
       letter-spacing: 4px;
-      text-shadow:
-        4px 4px 0 #d62828,
-        8px 8px 0 #7a1010;
+      text-shadow: 4px 4px 0 #d62828, 8px 8px 0 #7a1010;
     }
 
     #boton-empezar {
@@ -121,7 +103,6 @@
       transform: translateX(-50%) translateY(-3px);
     }
 
-    /* Pantalla de juego (vacía por ahora) */
     #juego { display: none; }
   </style>
 </head>
@@ -129,13 +110,103 @@
 
   <div class="escena">
     <div class="sol"></div>
-    <div class="nube nube1"></div>
-    <div class="nube nube2"></div>
-    <div class="nube nube3"></div>
-    <div class="montana m1"></div>
-    <div class="montana m2"></div>
-    <div class="montana m3"></div>
-    <div class="cesped"></div>
+    <div id="nubes"></div>
+
+    <!-- MONTAÑAS -->
+    <div class="montanas">
+      <svg viewBox="0 0 1600 500" preserveAspectRatio="xMidYMax slice">
+        <defs>
+          <linearGradient id="gBruma" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#cfe8fb" stop-opacity="0"/>
+            <stop offset="1" stop-color="#cfe8fb" stop-opacity="0.65"/>
+          </linearGradient>
+          <polygon id="roca" points="0,0 12,-9 28,-5 33,7 17,13 3,10"/>
+        </defs>
+
+        <!-- Cordillera lejana (azulada, con bruma) -->
+        <polygon fill="#93abc8" points="0,500 0,300 80,260 140,285 230,210 300,250 380,190 470,260 540,230 640,280 720,220 800,270 900,200 980,255 1060,230 1160,290 1260,215 1340,260 1440,205 1520,250 1600,230 1600,500"/>
+        <polyline fill="none" stroke="#7a93b3" stroke-width="3" points="230,210 250,290 300,250 330,330 380,190 400,300 470,260 480,340"/>
+
+        <!-- Montaña A -->
+        <polygon fill="#8795aa" points="-60,500 50,390 100,360 140,300 200,260 250,190 320,110 345,200 320,260 360,330 340,400 380,500"/>
+        <polygon fill="#5a6679" points="320,110 372,190 355,240 420,290 410,340 490,390 540,440 700,500 380,500 340,400 360,330 320,260 345,200"/>
+        <polygon fill="#ffffff" points="320,110 252,192 278,176 296,202 318,182 338,208 352,196 372,190"/>
+        <polygon fill="#d9e6f5" points="320,110 352,196 338,208 335,160"/>
+
+        <!-- Montaña B (la más alta) -->
+        <polygon fill="#8795aa" points="450,500 540,410 600,370 640,300 700,250 740,170 800,40 830,140 810,210 850,280 830,350 870,420 850,500"/>
+        <polygon fill="#55627a" points="800,40 860,125 900,180 880,240 960,290 1000,350 1080,420 1200,500 850,500 870,420 830,350 850,280 810,210 830,140"/>
+        <polygon fill="#ffffff" points="800,40 740,170 762,152 782,182 806,158 832,188 848,168 860,125"/>
+        <polygon fill="#d9e6f5" points="800,40 860,125 848,168 832,188 826,110"/>
+
+        <!-- Montaña C -->
+        <polygon fill="#8795aa" points="1080,500 1160,420 1210,380 1250,300 1290,220 1330,150 1350,230 1330,290 1370,350 1355,420 1390,500"/>
+        <polygon fill="#5a6679" points="1330,150 1385,220 1420,270 1410,330 1480,380 1530,430 1650,500 1390,500 1355,420 1370,350 1330,290 1350,230"/>
+        <polygon fill="#ffffff" points="1330,150 1292,220 1312,206 1328,232 1344,208 1362,236 1385,220"/>
+
+        <!-- Grietas y relieve -->
+        <g fill="none" stroke="#3b4658" stroke-opacity="0.55" stroke-width="2.5" stroke-linejoin="round">
+          <polyline points="250,230 235,290 262,340 240,400"/>
+          <polyline points="740,230 720,300 745,360 720,430"/>
+          <polyline points="780,200 765,270 790,330"/>
+          <polyline points="900,230 925,300 905,360 940,420"/>
+          <polyline points="1290,280 1275,340 1300,400"/>
+          <polyline points="1440,310 1460,360 1445,420"/>
+          <polyline points="400,300 430,350 415,410 450,450"/>
+        </g>
+
+        <!-- Rocas en las zonas iluminadas -->
+        <g fill="#a3acb9" stroke="#55606e" stroke-width="1.5">
+          <use href="#roca" transform="translate(150 380) scale(.9)"/>
+          <use href="#roca" transform="translate(205 335) scale(.7)"/>
+          <use href="#roca" transform="translate(270 420) scale(1.2)"/>
+          <use href="#roca" transform="translate(260 265) scale(.6)"/>
+          <use href="#roca" transform="translate(620 420) scale(1.1)"/>
+          <use href="#roca" transform="translate(700 335) scale(.8)"/>
+          <use href="#roca" transform="translate(765 265) scale(.7)"/>
+          <use href="#roca" transform="translate(690 445) scale(1.3)"/>
+          <use href="#roca" transform="translate(775 385) scale(.9)"/>
+          <use href="#roca" transform="translate(1200 440) scale(1)"/>
+          <use href="#roca" transform="translate(1285 365) scale(.7)"/>
+          <use href="#roca" transform="translate(1300 425) scale(1.1)"/>
+        </g>
+        <!-- Rocas en las zonas de sombra -->
+        <g fill="#657086" stroke="#2f3744" stroke-width="1.5">
+          <use href="#roca" transform="translate(435 360) scale(.9)"/>
+          <use href="#roca" transform="translate(480 430) scale(1.2)"/>
+          <use href="#roca" transform="translate(520 470) scale(.8)"/>
+          <use href="#roca" transform="translate(880 335) scale(.8)"/>
+          <use href="#roca" transform="translate(950 385) scale(1)"/>
+          <use href="#roca" transform="translate(1000 435) scale(1.3)"/>
+          <use href="#roca" transform="translate(905 455) scale(.9)"/>
+          <use href="#roca" transform="translate(1425 360) scale(.8)"/>
+          <use href="#roca" transform="translate(1500 440) scale(1.1)"/>
+        </g>
+
+        <!-- Colinas verdes al pie -->
+        <path fill="#5c9a50" d="M0,500 L0,462 Q150,425 320,462 T640,455 T960,466 T1280,452 T1600,460 L1600,500Z"/>
+        <path fill="#4a8a3f" d="M0,500 L0,482 Q200,455 420,484 T860,478 T1300,486 T1600,476 L1600,500Z"/>
+        <rect x="0" y="330" width="1600" height="170" fill="url(#gBruma)"/>
+      </svg>
+    </div>
+
+    <!-- SUELO -->
+    <div class="suelo">
+      <svg viewBox="0 0 1600 220" preserveAspectRatio="xMidYMin slice">
+        <defs>
+          <linearGradient id="gTierra" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#8a5a34"/>
+            <stop offset="1" stop-color="#4a2c17"/>
+          </linearGradient>
+          <linearGradient id="gHierba" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#7be04f"/>
+            <stop offset="1" stop-color="#37901f"/>
+          </linearGradient>
+        </defs>
+        <rect x="0" y="40" width="1600" height="180" fill="url(#gTierra)"/>
+        <g id="detalles-suelo"></g>
+      </svg>
+    </div>
 
     <!-- PANTALLA 1: INICIO -->
     <div id="inicio" class="pantalla">
@@ -154,6 +225,129 @@
       document.getElementById("inicio").style.display = "none";
       document.getElementById("juego").style.display = "block";
     }
+
+    // Generador de números "aleatorios" repetibles: misma semilla = mismos resultados siempre
+    function semilla(a) {
+      return function () {
+        a |= 0; a = a + 0x6D2B79F5 | 0;
+        var t = Math.imul(a ^ a >>> 15, 1 | a);
+        t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      };
+    }
+
+    /* ===== NUBES: patrón de 5 minutos que se repite ===== */
+    (function () {
+      var CICLO = 300;            // segundos
+      var r = semilla(2024);
+      var contenedor = document.getElementById("nubes");
+      var nubes = [];
+
+      for (var i = 0; i < 18; i++) {
+        var el = document.createElement("div");
+        el.className = "nube";
+        el.style.top = (3 + r() * 30) + "vh";
+        el.style.opacity = (0.8 + r() * 0.15).toFixed(2);
+        contenedor.appendChild(el);
+        nubes.push({
+          el: el,
+          inicio: r() * CICLO,        // en qué momento del ciclo aparece
+          duracion: 50 + r() * 60,    // segundos que tarda en cruzar la pantalla
+          escala: 0.6 + r() * 0.7
+        });
+      }
+
+      function mover() {
+        var t = performance.now() / 1000;
+        var ancho = window.innerWidth;
+        for (var i = 0; i < nubes.length; i++) {
+          var n = nubes[i];
+          var fase = (((t - n.inicio) % CICLO) + CICLO) % CICLO / n.duracion;
+          if (fase <= 1) {
+            var px = -300 + fase * (ancho + 600);
+            n.el.style.display = "block";
+            n.el.style.transform = "translate3d(" + px.toFixed(1) + "px,0,0) scale(" + n.escala.toFixed(2) + ")";
+          } else {
+            n.el.style.display = "none";
+          }
+        }
+        requestAnimationFrame(mover);
+      }
+      mover();
+    })();
+
+    /* ===== SUELO: césped, tierra y piedras ===== */
+    (function () {
+      var NS = "http://www.w3.org/2000/svg";
+      var g = document.getElementById("detalles-suelo");
+      var r = semilla(7);
+      var x, i;
+
+      function el(tipo, atributos) {
+        var e = document.createElementNS(NS, tipo);
+        for (var k in atributos) e.setAttribute(k, atributos[k]);
+        g.appendChild(e);
+        return e;
+      }
+      // Borde superior del césped con pequeños desniveles
+      function borde(x) { return 26 + 4 * Math.sin(x / 90) + 3 * Math.sin(x / 37 + 1); }
+
+      // Capas de la tierra
+      for (i = 0; i < 3; i++) {
+        var d = "";
+        for (x = 0; x <= 1600; x += 40) {
+          d += (x ? "L" : "M") + x + "," + (95 + i * 48 + 8 * Math.sin(x / 130 + i)).toFixed(1) + " ";
+        }
+        el("path", { d: d, fill: "none", stroke: "rgba(0,0,0,0.14)", "stroke-width": 10 });
+      }
+
+      // Piedrecitas
+      var colores = ["#9b8b7a", "#6e5f50", "#b3a595", "#5a4a3b"];
+      for (i = 0; i < 80; i++) {
+        var rx = 3 + r() * 7;
+        el("ellipse", {
+          cx: (r() * 1600).toFixed(1), cy: (75 + r() * 140).toFixed(1),
+          rx: rx.toFixed(1), ry: (rx * 0.7).toFixed(1),
+          fill: colores[Math.floor(r() * colores.length)]
+        });
+      }
+
+      // Piedras grandes
+      for (i = 0; i < 16; i++) {
+        var cx = r() * 1600, cy = 90 + r() * 115, s = 12 + r() * 16, pts = "";
+        for (var a = 0; a < 7; a++) {
+          var ang = a / 7 * Math.PI * 2, rad = s * (0.7 + r() * 0.4);
+          pts += (cx + Math.cos(ang) * rad * 1.3).toFixed(1) + "," + (cy + Math.sin(ang) * rad * 0.8).toFixed(1) + " ";
+        }
+        el("polygon", { points: pts, fill: "#8d9199", stroke: "#4d4f55", "stroke-width": 2 });
+        el("ellipse", { cx: (cx - s * 0.3).toFixed(1), cy: (cy - s * 0.3).toFixed(1), rx: (s * 0.4).toFixed(1), ry: (s * 0.2).toFixed(1), fill: "rgba(255,255,255,0.25)" });
+      }
+
+      // Césped (banda con borde inferior irregular)
+      var arriba = "", abajo = [];
+      for (x = 0; x <= 1600; x += 10) arriba += (x ? "L" : "M") + x + "," + borde(x).toFixed(1) + " ";
+      for (x = 1600; x >= 0; x -= 10) abajo.push("L" + x + "," + (borde(x) + 30 + ((x / 10) % 2 ? 9 : 0) + r() * 6).toFixed(1));
+      el("path", { d: arriba + abajo.join(" ") + "Z", fill: "url(#gHierba)" });
+
+      // Línea de luz en el borde y briznas de hierba
+      var linea = "";
+      for (x = 0; x <= 1600; x += 10) linea += x + "," + borde(x).toFixed(1) + " ";
+      el("polyline", { points: linea, fill: "none", stroke: "#a5f27a", "stroke-width": 3 });
+
+      for (x = 0; x < 1600; x += 7) {
+        var y = borde(x);
+        el("polygon", {
+          points: x + "," + (y + 3) + " " + (x + 2.5) + "," + (y - 6 - r() * 7).toFixed(1) + " " + (x + 5) + "," + (y + 3),
+          fill: r() > 0.5 ? "#4cc233" : "#6fe04a"
+        });
+      }
+
+      // Florecillas
+      for (i = 0; i < 14; i++) {
+        var fx = r() * 1600;
+        el("circle", { cx: fx.toFixed(1), cy: (borde(fx) + 12).toFixed(1), r: 2.6, fill: r() > 0.5 ? "#ffffff" : "#ffe14d" });
+      }
+    })();
   </script>
 </body>
 </html>
