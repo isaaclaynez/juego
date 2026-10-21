@@ -1,28 +1,159 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Mi juego</title>
-    <style>
-      body {
-        background-color: #1e1e2f;
-        color: white;
-        font-family: Arial, sans-serif;
-        text-align: center;
-      }
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SuperBros SMR</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-      h1 {
-        color: #ffd166;
-        font-size: 48px;
-        margin-top: 80px;
-      }
+    body {
+      overflow: hidden;
+      font-family: Verdana, sans-serif;
+    }
 
-      p {
-        font-size: 20px;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>¡Hola! Este será mi juego</h1>
-    <p>Ya estoy en internet.</p>
-  </body>
+    /* ===== ESCENARIO ===== */
+    .escena {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      background: linear-gradient(to bottom, #3a9bff 0%, #8fd0ff 60%, #d6f0ff 100%);
+    }
+
+    /* Sol */
+    .sol {
+      position: absolute;
+      top: 8vh;
+      right: 10%;
+      width: 110px;
+      height: 110px;
+      background: #ffe14d;
+      border-radius: 50%;
+      box-shadow: 0 0 40px 20px rgba(255, 225, 77, 0.6);
+    }
+
+    /* Nubes */
+    .nube {
+      position: absolute;
+      width: 160px;
+      height: 50px;
+      background: white;
+      border-radius: 50px;
+      opacity: 0.95;
+      animation: mover linear infinite;
+    }
+    .nube::before, .nube::after {
+      content: "";
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+    }
+    .nube::before { width: 70px; height: 70px; top: -30px; left: 20px; }
+    .nube::after  { width: 90px; height: 90px; top: -45px; left: 70px; }
+
+    .nube1 { top: 12vh; animation-duration: 60s; }
+    .nube2 { top: 25vh; animation-duration: 90s; transform: scale(0.7); }
+    .nube3 { top: 6vh;  animation-duration: 75s; animation-delay: -30s; transform: scale(1.2); }
+
+    @keyframes mover {
+      from { left: -250px; }
+      to   { left: 100%; }
+    }
+
+    /* Montañas */
+    .montana {
+      position: absolute;
+      bottom: 20vh;
+      background: linear-gradient(to bottom, white 0 18%, #6b7f99 18% 100%);
+      clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    }
+    .m1 { left: -5%;  width: 45%; height: 45vh; }
+    .m2 { left: 25%;  width: 50%; height: 55vh; background: linear-gradient(to bottom, white 0 16%, #56698a 16% 100%); }
+    .m3 { left: 60%;  width: 45%; height: 40vh; }
+
+    /* Césped */
+    .cesped {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 22vh;
+      background: linear-gradient(to bottom, #6fdc45, #2f8f1f);
+      border-top: 8px solid #8cf064;
+    }
+
+    /* ===== PANTALLAS ===== */
+    .pantalla {
+      position: absolute;
+      inset: 0;
+    }
+
+    /* Pantalla de inicio */
+    #inicio h1 {
+      text-align: center;
+      margin-top: 12vh;
+      font-family: Impact, Arial Black, sans-serif;
+      font-size: clamp(40px, 9vw, 110px);
+      color: #ffd23f;
+      letter-spacing: 4px;
+      text-shadow:
+        4px 4px 0 #d62828,
+        8px 8px 0 #7a1010;
+    }
+
+    #boton-empezar {
+      position: absolute;
+      bottom: 6vh;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #d62828;
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      padding: 20px 40px;
+      border: 5px solid #ffd23f;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 6px 0 #7a1010;
+    }
+    #boton-empezar:hover {
+      background: #ef3b3b;
+      transform: translateX(-50%) translateY(-3px);
+    }
+
+    /* Pantalla de juego (vacía por ahora) */
+    #juego { display: none; }
+  </style>
+</head>
+<body>
+
+  <div class="escena">
+    <div class="sol"></div>
+    <div class="nube nube1"></div>
+    <div class="nube nube2"></div>
+    <div class="nube nube3"></div>
+    <div class="montana m1"></div>
+    <div class="montana m2"></div>
+    <div class="montana m3"></div>
+    <div class="cesped"></div>
+
+    <!-- PANTALLA 1: INICIO -->
+    <div id="inicio" class="pantalla">
+      <h1>SuperBros SMR</h1>
+      <button id="boton-empezar" onclick="empezar()">Clica aquí para comenzar</button>
+    </div>
+
+    <!-- PANTALLA 2: JUEGO (vacía, sin configurar) -->
+    <div id="juego" class="pantalla">
+    </div>
+  </div>
+
+  <script>
+    // Al pulsar el botón, se oculta el inicio y se muestra la pantalla de juego
+    function empezar() {
+      document.getElementById("inicio").style.display = "none";
+      document.getElementById("juego").style.display = "block";
+    }
+  </script>
+</body>
 </html>
