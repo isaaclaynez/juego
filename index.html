@@ -668,6 +668,12 @@
     }
     #pausa-v .x:hover { background: #ef3b3b; }
     .escena.pausado *, .escena.pausado *::before, .escena.pausado *::after { animation-play-state: paused !important; }
+    /* ===== VERSIÓN 5 ===== */
+    .ventana { width: 340px; }
+    .ico-oculta { display: inline-block; width: 22px; height: 22px; border-radius: 50%; background: #000; border: 2px solid #888;
+      color: #fff; font-weight: bold; text-align: center; line-height: 18px; font-size: 14px; vertical-align: middle; }
+    .vent-cuerpo .item button:disabled { opacity: .55; cursor: default; }
+    .pr-rayo svg { filter: drop-shadow(0 0 6px #7ff0ff); }
   </style>
 </head>
 <body>
@@ -922,7 +928,7 @@
       </div>
       <div id="progreso"><div id="progreso-relleno"></div><div id="progreso-txt">1%</div></div>
       <button id="boton-volver" tabindex="-1" onmousedown="event.preventDefault()" onclick="volverANiveles()">← Niveles</button>
-      <div id="boss-hud"><div id="boss-txt">Lili ❤ 30 / 30</div><div id="boss-barra"><div id="boss-relleno"></div></div></div>
+      <div id="boss-hud"><div id="boss-txt">Lili ❤ 50 / 50</div><div id="boss-barra"><div id="boss-relleno"></div></div></div>
       <div id="cartel"></div>
       <div id="huevo"></div>
       <div id="derrota">
@@ -951,6 +957,7 @@
 
     <!-- BOTONES TIENDA / CÓDIGO -->
     <div id="botones-sup" data-p="inicio">
+      <button id="btn-musica" class="btn-sup" tabindex="-1" onmousedown="event.preventDefault()" onclick="toggleMusica()">🔊</button>
       <button id="btn-pausa" class="btn-sup" tabindex="-1" onmousedown="event.preventDefault()" onclick="togglePausa()">⏸ Pausa</button>
       <button id="btn-tienda" class="btn-sup" tabindex="-1" onmousedown="event.preventDefault()" onclick="toggleVentana('tienda-v')">🛒 Tienda</button>
       <button id="btn-codigo" class="btn-sup" tabindex="-1" onmousedown="event.preventDefault()" onclick="toggleVentana('codigo-v')">🔑 Código</button>
@@ -962,6 +969,8 @@
         <div id="tienda-monedas">🪙 0</div>
         <div class="item"><span>❤️ 1 corazón</span><button onclick="comprar(1,30)">30 🪙</button></div>
         <div class="item"><span>❤️❤️ 2 corazones</span><button onclick="comprar(2,50)">50 🪙</button></div>
+        <div class="item"><span>🔥 Habilidad de fuego (C)</span><button id="btn-hab-fuego" onclick="comprarHab('fuego')">100 🪙</button></div>
+        <div class="item"><span id="txt-hab-oculta"><span class="ico-oculta">?</span> Habilidad oculta</span><button id="btn-hab-oculta" onclick="comprarHab('oculta')">250 🪙</button></div>
         <div id="tienda-msg"></div>
       </div>
     </div>
@@ -1528,18 +1537,43 @@
         "Ivan corre un poco más que Champi. MJ corre un poco más que Ivan. Champi sigue enfadado.",
         "Truco: agáchate con Shift y los caparazones altos pasarán de largo.",
         "Moneda a moneda se construye un imperio. O una tienda.",
-        "Rojo no es el malo. Es solo un incomprendido con problemas de ira."
+        "Rojo no es el malo. Es solo un incomprendido con problemas de ira.",
+        "MJ pasa por debajo de casi todo. Ivan, por encima de casi nada.",
+        "Murci cuelga del techo porque la gravedad le debe dinero.",
+        "Pinchi no es un erizo, es un cactus con patas y mala educación.",
+        "Consejo: nunca pises a Pinchi. Él ya lo ha intentado con todos.",
+        "Ivan dice que la lava no quema, que solo 'calienta el ambiente'. Ivan se equivoca.",
+        "En el castillo hace tanto calor que los guardias dimitieron hace años.",
+        "Si Ivan fuera una moneda, sería de las grandes. Y de las escondidas.",
+        "Las monedas grandes se esconden porque son tímidas.",
+        "Champi persigue, Tortu dispara, Rojo vuela, Pinchi pincha y Murci cae. Ahora te toca a ti.",
+        "El valle tiene el mejor césped de Chipiona. No pises a Champi, pisa el césped.",
+        "La lava no perdona, pero te devuelve rebotando. Qué amable.",
+        "Truco: MJ y los caparazones altos no se llevan bien. Agáchate.",
+        "La tienda dice que los corazones alargan la vida. Los de verdad también.",
+        "Ivan y MJ van a la playa en Chipiona. MJ no cabe debajo de la sombrilla.",
+        "Rojo se quema un poco con su propia fama.",
+        "Dato: Tortu nunca falla un caparazón. Solo falla el que tú esquivas.",
+        "Hay una tecla secreta para algo muy poderoso. Pista: está pegadita a la C.",
+        "Las nubes de este mundo se repiten cada 5 minutos. Nadie se ha dado cuenta. Hasta ahora.",
+        "Cuando pulsas Esc, el mundo entero hace una pausa. Hasta Champi.",
+        "Algunos bloques '?' esconden poderes. Otros solo esconden decepción.",
+        "Con Shift en el aire rompes bloques. Con Shift en el suelo, solo te agachas. Elige bien.",
+        "Los niveles de lava los decoró alguien con mucho calor. O mucha imaginación.",
+        "Ivan prefiere los atajos. MJ prefiere los techos bajos. Ninguno prefiere a Pinchi.",
+        "Un buen salto vale más que mil corazones. Pero los corazones también ayudan."
       ];
       var DURACION_FIN = 10000;     // ms que dura la pantalla final (para poder leer las frases)
       var HASH_ADMIN = "c9903c5";
 
       // ---- Personajes: cada uno con su hitbox y sus físicas ----
       var PJ = {
-        zipi: { w: 46, h: 76,  hAg: 50, vel: 5.2, salto: 14.8, grav: 0.66, vw: 64, vh: 82,  vb: "36 80 128 240", off: -2 },
-        zape: { w: 30, h: 126, hAg: 70, vel: 6.0, salto: 15,   grav: 0.58, vw: 44, vh: 130, vb: "60 0 110 320",  off: -5 }
+        zipi: { w: 46, h: 76,  hAg: 50, vel: 5.2, salto: 16, grav: 0.66, vw: 64, vh: 82,  vb: "36 80 128 240", off: -2 },
+        zape: { w: 30, h: 126, hAg: 70, vel: 6.0, salto: 15.2, grav: 0.58, vw: 44, vh: 130, vb: "60 0 110 320",  off: -5 }
       };
       var NOMBRES = { seta: "Champi", koopa: "Tortu", fuego: "Rojo", pinchi: "Pinchi", murci: "Murci" };
 
+      var habil = { fuego: false, oculta: false };            // habilidades compradas (hasta recargar la página)
       var monedasTotal = 0;                                  // inventario: solo se pierde al recargar
       var grandes = { 1: [false, false, false], 2: [false, false, false], 3: [false, false, false], 4: [false, false, false], 5: [false, false, false] };   // monedas grandes
       var G = null, K = {}, BASE = 120, raf = 0, ultimo = 0, temporizadores = [];
@@ -1615,10 +1649,11 @@
 
       var elFondo = null;
       function fondoY(y) {
-        if (!elFondo) elFondo = [document.querySelector(".montanas"), document.querySelector(".suelo"), document.querySelector(".sol")];
+        if (!elFondo) elFondo = [document.querySelector(".montanas"), document.querySelector(".suelo"), document.querySelector(".sol"), document.querySelector(".castillo")];
         elFondo[0].style.transform = y ? "translateY(" + y + "px)" : "";
         elFondo[1].style.transform = y ? "translateY(" + y + "px)" : "";
         elFondo[2].style.transform = y ? "translateY(" + (y * 0.4) + "px)" : "";
+        elFondo[3].style.transform = y ? "translateY(" + y + "px)" : "";
       }
 
       // El suelo del juego es la línea del césped del fondo
@@ -1648,13 +1683,13 @@
         1: [["tubo",9],["muro",9],["escalera",7],["plataforma",12],["torre",6],["puente",6],["monedas",6],["corazon",2],
             ["seta",10],["koopa",7],["fuego",5],["muroAlto",8],["carrera",8]],
         2: [["tubo",7],["muro",8],["escalera",6],["plataforma",10],["torre",6],["puente",6],["monedas",5],["corazon",2],
-            ["seta",12],["koopa",10],["fuego",8],["muroAlto",10],["carrera",10],["pinchi",6]],
+            ["seta",12],["koopa",10],["fuego",8],["muroAlto",10],["carrera",10],["pinchi",3]],
         3: [["tubo",5],["muro",6],["escalera",5],["plataforma",9],["torre",5],["puente",6],["monedas",4],["corazon",2],
-            ["seta",8],["koopa",9],["fuego",7],["muroAlto",10],["carrera",10],["pinchi",8],["horda",10],["combo",5]],
+            ["seta",8],["koopa",9],["fuego",7],["muroAlto",10],["carrera",10],["pinchi",3],["horda",10],["combo",5]],
         4: [["tubo",4],["muro",5],["escalera",4],["plataforma",8],["torre",5],["puente",6],["monedas",4],["corazon",2],
-            ["seta",7],["koopa",9],["fuego",8],["muroAlto",11],["carrera",11],["pinchi",8],["horda",14],["combo",8]],
+            ["seta",7],["koopa",9],["fuego",8],["muroAlto",11],["carrera",11],["pinchi",3],["horda",14],["combo",8]],
         5: [["tubo",3],["muro",4],["escalera",3],["plataforma",7],["torre",5],["puente",6],["monedas",3],["corazon",2],
-            ["seta",6],["koopa",9],["fuego",9],["muroAlto",12],["carrera",12],["pinchi",9],["horda",18],["combo",11],["lava",12],["lago",9]]
+            ["seta",6],["koopa",9],["fuego",9],["muroAlto",12],["carrera",12],["pinchi",3],["horda",18],["combo",11],["lava",12],["lago",9]]
       };
       var SECRETOS = { 3: ["nicho", "torre", "isla"], 4: ["isla", "nicho", "torre"], 5: ["torre", "isla", "nicho"] };
 
@@ -1667,6 +1702,7 @@
         if (n === 6) return construirJefe();
         var r = semilla(500 + n * 31);
         var cfg = CFG[n], LEN = cfg.LEN;
+        var PB = 130;                         // parte de abajo de los suelos aéreos (MJ pasa por debajo sin agacharse)
         var L = { LEN: LEN, meta: LEN - 350, solidos: [], items: [], enemigos: [], cand: [], ocultas: [], lavas: [], maxTop: 0 };
 
         function bloque(x, y, w, h, tipo) {
@@ -1687,7 +1723,7 @@
           if (tipo === "koopa")  { e.w = 44; e.h = 64; e.x0 = x - 130; e.x1 = x + 130; e.cd = 40; e.dir = 1; }
           if (tipo === "fuego")  { e.w = 40; e.h = 40; e.y = 52; e.cd = 60; }
           if (tipo === "pinchi") { e.w = 44; e.h = 32; e.x0 = x - 110; e.x1 = x + 110; e.dir = 1; }
-          if (tipo === "murci")  { e.w = 40; e.h = 30; e.y = 56; e.hx = x; e.hy = 56; e.estado = "cuelga"; }
+          if (tipo === "murci")  { e.w = 40; e.h = 30; e.y = PB - 34; e.hx = x; e.hy = PB - 34; e.estado = "cuelga"; }
           L.enemigos.push(e);
         }
 
@@ -1695,10 +1731,10 @@
         function torreGrande(x, k, pisos) {
           var p, i;
           for (p = 0; p < pisos; p++) {
-            for (i = 0; i < 3; i++) bloque(x + p * 190 + i * 40, 90 + p * 90, 40, 36, "p");
-            if (p < pisos - 1) item("moneda", x + p * 190 + 48, 90 + p * 90 + 50);
+            for (i = 0; i < 3; i++) bloque(x + p * 190 + i * 40, PB + p * 90, 40, 36, "p");
+            if (p < pisos - 1) item("moneda", x + p * 190 + 48, PB + p * 90 + 60);
           }
-          item("grande", x + (pisos - 1) * 190 + 38, 90 + (pisos - 1) * 90 + 48, { idx: k, huevo: (n === 2 && k === 2), oculta: n >= 3 });
+          item("grande", x + (pisos - 1) * 190 + 38, PB + (pisos - 1) * 90 + 58, { idx: k, huevo: (n === 2 && k === 2), oculta: n >= 3 });
           return (pisos - 1) * 190 + 120;
         }
         // Moneda grande escondida entre dos muros: se entra saltando desde arriba
@@ -1707,16 +1743,16 @@
           bloque(x + 110, 0, 40, 120, "b");
           item("grande", x + 53, 4, { idx: k, oculta: true });
           if (n >= 4) { enemigo("seta", x - 130); enemigo("seta", x + 210); }
-          if (n >= 5) enemigo("pinchi", x - 180);
+          if (n >= 5) enemigo("seta", x - 180);
           return 150;
         }
         // Moneda grande en una isla lejana: cadena de plataformas con saltos largos
         function isla(x, k) {
           var largo = n === 5 ? 165 : 150, i;
-          var cadena = [[0, 90], [220, 180], [440, 270], [440 + 120 + largo, 270], [440 + 120 + largo + 220, 360]];
+          var cadena = [[0, PB], [220, PB + 90], [440, PB + 180], [440 + 120 + largo, PB + 180], [440 + 120 + largo + 220, PB + 270]];
           cadena.forEach(function (c) { for (i = 0; i < 3; i++) bloque(x + c[0] + i * 40, c[1], 40, 36, "p"); });
           var ult = cadena[cadena.length - 1];
-          item("grande", x + ult[0] + 38, ult[1] + 48, { idx: k, oculta: true });
+          item("grande", x + ult[0] + 38, ult[1] + 58, { idx: k, oculta: true });
           return ult[0] + 120;
         }
         function secreto(x, k) {
@@ -1740,25 +1776,25 @@
           },
           plataforma: function (x) {
             var k = 3 + Math.floor(r() * 3), q = Math.floor(r() * k);
-            for (var i = 0; i < k; i++) bloque(x + i * 40, 90, 40, 36, i === q ? "q" : "p");
-            filaMonedas(x + 8, 150, k, 40);
-            if (r() < 0.25) L.cand.push({ x: x + 40, y: 150 });
+            for (var i = 0; i < k; i++) bloque(x + i * 40, PB, 40, 36, i === q ? "q" : "p");
+            filaMonedas(x + 8, PB + 60, k, 40);
+            if (r() < 0.25) L.cand.push({ x: x + 40, y: PB + 60 });
             if (cfg.murci && r() < cfg.murci) enemigo("murci", x + k * 20 - 20);   // Murci cuelga debajo
             return k * 40;
           },
           torre: function (x) {
             var i, j;
-            for (i = 0; i < 3; i++) bloque(x + i * 40, 90, 40, 36, "p");
-            filaMonedas(x + 8, 150, 3, 40);
-            for (j = 0; j < 3; j++) bloque(x + 190 + j * 40, 180, 40, 36, j === 1 ? "q" : "p");
-            L.cand.push({ x: x + 238, y: 230 });
+            for (i = 0; i < 3; i++) bloque(x + i * 40, PB, 40, 36, "p");
+            filaMonedas(x + 8, PB + 60, 3, 40);
+            for (j = 0; j < 3; j++) bloque(x + 190 + j * 40, PB + 90, 40, 36, j === 1 ? "q" : "p");
+            L.cand.push({ x: x + 238, y: PB + 140 });
             if (n >= 3 && cfg.murci && r() < cfg.murci) enemigo("murci", x + 40);
             return 310;
           },
           puente: function (x) {
             var k = 8 + Math.floor(r() * 3), q1 = 2, q2 = k - 3;
-            for (var i = 0; i < k; i++) bloque(x + i * 40, 90, 40, 36, (i === q1 || i === q2) ? "q" : "p");
-            filaMonedas(x + 8, 150, k, 40);
+            for (var i = 0; i < k; i++) bloque(x + i * 40, PB, 40, 36, (i === q1 || i === q2) ? "q" : "p");
+            filaMonedas(x + 8, PB + 60, k, 40);
             if (r() < 0.6) enemigo("seta", x + k * 20);
             if (cfg.murci && r() < cfg.murci) enemigo("murci", x + k * 20 + 60);
             return k * 40;
@@ -1781,8 +1817,8 @@
           lago: function (x) {
             var np = 3 + Math.floor(r() * 2), s = x + 80, pos = s + 40, i, j;
             for (i = 0; i < np; i++) {
-              for (j = 0; j < 3; j++) bloque(pos + j * 40, 90, 40, 36, (i === 1 && j === 1) ? "q" : "p");
-              item("moneda", pos + 48, 150);
+              for (j = 0; j < 3; j++) bloque(pos + j * 40, PB, 40, 36, (i === 1 && j === 1) ? "q" : "p");
+              item("moneda", pos + 48, PB + 60);
               pos += 120 + (i < np - 1 ? 90 + Math.floor(r() * 40) : 0);
             }
             var w = pos + 40 - s;
@@ -1795,7 +1831,7 @@
             var k = 3 + Math.floor(r() * 2), i;
             for (i = 0; i < k; i++) {
               var t = r();
-              enemigo(t < 0.55 ? "seta" : (t < 0.8 || n < 4) ? "pinchi" : "fuego", x + 60 + i * 80);
+              enemigo(t < 0.7 ? "seta" : (t < 0.82 || n < 4) ? "pinchi" : "fuego", x + 60 + i * 80);
             }
             return k * 80 + 120;
           },
@@ -1804,10 +1840,10 @@
           muroAlto: function (x) {
             var np = (n >= 4 ? 3 : 2) + (r() < 0.5 ? 0 : 1), p, i;
             for (p = 0; p < np; p++) {
-              for (i = 0; i < 3; i++) bloque(x + p * 190 + i * 40, 90 + p * 90, 40, 36, "p");
-              filaMonedas(x + p * 190 + 48, 90 + p * 90 + 50, 1);
+              for (i = 0; i < 3; i++) bloque(x + p * 190 + i * 40, PB + p * 90, 40, 36, "p");
+              filaMonedas(x + p * 190 + 48, PB + p * 90 + 60, 1);
             }
-            var T = 126 + (np - 1) * 90, wx = x + (np - 1) * 190 + 160;
+            var T = PB + 36 + (np - 1) * 90, wx = x + (np - 1) * 190 + 160;
             bloque(wx, 0, 80, T + 64, "b");
             item("moneda", wx + 28, T + 64 + 25);
             return (np - 1) * 190 + 240;
@@ -1822,7 +1858,7 @@
               else { w = 80; h = 80; bloque(c, 0, w, h, "b"); }
               item("moneda", c + w / 2 - 12, h + 25);
               c += w + 120 + Math.floor(r() * 60);
-              if (i === 1 && r() < 0.6) enemigo(n >= 3 ? "pinchi" : "seta", c - 100);
+              if (i === 1 && r() < 0.6) enemigo("seta", c - 100);
             }
             return c - x;
           },
@@ -1854,7 +1890,7 @@
           if (r() < cfg.pEn) {                                       // monstruo extra en el camino
             var te = r(), tipoE;
             if (n === 1) tipoE = te < 0.5 ? "seta" : te < 0.78 ? "koopa" : "fuego";
-            else tipoE = te < 0.38 ? "seta" : te < 0.6 ? "koopa" : te < 0.78 ? "fuego" : "pinchi";
+            else tipoE = te < 0.42 ? "seta" : te < 0.68 ? "koopa" : te < 0.9 ? "fuego" : "pinchi";
             if (tipoE === "koopa" && hueco < 360) tipoE = "seta";
             enemigo(tipoE, x + 170);
           }
@@ -1881,8 +1917,8 @@
           n: nv, nombre: nombre, cfg: c, L: construirNivel(nv),
           x: 80, y: 0, vx: 0, vy: 0, w: c.w, h: c.h, suelo: true, dir: 1, agach: false, saltoListo: false,
           vidas: nv === 6 ? 6 : 4,   // siempre 4 corazones (6 contra el jefe)
-          inv: 90, poder: nv === 6 ? 1e9 : 0, cdFuego: 0, golpesSeta: 0, fin: false, muerto: false, pausa: false,
-          proy: [], bolasJ: [], hudKey: "", tiempo: 0, camY: 0, pctVis: 1, dif: 1 + 0.06 * (nv - 1), jefe: nv === 6, lluvia: []
+          inv: 90, poder: (nv === 6 || habil.fuego) ? 1e9 : 0, cdFuego: 0, golpesSeta: 0, fin: false, muerto: false, pausa: false,
+          proy: [], bolasJ: [], hudKey: "", tiempo: 0, camY: 0, pctVis: 1, dif: 1 + 0.06 * (nv - 1), jefe: nv === 6, lluvia: [], rayos: [], cdRayo: 0, volea: 0
         };
         montar();
         if (nv === 6) montarJefe(); else { $("boss-hud").style.display = "none"; $("progreso").style.display = ""; }
@@ -1942,12 +1978,13 @@
         g.tiempo += d * 16.667;
         jugador(d);
         fuegoJugador(d);
+        rayoJugador(d);
         enemigos(d);
         if (g.jefe) { jefe(d); if (g.cine) return; }
         proyectiles(d);
         recoger();
         if (g.inv > 0) g.inv -= d;
-        if (g.poder > 0 && !g.jefe) g.poder -= d;
+        if (g.poder > 0 && g.poder < 1e8) g.poder -= d;
         if (g.x + g.w / 2 >= g.L.meta) ganar();
       }
 
@@ -2083,7 +2120,7 @@
         if (g.cdFuego > 0) g.cdFuego -= d;
         if (g.poder > 0 && K.KeyC && g.cdFuego <= 0) {
           g.cdFuego = g.jefe ? 90 : 22;           // contra el jefe: 1,5 s entre bolas
-          var x = g.dir > 0 ? g.x + g.w : g.x - 20, y = g.y + g.h * 0.45;
+          var x = g.dir > 0 ? g.x + g.w : g.x - 20, y = alturaTiro(20);
           var el = div("pr pr-bolaj", SVG_BOLA);
           colocar(el, x, y, 20, 20);
           g.bolasJ.push({ x: x, y: y, w: 20, h: 20, vx: g.dir * 10, x0: x, el: el });
@@ -2352,7 +2389,7 @@
         $("progreso-txt").textContent = Math.round(g.pctVis) + "%";
 
         // HUD
-        var clave = g.vidas + "|" + g.golpesSeta + "|" + monedasTotal + "|" + Math.ceil(Math.max(0, g.poder) / 60) + "|" + Math.floor(g.tiempo / 1000) + "|" + (g.jefe ? (g.cdFuego > 0 ? "r" : "l") : "");
+        var clave = g.vidas + "|" + g.golpesSeta + "|" + monedasTotal + "|" + Math.ceil(Math.max(0, g.poder) / 60) + "|" + Math.floor(g.tiempo / 1000) + "|" + (g.jefe ? (g.cdFuego > 0 ? "r" : "l") : "") + (habil.oculta ? "o" : "");
         if (clave !== g.hudKey) {
           g.hudKey = clave;
           var s = "", max = Math.max(g.jefe ? 6 : 4, g.vidas);
@@ -2361,7 +2398,7 @@
           $("hud-vida").textContent = s;
           $("hud-tiempo").textContent = "⏱ " + fmt(g.tiempo);
           $("hud-monedas").textContent = "🪙 " + monedasTotal;
-          $("hud-poder").textContent = g.jefe ? (g.cdFuego > 0 ? "🔥 Fuego recargando..." : "🔥 Fuego listo (C)") : (g.poder > 0 ? "🔥 Poder " + Math.ceil(g.poder / 60) + "s  (C = bola de fuego)" : "");
+          $("hud-poder").textContent = (g.jefe ? (g.cdFuego > 0 ? "🔥 Fuego recargando..." : "🔥 Fuego listo (C)") : (g.poder >= 1e8 ? "🔥 Fuego (C)" : (g.poder > 0 ? "🔥 Poder " + Math.ceil(g.poder / 60) + "s  (C = bola de fuego)" : ""))) + (habil.oculta ? "   ⚡ Rayo Aura (V)" : "");
         }
       }
 
@@ -2386,6 +2423,7 @@
       setInterval(function () {
         var p = pantallaActual();
         $("botones-sup").setAttribute("data-p", p);
+        Musica.poner(pistaDeseada());
         if ((p === "inicio" || p === "carga") && $("tienda-v").style.display === "block") cerrarVentana("tienda-v");
         if (pausaPanel && p !== "juego") cerrarPausa();
       }, 150);
@@ -2396,6 +2434,7 @@
         if (id === "tienda-v") {
           if (!pausaPanel) $("tienda-v").style.left = "";
           $("tienda-monedas").textContent = "🪙 " + monedasTotal;
+          pintarTienda();
           $("tienda-msg").textContent = G ? "" : "Los corazones solo se pueden comprar dentro de un nivel.";
           actualizarPausa();                              // el juego se pausa mientras miras la tienda
         }
@@ -2527,7 +2566,7 @@
         g.globoEl = div("globo"); g.globoEl.style.display = "none";
         g.manosEl = div("manos"); g.manosEl.style.display = "none";
         g.boss = {
-          x: L.LEN - 260, y: 0, w: 100, h: 150, vida: 30, dir: -1, estado: "idle", t: 0,
+          x: L.LEN - 260, y: 0, w: 100, h: 150, vida: 50, dir: -1, estado: "idle", t: 0,
           cdG: 120, cdSomb: 420, cdAgua: 240, cdPico: 0, cdEsq: 0, inv: 0, dash: 0, dashDir: 0, flash: 0
         };
         var b = g.boss;
@@ -2648,6 +2687,7 @@
         g.proy.forEach(function (p) { p.el.remove(); }); g.proy = [];
         g.bolasJ.forEach(function (p) { p.el.remove(); }); g.bolasJ = [];
         g.lluvia.forEach(function (p) { p.el.remove(); }); g.lluvia = [];
+        g.rayos.forEach(function (p) { p.el.remove(); }); g.rayos = [];
         g.vx = 0; g.vy = 0; g.y = 0; g.suelo = true; g.agach = false; g.h = g.cfg.h;
         g.otro = g.nombre === "zipi" ? "zape" : "zipi";
         g.otroEl = div("pjg", pjHTML(g.otro));
@@ -2708,7 +2748,7 @@
         } else if (c.fase === 6) {
           c.fase = 7;
           g.fin = true;
-          $("fin-titulo").textContent = "¡Juego completado!";
+          $("fin-titulo").textContent = "¡Felicidades, terminaste el juego!";
           pantallaFin();
         }
       }
@@ -2728,8 +2768,8 @@
           else if (b.estado === "muerto") st = " muerto";
           b.el.className = "en lili" + st + (b.inv > 0 && Math.floor(b.inv / 5) % 2 ? " parpadeo" : "");
         }
-        $("boss-relleno").style.width = (Math.max(0, b.vida) / 30 * 100) + "%";
-        $("boss-txt").textContent = "Lili  ❤ " + Math.max(0, b.vida) + " / 30";
+        $("boss-relleno").style.width = (Math.max(0, b.vida) / 50 * 100) + "%";
+        $("boss-txt").textContent = "Lili  ❤ " + Math.max(0, b.vida) + " / 50";
         if (g.cine) {
           if (g.otroEl) {
             var o = PJ[g.otro];
@@ -2748,6 +2788,7 @@
         if (on && !__pausa.on) { __pausa.on = true; __pausa.desde = performance.now(); }
         else if (!on && __pausa.on) { __pausa.acum += performance.now() - __pausa.desde; __pausa.on = false; }
         document.querySelector(".escena").classList.toggle("pausado", on);
+        Musica.pausar(on);
       }
       function abrirPausa() {
         if (!G || G.fin || G.muerto || G.cine) return;
@@ -2765,6 +2806,194 @@
         actualizarPausa();
       }
       function togglePausa() { if (pausaPanel) cerrarPausa(); else abrirPausa(); }
+
+      /* ===================== PUNTERÍA DE LAS HABILIDADES ===================== */
+      var SVG_RAYO = '<svg viewBox="0 0 44 20" preserveAspectRatio="none"><ellipse cx="22" cy="10" rx="21" ry="8" fill="#7ff0ff"/><ellipse cx="22" cy="10" rx="16" ry="3.5" fill="#fff"/></svg>';
+
+      // Altura del centro del enemigo más cercano (en cualquier dirección). El disparo va recto, a esa altura.
+      function objetivoCentro() {
+        var g = G, mejor = null, dmin = 900, gx = g.x + g.w / 2;
+        g.L.enemigos.forEach(function (e) {
+          if (!e.vivo) return;
+          var dd = Math.abs((e.x + e.w / 2) - gx);
+          if (dd < dmin) { dmin = dd; mejor = e; }
+        });
+        if (g.jefe && g.boss && g.boss.estado !== "muerto") {
+          if (Math.abs((g.boss.x + g.boss.w / 2) - gx) < dmin) mejor = g.boss;
+        }
+        return mejor ? mejor.y + mejor.h / 2 : null;
+      }
+      function alturaTiro(alto) {
+        var c = objetivoCentro();
+        return c === null ? G.y + G.h * 0.45 : Math.max(0, c - alto / 2);
+      }
+
+      // Habilidad oculta: Rayo Aura (tecla V). 3 rayos que atraviesan a todos los monstruos.
+      function rayoJugador(d) {
+        var g = G, i, j;
+        if (g.cdRayo > 0) g.cdRayo -= d;
+        if (habil.oculta && K.KeyV && g.cdRayo <= 0) {
+          g.cdRayo = g.jefe ? 90 : 40;
+          g.volea++;
+          var x = g.dir > 0 ? g.x + g.w : g.x - 44, c = objetivoCentro(), base = c === null ? g.y + g.h * 0.45 : c - 10;
+          [-34, 0, 34].forEach(function (off) {
+            var y = Math.max(0, base + off), el = div("pr pr-rayo", SVG_RAYO);
+            colocar(el, x, y, 44, 20);
+            g.rayos.push({ x: x, y: y, w: 44, h: 20, vx: g.dir * 14, x0: x, el: el, v: g.volea });
+          });
+        }
+        for (i = g.rayos.length - 1; i >= 0; i--) {
+          var b = g.rayos[i];
+          if (!b) continue;
+          b.x += b.vx * d;
+          var quitar = Math.abs(b.x - b.x0) > 1000 || choca(b);
+          for (j = 0; j < g.L.enemigos.length; j++) { var e = g.L.enemigos[j]; if (e.vivo && sup(b, e)) matar(e); }
+          if (g.jefe && g.boss.estado !== "muerto" && g.boss.volea !== b.v && sup(b, g.boss)) {   // 2 corazones por descarga
+            g.boss.volea = b.v; g.boss.vida -= 2; flotante(g.boss.x + 30, g.boss.h + 30, "-2 ❤");
+            if (g.boss.vida <= 0) { derrotarJefe(); return; }
+          }
+          if (quitar) { b.el.remove(); g.rayos.splice(i, 1); } else colocar(b.el, b.x, b.y);
+        }
+      }
+
+      /* ===================== TIENDA: HABILIDADES ===================== */
+      function pintarTienda() {
+        var bf = $("btn-hab-fuego"), bo = $("btn-hab-oculta");
+        bf.textContent = habil.fuego ? "✓ Comprada" : "100 🪙"; bf.disabled = habil.fuego;
+        bo.textContent = habil.oculta ? "✓ Comprada" : "250 🪙"; bo.disabled = habil.oculta;
+        $("txt-hab-oculta").innerHTML = habil.oculta ? "⚡ Rayo Aura (V)" : '<span class="ico-oculta">?</span> Habilidad oculta';
+      }
+      function comprarHab(tipo) {
+        var m = $("tienda-msg"), coste = tipo === "fuego" ? 100 : 250;
+        if (habil[tipo]) { m.textContent = "Ya tienes esta habilidad."; return; }
+        if (monedasTotal < coste) { m.textContent = "No tienes suficientes monedas."; return; }
+        monedasTotal -= coste;
+        habil[tipo] = true;
+        if (G && tipo === "fuego") G.poder = 1e9;
+        m.textContent = tipo === "fuego" ? "¡Habilidad de fuego conseguida! Pulsa C." : "¡Habilidad desbloqueada: Rayo Aura! Pulsa V.";
+        if (G) G.hudKey = "";
+        $("tienda-monedas").textContent = "🪙 " + monedasTotal;
+        pintarTienda();
+      }
+
+      /* ===================== MÚSICA (compuesta con código: sin copyright) ===================== */
+      var Musica = (function () {
+        var ctx = null, master = null, buf = null, mute = false, deseada = null, actual = null, timer = 0, sig = 0, paso = 0, T = null, VOL = 0.32;
+        var NN = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
+        var ACORDE = { M: [0, 4, 7, 12], m: [0, 3, 7, 12] };
+        function nota(s) { var m = /^([A-G])([#b]?)(\d)$/.exec(s); return m ? NN[m[1]] + (m[2] === "#" ? 1 : m[2] === "b" ? -1 : 0) + (parseInt(m[3], 10) + 1) * 12 : 0; }
+        function mtof(m) { return 440 * Math.pow(2, (m - 69) / 12); }
+        function parse(str) {
+          var tk = str.split(/\s+/), out = [], last = null, i;
+          for (i = 0; i < tk.length; i++) {
+            if (tk[i] === "." && last) { last.len++; out.push(null); }
+            else if (tk[i] === "." || tk[i] === "-") { last = null; out.push(null); }
+            else { last = { m: nota(tk[i]), len: 1 }; out.push(last); }
+          }
+          return out;
+        }
+        // Cada pista dura 4 compases (64 pasos de semicorchea) y se repite
+        var PISTAS = {
+          menu: { bpm: 112, onda: "square", vm: 0.07, acordes: [[48, "M"], [45, "m"], [41, "M"], [43, "M"]],
+            mel: "E5 . . . G5 . . . C6 . . . G5 . . .  A5 . . . G5 . E5 . C5 . . . E5 . . .  F5 . . A5 . . C6 . A5 . . . F5 . . .  G5 . . . D5 . . . B4 . . . D5 . G5 .",
+            bajo: "r---f---r---f---", arp: "0123210101232101", bat: "k..h..h.s..h..h." },
+          valle: { bpm: 140, onda: "square", vm: 0.07, acordes: [[43, "M"], [38, "M"], [40, "m"], [48, "M"]],
+            mel: "B4 . D5 . G5 . D5 . B4 . D5 . G5 . . .  A4 . D5 . F#5 . D5 . A4 . D5 . F#5 . . .  G4 . B4 . E5 . B4 . G4 . B4 . E5 . D5 .  E5 . G5 . C6 . G5 . E5 . G5 . D5 . . .",
+            bajo: "r-r-f-r-r-r-f-r-", arp: "0-2-1-3-0-2-1-3-", bat: "k.h.s.h.k.h.s.hh" },
+          lava: { bpm: 132, onda: "sawtooth", vm: 0.055, acordes: [[38, "m"], [34, "M"], [36, "M"], [33, "M"]],
+            mel: "D5 . . F5 . . A5 . . G5 . F5 . . . .  Bb4 . . D5 . . F5 . . E5 . D5 . . . .  C5 . . E5 . . G5 . . F5 . E5 . . . .  A4 . . C#5 . . E5 . A5 . . G5 . . F5 .",
+            bajo: "r-rrf-rrr-rrf-r-", arp: "0-1-2-1-0-1-2-1-", bat: "k..kh.s.k..kh.s." },
+          jefe: { bpm: 168, onda: "square", vm: 0.07, acordes: [[45, "m"], [41, "M"], [43, "M"], [40, "M"]],
+            mel: "A5 . A5 . E5 . A5 . C6 . B5 . A5 . E5 .  F5 . F5 . C5 . F5 . A5 . G5 . F5 . C5 .  G5 . G5 . D5 . G5 . B5 . A5 . G5 . D5 .  E5 . G#5 . B5 . G#5 . E5 . B4 . E5 . . .",
+            bajo: "rrorrrorrrorrrfr", arp: "0123012301230123", bat: "k.hks.hkk.hks.hk" },
+          final: { bpm: 84, onda: "sine", vm: 0.2, bajoLen: 6, acordes: [[48, "M"], [43, "M"], [45, "m"], [41, "M"]],
+            mel: "E5 . . . . . G5 . . . C6 . . . . .  B5 . . . . . G5 . . . D5 . . . . .  C6 . . . . . A5 . . . E5 . . . . .  A5 . . . G5 . . . F5 . . . E5 . D5 .",
+            bajo: "r-------f-------", arp: "0-1-2-3-2-1-0-1-", bat: "................" }
+        };
+
+        function iniciar() {
+          if (ctx) return true;
+          var AC = window.AudioContext || window.webkitAudioContext;
+          if (!AC) return false;
+          ctx = new AC();
+          var comp = ctx.createDynamicsCompressor();
+          master = ctx.createGain();
+          master.gain.value = mute ? 0 : VOL;
+          master.connect(comp); comp.connect(ctx.destination);
+          buf = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
+          var dat = buf.getChannelData(0);
+          for (var i = 0; i < dat.length; i++) dat[i] = Math.random() * 2 - 1;
+          return true;
+        }
+        function tono(f, t, dur, tipo, v) {
+          var o = ctx.createOscillator(), g = ctx.createGain(), dd = Math.max(0.06, dur);
+          o.type = tipo; o.frequency.value = f;
+          g.gain.setValueAtTime(0.0001, t);
+          g.gain.linearRampToValueAtTime(v, t + 0.01);
+          g.gain.exponentialRampToValueAtTime(0.0001, t + dd);
+          o.connect(g); g.connect(master);
+          o.start(t); o.stop(t + dd + 0.03);
+        }
+        function bombo(t) {
+          var o = ctx.createOscillator(), g = ctx.createGain();
+          o.type = "sine";
+          o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(40, t + 0.12);
+          g.gain.setValueAtTime(0.4, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.16);
+          o.connect(g); g.connect(master); o.start(t); o.stop(t + 0.2);
+        }
+        function ruido(t, dur, v, fc) {
+          var s = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+          s.buffer = buf; f.type = "highpass"; f.frequency.value = fc;
+          g.gain.setValueAtTime(v, t); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+          s.connect(f); f.connect(g); g.connect(master); s.start(t); s.stop(t + dur + 0.02);
+        }
+        function toca(s, t, d16) {
+          var bar = Math.floor(s / 16), p = s % 16, ac = T.acordes[bar], raiz = ac[0], tonos = ACORDE[ac[1]];
+          var n = T.melP[s];
+          if (n) tono(mtof(n.m), t, n.len * d16 * 0.92, T.onda, T.vm);
+          var b = T.bajo.charAt(p);
+          if (b !== "-") tono(mtof(raiz + (b === "f" ? 7 : b === "o" ? 12 : 0)), t, d16 * (T.bajoLen || 1.8), "triangle", 0.22);
+          var a = T.arp.charAt(p);
+          if (a !== "-") tono(mtof(raiz + 24 + tonos[parseInt(a, 10)]), t, d16 * 0.8, "square", 0.035);
+          var k = T.bat.charAt(p);
+          if (k === "k") bombo(t); else if (k === "s") ruido(t, 0.12, 0.14, 1500); else if (k === "h") ruido(t, 0.04, 0.05, 7000);
+        }
+        function programar() {
+          if (!ctx || !T) return;
+          var d16 = 60 / T.bpm / 4;
+          while (sig < ctx.currentTime + 0.25) { toca(paso % 64, sig, d16); sig += d16; paso++; }
+        }
+        function poner(n) {
+          deseada = n;
+          if (!ctx || n === actual || !PISTAS[n]) return;
+          actual = n; T = PISTAS[n];
+          if (!T.melP) T.melP = parse(T.mel);
+          paso = 0; sig = ctx.currentTime + 0.1;
+          clearInterval(timer);
+          timer = setInterval(programar, 40);
+          programar();
+        }
+        function desbloquear() {
+          if (!iniciar()) return;
+          if (ctx.state === "suspended" && !(G && G.pausa)) ctx.resume();
+          if (deseada && !actual) poner(deseada);
+        }
+        function silenciar(v) { mute = v; if (master) master.gain.setTargetAtTime(v ? 0 : VOL, ctx.currentTime, 0.05); }
+        function pausar(on) { if (!ctx) return; if (on) ctx.suspend(); else if (ctx.state === "suspended") ctx.resume(); }
+        return { poner: poner, desbloquear: desbloquear, silenciar: silenciar, pausar: pausar, esMute: function () { return mute; }, _p: PISTAS, _parse: parse };
+      })();
+
+      // Qué música toca en cada momento
+      function pistaDeseada() {
+        if (G) { if (G.cine) return "final"; return G.n === 6 ? "jefe" : G.n === 5 ? "lava" : "valle"; }
+        return "menu";
+      }
+      function toggleMusica() {
+        var m = !Musica.esMute();
+        Musica.silenciar(m);
+        $("btn-musica").textContent = m ? "🔇" : "🔊";
+      }
+      ["pointerdown", "keydown"].forEach(function (ev) { document.addEventListener(ev, function () { Musica.desbloquear(); }); });
 
       /* ===================== TECLADO ===================== */
       var TECLAS_JUEGO = ["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
@@ -2801,6 +3030,8 @@
       window.toggleVentana = toggleVentana;
       window.comprar = comprar;
       window.entrarCodigo = entrarCodigo;
+      window.comprarHab = comprarHab;
+      window.toggleMusica = toggleMusica;
       window.abrirPausa = abrirPausa;
       window.cerrarPausa = cerrarPausa;
       window.togglePausa = togglePausa;
