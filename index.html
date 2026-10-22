@@ -558,6 +558,116 @@
       width: 52px; height: 52px; font-size: 22px; cursor: pointer; flex-shrink: 0;
     }
     .flecha:hover { background: #2d2d48; }
+    /* ===== VERSIÓN 3: 5 niveles, Murci, Pinchi, monedas ocultas ===== */
+    .tarjetas { gap: 28px; }
+    .nivel { width: 210px; }
+    .nivel .portada { height: 130px; }
+    .nivel .etiqueta { font-size: 20px; padding: 8px; }
+    .aletea svg { animation: aletea .14s infinite alternate; }
+    @keyframes aletea { from { transform: scaleY(1); } to { transform: scaleY(.65); } }
+    .en-murci.aletea svg { transform-origin: 50% 40%; }
+    .grande.oculta { box-shadow: none; }
+    /* ===== VERSIÓN 4: infierno, castillo, lava, jefe Lili, pausa ===== */
+    .nivel { width: 190px; }
+    #nivel6 { display: none; border-color: #ff5a1a; box-shadow: 0 6px 0 #5a0a00, 0 0 22px 4px rgba(255,90,20,.7); }
+    #nivel6 .etiqueta { color: #ff9a3c; }
+
+    /* Fondo infernal (niveles 5 y El paso final) */
+    .escena.infierno { background: linear-gradient(to bottom, #1a0505 0%, #3d0a0a 25%, #7a1408 50%, #b8340d 72%, #e8641a 88%, #ff9a3c 100%); }
+    .infierno .sol { background: #ff3b1a; box-shadow: 0 0 60px 30px rgba(255,70,20,.6); }
+    .infierno .nube, .infierno .nube::before, .infierno .nube::after { background: #2a1010; }
+    .infierno .nieve { fill: #ff5a1a; filter: drop-shadow(0 0 6px #ffb000); }
+    .infierno .cord { fill: #3a1414; }
+    .infierno .cord2 { fill: #2c0f0f; }
+    .infierno #gRoca stop:nth-child(1) { stop-color: #2b1212; }
+    .infierno #gRoca stop:nth-child(2) { stop-color: #3a1818; }
+    .infierno #gRoca stop:nth-child(3) { stop-color: #5a2418; }
+    .infierno #gBruma stop { stop-color: #ff6a2a; }
+    .infierno .colina1 { fill: #3a1a10; }
+    .infierno .colina2 { fill: #2a110a; }
+    .infierno .barranco { fill: rgba(255,110,20,.55); }
+    .infierno .suelo { filter: sepia(1) hue-rotate(-25deg) saturate(1.8) brightness(.55); }
+
+    /* Castillo de fondo */
+    .castillo { display: none; position: absolute; left: 0; bottom: 17vh; width: 100%; height: 38vh; pointer-events: none; }
+    .infierno .castillo { display: block; }
+    .castillo svg { width: 100%; height: 100%; display: block; }
+
+    /* Bloques de piedra de castillo */
+    .infierno .s-b {
+      background-color: #4a4a58; border-color: #22222c;
+      background-image: linear-gradient(rgba(0,0,0,.45) 3px, transparent 3px), linear-gradient(90deg, rgba(0,0,0,.45) 3px, transparent 3px);
+    }
+    .infierno .s-p { background-color: #5a4a58; border-color: #2a1f2a; }
+    .infierno .s-tubo { background: linear-gradient(90deg, #2b2b33, #5b5b6a 40%, #2b2b33); border-color: #111; }
+    .infierno .s-tubo::before { background: linear-gradient(90deg, #2b2b33, #6a6a7a 40%, #2b2b33); border-color: #111; }
+
+    /* Suelo de lava */
+    .lava {
+      z-index: 4; border-top: 3px solid #fff3a0;
+      background: linear-gradient(#ffd84a, #ff7a1a 35%, #c21a00);
+      box-shadow: 0 0 22px 6px rgba(255,100,20,.75);
+      animation: burbuja 1.2s infinite alternate;
+    }
+    @keyframes burbuja { from { filter: brightness(1); } to { filter: brightness(1.3); } }
+
+    /* Lili */
+    .lili .cu2 { width: 100%; height: 100%; transform-origin: 50% 100%; transition: transform .15s; }
+    .lili .cu2 svg { width: 100%; height: 100%; overflow: visible; }
+    .lili .lili-hat { transition: transform .2s; transform-box: fill-box; transform-origin: center; }
+    .lili.alza .lili-hat { transform: translateY(-22px) rotate(-14deg); }
+    .lili.agacha .cu2 { transform: translateY(18px) scaleY(.8) rotate(-4deg); }
+    .lili.pico .cu2 { transform: translateX(-30px) rotate(-24deg) scaleY(.92); }
+    .lili.hincha .cu2 { animation: hincha .18s infinite alternate; }
+    @keyframes hincha { from { transform: scale(1); } to { transform: scale(1.1, .95); } }
+    .lili.parpadeo { opacity: .45; }
+    .lili.muerto { animation: muertoL 1.2s forwards; }
+    @keyframes muertoL { to { transform: rotate(90deg) translateY(30px); opacity: 0; } }
+    .lili .nom { top: -22px; font-size: 15px; color: #7ff0ff; }
+    .pr-sombrero svg { animation: rueda .9s infinite linear; }
+
+    /* Celda y princesa */
+    .cadena { width: 6px; background: repeating-linear-gradient(#888 0 8px, #444 8px 12px); z-index: 2; }
+    .princesa { z-index: 2; }
+    .princesa svg { width: 100%; height: 100%; overflow: visible; display: block; }
+    .jaula { z-index: 3; }
+    .jaula svg { width: 100%; height: 100%; overflow: visible; display: block; }
+    .jaula .puerta { transform-box: fill-box; transform-origin: left center; transition: transform .7s; }
+    .jaula.abierta .puerta { transform: scaleX(.1); }
+    .jaula:not(.abierta) { animation: balanceo 2.4s ease-in-out infinite alternate; transform-origin: 50% 0; }
+    @keyframes balanceo { from { rotate: -1.5deg; } to { rotate: 1.5deg; } }
+    .princesa .lagrima { display: none; }
+    .princesa.llora .lagrima { display: inline; animation: lagr .9s infinite; }
+    .princesa .lagrima.l2 { animation-delay: .4s; }
+    @keyframes lagr { from { transform: translateY(0); opacity: 1; } to { transform: translateY(26px); opacity: 0; } }
+    .princesa.llora svg { animation: llorar .35s infinite alternate; }
+    @keyframes llorar { from { transform: translateY(0); } to { transform: translateY(-3px); } }
+    .princesa.camina svg { animation: paso .4s infinite; }
+    .globo {
+      z-index: 9; background: #fff; color: #111; border: 3px solid #111; border-radius: 12px;
+      padding: 8px 12px; font: bold 15px Verdana, sans-serif; width: 230px; text-align: center; transform: translateX(-50%);
+    }
+    .manos { z-index: 6; background: #e9c89c; border: 2px solid #7a5a3a; border-radius: 4px; }
+
+    /* Barra de vida del jefe */
+    #boss-hud {
+      display: none; position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+      width: min(520px, 38%); z-index: 8; text-align: center; color: #fff; font-weight: bold;
+      text-shadow: 2px 2px 0 #000; pointer-events: none;
+    }
+    #boss-barra { height: 20px; background: #222; border: 3px solid #7ff0ff; border-radius: 12px; overflow: hidden; margin-top: 4px; }
+    #boss-relleno { height: 100%; width: 100%; background: linear-gradient(to bottom, #ff7a7a, #c1121f); transition: width .2s; }
+
+    /* Pausa: se frena todo menos el ratón */
+    #botones-sup:not([data-p="juego"]) #btn-pausa { display: none; }
+    #pausa-v { left: calc(50% + 30px); top: 18%; }
+    #pausa-v .vent-cab { display: flex; justify-content: space-between; align-items: center; }
+    #pausa-v .x {
+      background: #1e1e2f; color: #fff; border: 2px solid #ffd23f; border-radius: 6px;
+      width: 30px; height: 30px; font-size: 16px; font-weight: bold; cursor: pointer;
+    }
+    #pausa-v .x:hover { background: #ef3b3b; }
+    .escena.pausado *, .escena.pausado *::before, .escena.pausado *::after { animation-play-state: paused !important; }
   </style>
 </head>
 <body>
@@ -586,11 +696,14 @@
         <g id="mont-principales"></g>
 
         <!-- Colinas verdes al pie -->
-        <path fill="#5c9a50" d="M0,500 L0,462 Q150,425 320,462 T640,455 T960,466 T1280,452 T1600,460 L1600,500Z"/>
-        <path fill="#4a8a3f" d="M0,500 L0,482 Q200,455 420,484 T860,478 T1300,486 T1600,476 L1600,500Z"/>
+        <path class="colina1" fill="#5c9a50" d="M0,500 L0,462 Q150,425 320,462 T640,455 T960,466 T1280,452 T1600,460 L1600,500Z"/>
+        <path class="colina2" fill="#4a8a3f" d="M0,500 L0,482 Q200,455 420,484 T860,478 T1300,486 T1600,476 L1600,500Z"/>
         <rect x="0" y="330" width="1600" height="170" fill="url(#gBruma)"/>
       </svg>
     </div>
+
+    <!-- CASTILLO (solo se ve en el infierno) -->
+    <div class="castillo"><svg viewBox="0 0 1600 300" preserveAspectRatio="xMidYMax slice"><rect x="0" y="206" width="1600" height="94" fill="#170808"/><rect x="0" y="190" width="24" height="16" fill="#170808"/><rect x="44" y="190" width="24" height="16" fill="#170808"/><rect x="88" y="190" width="24" height="16" fill="#170808"/><rect x="132" y="190" width="24" height="16" fill="#170808"/><rect x="176" y="190" width="24" height="16" fill="#170808"/><rect x="220" y="190" width="24" height="16" fill="#170808"/><rect x="264" y="190" width="24" height="16" fill="#170808"/><rect x="308" y="190" width="24" height="16" fill="#170808"/><rect x="352" y="190" width="24" height="16" fill="#170808"/><rect x="396" y="190" width="24" height="16" fill="#170808"/><rect x="440" y="190" width="24" height="16" fill="#170808"/><rect x="484" y="190" width="24" height="16" fill="#170808"/><rect x="528" y="190" width="24" height="16" fill="#170808"/><rect x="572" y="190" width="24" height="16" fill="#170808"/><rect x="616" y="190" width="24" height="16" fill="#170808"/><rect x="660" y="190" width="24" height="16" fill="#170808"/><rect x="704" y="190" width="24" height="16" fill="#170808"/><rect x="748" y="190" width="24" height="16" fill="#170808"/><rect x="792" y="190" width="24" height="16" fill="#170808"/><rect x="836" y="190" width="24" height="16" fill="#170808"/><rect x="880" y="190" width="24" height="16" fill="#170808"/><rect x="924" y="190" width="24" height="16" fill="#170808"/><rect x="968" y="190" width="24" height="16" fill="#170808"/><rect x="1012" y="190" width="24" height="16" fill="#170808"/><rect x="1056" y="190" width="24" height="16" fill="#170808"/><rect x="1100" y="190" width="24" height="16" fill="#170808"/><rect x="1144" y="190" width="24" height="16" fill="#170808"/><rect x="1188" y="190" width="24" height="16" fill="#170808"/><rect x="1232" y="190" width="24" height="16" fill="#170808"/><rect x="1276" y="190" width="24" height="16" fill="#170808"/><rect x="1320" y="190" width="24" height="16" fill="#170808"/><rect x="1364" y="190" width="24" height="16" fill="#170808"/><rect x="1408" y="190" width="24" height="16" fill="#170808"/><rect x="1452" y="190" width="24" height="16" fill="#170808"/><rect x="1496" y="190" width="24" height="16" fill="#170808"/><rect x="1540" y="190" width="24" height="16" fill="#170808"/><rect x="1584" y="190" width="24" height="16" fill="#170808"/><rect x="110" y="150" width="90" height="150" fill="#1c0a0a" stroke="#2c1010" stroke-width="2"/><rect x="112" y="138" width="12" height="12" fill="#1c0a0a"/><rect x="152" y="138" width="12" height="12" fill="#1c0a0a"/><polygon points="104,138 155,66 206,138" fill="#120606"/><rect x="150" y="180" width="10" height="22" rx="5" fill="#ff7a1a"/><rect x="150" y="230" width="10" height="22" rx="5" fill="#ffb020"/><rect x="410" y="110" width="76" height="190" fill="#1c0a0a" stroke="#2c1010" stroke-width="2"/><rect x="412" y="98" width="12" height="12" fill="#1c0a0a"/><rect x="452" y="98" width="12" height="12" fill="#1c0a0a"/><rect x="443" y="140" width="10" height="22" rx="5" fill="#ff7a1a"/><rect x="443" y="190" width="10" height="22" rx="5" fill="#ffb020"/><rect x="740" y="60" width="120" height="240" fill="#1c0a0a" stroke="#2c1010" stroke-width="2"/><rect x="742" y="48" width="12" height="12" fill="#1c0a0a"/><rect x="782" y="48" width="12" height="12" fill="#1c0a0a"/><rect x="822" y="48" width="12" height="12" fill="#1c0a0a"/><polygon points="734,48 800,-48 866,48" fill="#120606"/><rect x="795" y="90" width="10" height="22" rx="5" fill="#ff7a1a"/><rect x="795" y="140" width="10" height="22" rx="5" fill="#ffb020"/><rect x="1090" y="130" width="84" height="170" fill="#1c0a0a" stroke="#2c1010" stroke-width="2"/><rect x="1092" y="118" width="12" height="12" fill="#1c0a0a"/><rect x="1132" y="118" width="12" height="12" fill="#1c0a0a"/><polygon points="1084,118 1132,51 1180,118" fill="#120606"/><rect x="1127" y="160" width="10" height="22" rx="5" fill="#ff7a1a"/><rect x="1127" y="210" width="10" height="22" rx="5" fill="#ffb020"/><rect x="1410" y="160" width="100" height="140" fill="#1c0a0a" stroke="#2c1010" stroke-width="2"/><rect x="1412" y="148" width="12" height="12" fill="#1c0a0a"/><rect x="1452" y="148" width="12" height="12" fill="#1c0a0a"/><rect x="1492" y="148" width="12" height="12" fill="#1c0a0a"/><polygon points="1404,148 1460,68 1516,148" fill="#120606"/><rect x="1455" y="190" width="10" height="22" rx="5" fill="#ff7a1a"/><rect x="1455" y="240" width="10" height="22" rx="5" fill="#ffb020"/><rect x="760" y="236" width="40" height="64" rx="20" fill="#ff7a1a" opacity=".8"/></svg></div>
 
     <!-- SUELO -->
     <div class="suelo">
@@ -683,6 +796,88 @@
           </div>
         </div>
 
+        <!-- NIVEL 3 (bloqueado hasta completar el anterior) -->
+        <div class="nivel bloqueado" id="nivel3" onclick="entrarNivel(3)">
+          <svg class="portada" viewBox="0 0 260 160" preserveAspectRatio="xMidYMid slice">
+            <defs><linearGradient id="p3Cielo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b1030"/><stop offset="0.6" stop-color="#2a2f6b"/><stop offset="1" stop-color="#5a4a8a"/></linearGradient></defs>
+            <rect width="260" height="160" fill="url(#p3Cielo)"/>
+            <circle cx="215" cy="30" r="16" fill="#f5f0d0"/><circle cx="208" cy="26" r="16" fill="#0b1030" opacity=".35"/>
+            <g fill="#fff"><circle cx="30" cy="20" r="1.5"/><circle cx="70" cy="40" r="1.2"/><circle cx="120" cy="18" r="1.6"/><circle cx="165" cy="45" r="1.2"/><circle cx="90" cy="12" r="1"/></g>
+            <polygon fill="#1a1f44" points="0,125 50,70 95,110 140,60 200,115 260,85 260,160 0,160"/>
+            <polygon fill="#12163a" points="0,145 60,105 120,140 190,100 260,135 260,160 0,160"/>
+          </svg>
+          <div class="etiqueta">Nivel 3</div>
+          <div class="grandes" id="gc-3"></div>
+          <div class="bloqueo">
+            <svg viewBox="0 0 64 64">
+              <path d="M18 28 V20 a14 14 0 0 1 28 0 V28" fill="none" stroke="#c9ccd3" stroke-width="7" stroke-linecap="round"/>
+              <rect x="10" y="28" width="44" height="30" rx="6" fill="#ffd23f" stroke="#a07c10" stroke-width="3"/>
+              <circle cx="32" cy="41" r="5" fill="#5a4308"/>
+              <rect x="30" y="43" width="4" height="9" rx="2" fill="#5a4308"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- NIVEL 4 (bloqueado hasta completar el anterior) -->
+        <div class="nivel bloqueado" id="nivel4" onclick="entrarNivel(4)">
+          <svg class="portada" viewBox="0 0 260 160" preserveAspectRatio="xMidYMid slice">
+            <defs><linearGradient id="p4Cielo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a0f0f"/><stop offset="0.6" stop-color="#c0391b"/><stop offset="1" stop-color="#ff9a3c"/></linearGradient></defs>
+            <rect width="260" height="160" fill="url(#p4Cielo)"/>
+            <circle cx="60" cy="45" r="14" fill="#ffd27a" opacity=".8"/>
+            <polygon fill="#2a1410" points="60,160 110,55 140,55 200,160"/>
+            <polygon fill="#ff5a1f" points="110,55 140,55 132,75 118,75"/>
+            <path d="M125 75 L120 110 L130 130" stroke="#ff7a1f" stroke-width="4" fill="none"/>
+            <polygon fill="#1c0d0a" points="0,150 50,120 110,150 170,125 260,150 260,160 0,160"/>
+          </svg>
+          <div class="etiqueta">Nivel 4</div>
+          <div class="grandes" id="gc-4"></div>
+          <div class="bloqueo">
+            <svg viewBox="0 0 64 64">
+              <path d="M18 28 V20 a14 14 0 0 1 28 0 V28" fill="none" stroke="#c9ccd3" stroke-width="7" stroke-linecap="round"/>
+              <rect x="10" y="28" width="44" height="30" rx="6" fill="#ffd23f" stroke="#a07c10" stroke-width="3"/>
+              <circle cx="32" cy="41" r="5" fill="#5a4308"/>
+              <rect x="30" y="43" width="4" height="9" rx="2" fill="#5a4308"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- NIVEL 5 (bloqueado hasta completar el anterior) -->
+        <div class="nivel bloqueado" id="nivel5" onclick="entrarNivel(5)">
+          <svg class="portada" viewBox="0 0 260 160" preserveAspectRatio="xMidYMid slice">
+            <defs><linearGradient id="p5Cielo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5fb3e6"/><stop offset="0.6" stop-color="#cfeaf7"/><stop offset="1" stop-color="#ffffff"/></linearGradient></defs>
+            <rect width="260" height="160" fill="url(#p5Cielo)"/>
+            <circle cx="215" cy="30" r="14" fill="#fff6c8"/>
+            <polygon fill="#a9c9e6" points="0,125 45,60 90,110 140,45 200,115 260,80 260,160 0,160"/>
+            <polygon fill="#ffffff" points="45,60 32,85 45,78 58,88"/><polygon fill="#ffffff" points="140,45 120,80 140,70 160,84"/>
+            <rect y="135" width="260" height="25" fill="#f4fbff"/><rect y="150" width="260" height="10" fill="#cfe4f2"/>
+          </svg>
+          <div class="etiqueta">Nivel 5</div>
+          <div class="grandes" id="gc-5"></div>
+          <div class="bloqueo">
+            <svg viewBox="0 0 64 64">
+              <path d="M18 28 V20 a14 14 0 0 1 28 0 V28" fill="none" stroke="#c9ccd3" stroke-width="7" stroke-linecap="round"/>
+              <rect x="10" y="28" width="44" height="30" rx="6" fill="#ffd23f" stroke="#a07c10" stroke-width="3"/>
+              <circle cx="32" cy="41" r="5" fill="#5a4308"/>
+              <rect x="30" y="43" width="4" height="9" rx="2" fill="#5a4308"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- NIVEL OCULTO: EL PASO FINAL (solo aparece al pasarte el nivel 5) -->
+        <div class="nivel desbloqueado" id="nivel6" onclick="entrarNivel(6)">
+          <svg class="portada" viewBox="0 0 260 160" preserveAspectRatio="xMidYMid slice">
+            <defs><linearGradient id="p6Cielo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a0505"/><stop offset="0.6" stop-color="#8a1a08"/><stop offset="1" stop-color="#ff7a1f"/></linearGradient></defs>
+            <rect width="260" height="160" fill="url(#p6Cielo)"/>
+            <polygon fill="#2a1010" points="0,120 40,70 85,110 130,60 190,112 260,80 260,160 0,160"/>
+            <polygon fill="#ff5a1a" points="130,60 118,80 130,74 142,82"/>
+            <line x1="130" y1="0" x2="130" y2="40" stroke="#888" stroke-width="3"/>
+            <rect x="112" y="40" width="36" height="46" rx="4" fill="none" stroke="#aaa" stroke-width="3"/>
+            <line x1="121" y1="40" x2="121" y2="86" stroke="#aaa" stroke-width="2"/><line x1="130" y1="40" x2="130" y2="86" stroke="#aaa" stroke-width="2"/><line x1="139" y1="40" x2="139" y2="86" stroke="#aaa" stroke-width="2"/>
+            <rect y="140" width="260" height="20" fill="#3a1410"/>
+          </svg>
+          <div class="etiqueta">El paso final</div>
+        </div>
+
       </div>
     </div>
 
@@ -727,6 +922,7 @@
       </div>
       <div id="progreso"><div id="progreso-relleno"></div><div id="progreso-txt">1%</div></div>
       <button id="boton-volver" tabindex="-1" onmousedown="event.preventDefault()" onclick="volverANiveles()">← Niveles</button>
+      <div id="boss-hud"><div id="boss-txt">Lili ❤ 30 / 30</div><div id="boss-barra"><div id="boss-relleno"></div></div></div>
       <div id="cartel"></div>
       <div id="huevo"></div>
       <div id="derrota">
@@ -755,6 +951,7 @@
 
     <!-- BOTONES TIENDA / CÓDIGO -->
     <div id="botones-sup" data-p="inicio">
+      <button id="btn-pausa" class="btn-sup" tabindex="-1" onmousedown="event.preventDefault()" onclick="togglePausa()">⏸ Pausa</button>
       <button id="btn-tienda" class="btn-sup" tabindex="-1" onmousedown="event.preventDefault()" onclick="toggleVentana('tienda-v')">🛒 Tienda</button>
       <button id="btn-codigo" class="btn-sup" tabindex="-1" onmousedown="event.preventDefault()" onclick="toggleVentana('codigo-v')">🔑 Código</button>
     </div>
@@ -777,7 +974,16 @@
         <label for="cod-pass">Contraseña</label>
         <input id="cod-pass" type="password" autocomplete="off">
         <button class="btn-grande" onclick="entrarCodigo()">Entrar</button>
+        <button class="btn-chico" onclick="borrarProgreso()">Borrar progreso guardado</button>
         <div id="codigo-msg"></div>
+      </div>
+    </div>
+
+    <div id="pausa-v" class="ventana">
+      <div class="vent-cab"><span>⏸ Pausa</span><button class="x" onclick="cerrarPausa()">✕</button></div>
+      <div class="vent-cuerpo">
+        <div>El juego está en pausa.</div>
+        <div style="font-size:14px;color:#ccc">Pulsa la cruz o la tecla Esc para continuar. Mientras tanto puedes comprar en la tienda.</div>
       </div>
     </div>
 
@@ -800,45 +1006,55 @@
       return (h >>> 0).toString(16);
     }
 
-    // Guarda "nivel 1 completado" cifrado y firmado
-    function guardarProgreso() {
+    // Guarda hasta qué nivel has completado (cifrado y firmado)
+    function guardarProgreso(n) {
       try {
-        var datos = "nivel1=completado";
+        if (n <= nivelesCompletados(true)) return;
+        var datos = "nivel=" + n;
         localStorage.setItem("smr_p", btoa(datos + "|" + firma(datos + CLAVE)));
       } catch (e) {}
     }
 
     // Lee el progreso y comprueba que la firma sea válida
-    function nivel1Completado() {
-      if (window.ADMIN) return true;
+    function nivelesCompletados(sinAdmin) {
+      if (window.ADMIN && !sinAdmin) return 99;
       try {
-        var t = atob(localStorage.getItem("smr_p") || "");
-        var partes = t.split("|");
-        return partes[0] === "nivel1=completado" && partes[1] === firma(partes[0] + CLAVE);
+        var partes = atob(localStorage.getItem("smr_p") || "").split("|");
+        if (partes[1] !== firma(partes[0] + CLAVE)) return 0;
+        if (partes[0] === "nivel1=completado") return 1;          // progreso de la versión anterior
+        var m = /^nivel=(\d+)$/.exec(partes[0]);
+        return m ? Math.min(6, parseInt(m[1], 10)) : 0;
       } catch (e) {
-        return false;
+        return 0;
       }
     }
 
-    // Pone o quita el candado del nivel 2 según el progreso
+    // Un nivel está disponible si es el 1 o si has completado el anterior
+    function nivelDesbloqueado(n) { return n <= 1 || nivelesCompletados() >= n - 1; }
+    function nivel1Completado() { return nivelDesbloqueado(2); }
+
+    // Pone o quita los candados de los niveles 2 a 5
     function actualizarNiveles() {
-      var n2 = document.getElementById("nivel2");
-      if (nivel1Completado()) {
-        n2.classList.add("desbloqueado");
-        n2.classList.remove("bloqueado");
-      } else {
-        n2.classList.add("bloqueado");
-        n2.classList.remove("desbloqueado");
+      for (var n = 2; n <= 5; n++) {
+        var el = document.getElementById("nivel" + n);
+        if (!el) continue;
+        var ok = nivelDesbloqueado(n);
+        el.classList.toggle("desbloqueado", ok);
+        el.classList.toggle("bloqueado", !ok);
       }
+      // El paso final: invisible hasta que te pases el nivel 5
+      var n6 = document.getElementById("nivel6");
+      if (n6) n6.style.display = nivelesCompletados(true) >= 5 ? "block" : "none";
     }
 
-    // Esto se llamará desde el juego cuando se termine el nivel 1
-    function completarNivel1() {
-      guardarProgreso();
+    // El juego lo llama al llegar a la meta
+    function completarNivel(n) {
+      guardarProgreso(n);
       actualizarNiveles();
     }
+    function completarNivel1() { completarNivel(1); }
 
-    // Para volver a bloquear el nivel 2 (útil para hacer pruebas)
+    // Para volver a bloquear los niveles (útil para hacer pruebas)
     function reiniciarProgreso() {
       try { localStorage.removeItem("smr_p"); } catch (e) {}
       actualizarNiveles();
@@ -863,12 +1079,12 @@
 
     // Al pulsar un nivel: aparece el recuadro "Comenzar nivel"
     function entrarNivel(n) {
-      if (n === 2 && !nivel1Completado()) {
+      if (!nivelDesbloqueado(n)) {
         mostrarAviso();
         return;
       }
       nivelActual = n;
-      document.getElementById("titulo-nivel").textContent = "Nivel " + n;
+      document.getElementById("titulo-nivel").textContent = (n === 6) ? "El paso final" : "Nivel " + n;
       document.getElementById("comenzar").style.display = "flex";
     }
 
@@ -951,6 +1167,10 @@
       };
     }
 
+    /* ===== RELOJ DEL JUEGO (se detiene en pausa) ===== */
+    var __pausa = { on: false, desde: 0, acum: 0 };
+    function tiempoJuego() { return (__pausa.on ? __pausa.desde : performance.now()) - __pausa.acum; }
+
     /* ===== NUBES: patrón de 5 minutos que se repite ===== */
     (function () {
       var CICLO = 300;            // segundos
@@ -973,7 +1193,7 @@
       }
 
       function mover() {
-        var t = performance.now() / 1000;
+        var t = tiempoJuego() / 1000;
         var ancho = window.innerWidth;
         for (var i = 0; i < nubes.length; i++) {
           var n = nubes[i];
@@ -1026,7 +1246,7 @@
           pts += " " + p(x, y);
         }
         pts += " 1600,500";
-        crear(lejos, "polygon", { points: pts, fill: color });
+        crear(lejos, "polygon", { points: pts, fill: color, "class": (color === "#bccfe4" ? "cord" : "cord2") });
       }
       cordillera("#bccfe4", 305, 120, 170);
       cordillera("#a3b8d2", 335, 105, 120);
@@ -1075,7 +1295,7 @@
           nieve += " L" + p(xs[i], sy);
         }
         nieve += " L" + p(px + Wr, py - 40) + " Z";
-        crear(g, "path", { d: nieve, fill: "#f4f8fd" });
+        crear(g, "path", { d: nieve, fill: "#f4f8fd", "class": "nieve" });
 
         for (i = 0; i < 80; i++) {
           var fx = px - Wl * 0.9 + r() * (Wl * 0.9 + Wr * 0.9);
@@ -1114,7 +1334,7 @@
           }
           crear(g, "polygon", {
             points: izq.concat(der.reverse()).join(" "),
-            fill: "rgba(20,30,50," + (0.14 + r() * 0.12).toFixed(2) + ")"
+            "class": "barranco", fill: "rgba(20,30,50," + (0.14 + r() * 0.12).toFixed(2) + ")"
           });
         }
 
@@ -1311,17 +1531,17 @@
         "Rojo no es el malo. Es solo un incomprendido con problemas de ira."
       ];
       var DURACION_FIN = 10000;     // ms que dura la pantalla final (para poder leer las frases)
-      var HASH_ADMIN = "90bab926";
+      var HASH_ADMIN = "c9903c5";
 
       // ---- Personajes: cada uno con su hitbox y sus físicas ----
       var PJ = {
         zipi: { w: 46, h: 76,  hAg: 50, vel: 5.2, salto: 14.8, grav: 0.66, vw: 64, vh: 82,  vb: "36 80 128 240", off: -2 },
         zape: { w: 30, h: 126, hAg: 70, vel: 6.0, salto: 15,   grav: 0.58, vw: 44, vh: 130, vb: "60 0 110 320",  off: -5 }
       };
-      var NOMBRES = { seta: "Champi", koopa: "Tortu", fuego: "Rojo" };
+      var NOMBRES = { seta: "Champi", koopa: "Tortu", fuego: "Rojo", pinchi: "Pinchi", murci: "Murci" };
 
       var monedasTotal = 0;                                  // inventario: solo se pierde al recargar
-      var grandes = { 1: [false, false, false], 2: [false, false, false] };   // monedas grandes
+      var grandes = { 1: [false, false, false], 2: [false, false, false], 3: [false, false, false], 4: [false, false, false], 5: [false, false, false] };   // monedas grandes
       var G = null, K = {}, BASE = 120, raf = 0, ultimo = 0, temporizadores = [];
       var idxFrase = 0, intervaloFrases = 0;
       var $ = function (id) { return document.getElementById(id); };
@@ -1352,6 +1572,20 @@
       var SVG_CAP = '<svg viewBox="0 0 22 22"><circle cx="11" cy="11" r="10" fill="#2f9e44" stroke="#1b5e20" stroke-width="2"/>' +
         '<path d="M11 1 L11 21 M1 11 L21 11" stroke="#fff" stroke-width="2"/><circle cx="11" cy="11" r="4" fill="#ffd23f"/></svg>';
       var SVG_BOLA = '<svg viewBox="0 0 22 22"><circle cx="11" cy="11" r="10" fill="#ff7a00"/><circle cx="11" cy="11" r="6" fill="#ffe14d"/></svg>';
+
+      var SVG_PINCHI = '<svg viewBox="0 0 44 32"><ellipse cx="14" cy="30" rx="6" ry="2.5" fill="#3b2314"/><ellipse cx="30" cy="30" rx="6" ry="2.5" fill="#3b2314"/>' +
+        '<ellipse cx="22" cy="21" rx="18" ry="10" fill="#7a5a3a" stroke="#3b2a18" stroke-width="1.5"/>' +
+        '<polygon points="5,20 8,3 13,15 17,0 22,14 27,1 31,15 36,4 39,19" fill="#555a66" stroke="#1f2228" stroke-width="1.5"/>' +
+        '<circle cx="33" cy="22" r="3.8" fill="#fff"/><circle cx="34" cy="22.5" r="1.8" fill="#000"/>' +
+        '<path d="M28 17 L37 20" stroke="#2a1608" stroke-width="2.4" stroke-linecap="round"/>' +
+        '<circle cx="40" cy="25" r="2.6" fill="#222"/></svg>';
+      var SVG_MURCI = '<svg viewBox="0 0 40 30"><path d="M14 13 Q2 2 0 15 Q6 12 8 19 Q11 15 14 19Z" fill="#3d1b5e" stroke="#1f0c33" stroke-width="1"/>' +
+        '<path d="M26 13 Q38 2 40 15 Q34 12 32 19 Q29 15 26 19Z" fill="#3d1b5e" stroke="#1f0c33" stroke-width="1"/>' +
+        '<ellipse cx="20" cy="17" rx="8" ry="10" fill="#5b2a86" stroke="#1f0c33" stroke-width="1"/>' +
+        '<polygon points="14,9 15,1 19,8" fill="#5b2a86" stroke="#1f0c33" stroke-width="1"/><polygon points="26,9 25,1 21,8" fill="#5b2a86" stroke="#1f0c33" stroke-width="1"/>' +
+        '<circle cx="17" cy="14" r="2.3" fill="#ff3b3b"/><circle cx="23" cy="14" r="2.3" fill="#ff3b3b"/>' +
+        '<polygon points="16.5,20 18,24 19.5,20" fill="#fff"/><polygon points="20.5,20 22,24 23.5,20" fill="#fff"/></svg>';
+      var SVGS = { seta: SVG_SETA, koopa: SVG_KOOPA, fuego: SVG_FUEGO, pinchi: SVG_PINCHI, murci: SVG_MURCI };
 
       // ---- Utilidades ----
       function div(clase, html) {
@@ -1397,16 +1631,43 @@
       }
 
       /* ===================== CONSTRUCCIÓN DEL MAPA =====================
-         El mapa es siempre el mismo (semilla fija). Solo los corazones cambian de sitio.
+         Cada nivel es siempre el mismo (semilla fija). Solo los corazones cambian de sitio.
          Accesibilidad garantizada:
          - Salto máximo: Ivan ~166 px, MJ ~194 px.
          - Muros y tubos sueltos: máx. 120 px. Suelos en el aire: de 90 a 126 px.
-         - Los pisos altos suben de 90 en 90 px con 70 px de hueco para tomar impulso.
-         - No hay huecos en el suelo: nunca se puede caer a ningún sitio sin salida. */
+         - Los pisos altos suben de 90 en 90 px con huecos de 70-165 px, que se pueden saltar.
+         - No hay huecos en el suelo: si caes de una plataforma, siempre vuelves al camino. */
+      var CFG = {
+        1: { LEN: 22000, gap: 360, pEn: 0.50 },
+        2: { LEN: 28000, gap: 360, pEn: 0.65, murci: 0.45 },
+        3: { LEN: 32000, gap: 340, pEn: 0.70, murci: 0.65 },
+        4: { LEN: 36000, gap: 320, pEn: 0.75, murci: 0.75 },
+        5: { LEN: 40000, gap: 300, pEn: 0.80, murci: 0.85 }
+      };
+      var TABLAS = {
+        1: [["tubo",9],["muro",9],["escalera",7],["plataforma",12],["torre",6],["puente",6],["monedas",6],["corazon",2],
+            ["seta",10],["koopa",7],["fuego",5],["muroAlto",8],["carrera",8]],
+        2: [["tubo",7],["muro",8],["escalera",6],["plataforma",10],["torre",6],["puente",6],["monedas",5],["corazon",2],
+            ["seta",12],["koopa",10],["fuego",8],["muroAlto",10],["carrera",10],["pinchi",6]],
+        3: [["tubo",5],["muro",6],["escalera",5],["plataforma",9],["torre",5],["puente",6],["monedas",4],["corazon",2],
+            ["seta",8],["koopa",9],["fuego",7],["muroAlto",10],["carrera",10],["pinchi",8],["horda",10],["combo",5]],
+        4: [["tubo",4],["muro",5],["escalera",4],["plataforma",8],["torre",5],["puente",6],["monedas",4],["corazon",2],
+            ["seta",7],["koopa",9],["fuego",8],["muroAlto",11],["carrera",11],["pinchi",8],["horda",14],["combo",8]],
+        5: [["tubo",3],["muro",4],["escalera",3],["plataforma",7],["torre",5],["puente",6],["monedas",3],["corazon",2],
+            ["seta",6],["koopa",9],["fuego",9],["muroAlto",12],["carrera",12],["pinchi",9],["horda",18],["combo",11],["lava",12],["lago",9]]
+      };
+      var SECRETOS = { 3: ["nicho", "torre", "isla"], 4: ["isla", "nicho", "torre"], 5: ["torre", "isla", "nicho"] };
+
+      // El paso final: una sola arena del ancho de la pantalla, sin meta
+      function construirJefe() {
+        return { LEN: Math.max(900, $("juego").clientWidth), meta: 1e9, solidos: [], items: [], enemigos: [], cand: [], ocultas: [], lavas: [], maxTop: 0 };
+      }
+
       function construirNivel(n) {
+        if (n === 6) return construirJefe();
         var r = semilla(500 + n * 31);
-        var LEN = n === 1 ? 22000 : 28000;
-        var L = { LEN: LEN, meta: LEN - 350, solidos: [], items: [], enemigos: [], cand: [], maxTop: 0 };
+        var cfg = CFG[n], LEN = cfg.LEN;
+        var L = { LEN: LEN, meta: LEN - 350, solidos: [], items: [], enemigos: [], cand: [], ocultas: [], lavas: [], maxTop: 0 };
 
         function bloque(x, y, w, h, tipo) {
           L.solidos.push({ x: x, y: y, w: w, h: h, tipo: tipo, usado: false });
@@ -1416,26 +1677,54 @@
           var o = { tipo: tipo, x: x, y: y, w: 24, h: 24, rec: false };
           if (tipo === "grande") { o.w = 44; o.h = 44; }
           if (extra) for (var k in extra) o[k] = extra[k];
+          if (o.oculta) L.ocultas.push(o);
           L.items.push(o);
         }
         function filaMonedas(x, y, k, sep) { for (var i = 0; i < k; i++) item("moneda", x + i * (sep || 36), y); }
         function enemigo(tipo, x) {
-          var e = { tipo: tipo, x: x, y: 0, vx: 0, dir: -1, vivo: true, cd: 0, t: 0 };
-          if (tipo === "seta")  { e.w = 40; e.h = 36; }
-          if (tipo === "koopa") { e.w = 44; e.h = 64; e.x0 = x - 130; e.x1 = x + 130; e.cd = 40; e.dir = 1; }
-          if (tipo === "fuego") { e.w = 40; e.h = 40; e.y = 52; e.cd = 60; }
+          var e = { tipo: tipo, x: x, y: 0, vx: 0, vy: 0, dir: -1, vivo: true, cd: 0, t: 0 };
+          if (tipo === "seta")   { e.w = 40; e.h = 36; }
+          if (tipo === "koopa")  { e.w = 44; e.h = 64; e.x0 = x - 130; e.x1 = x + 130; e.cd = 40; e.dir = 1; }
+          if (tipo === "fuego")  { e.w = 40; e.h = 40; e.y = 52; e.cd = 60; }
+          if (tipo === "pinchi") { e.w = 44; e.h = 32; e.x0 = x - 110; e.x1 = x + 110; e.dir = 1; }
+          if (tipo === "murci")  { e.w = 40; e.h = 30; e.y = 56; e.hx = x; e.hy = 56; e.estado = "cuelga"; }
           L.enemigos.push(e);
         }
 
         // Torre con la moneda grande arriba (hay que subir haciendo parkour)
-        function torreGrande(x, k) {
-          var pisos = (n === 1 ? [3, 4, 5] : [4, 5, 7])[k], p, i;
+        function torreGrande(x, k, pisos) {
+          var p, i;
           for (p = 0; p < pisos; p++) {
             for (i = 0; i < 3; i++) bloque(x + p * 190 + i * 40, 90 + p * 90, 40, 36, "p");
             if (p < pisos - 1) item("moneda", x + p * 190 + 48, 90 + p * 90 + 50);
           }
-          item("grande", x + (pisos - 1) * 190 + 38, 90 + (pisos - 1) * 90 + 48, { idx: k, huevo: (n === 2 && k === 2) });
+          item("grande", x + (pisos - 1) * 190 + 38, 90 + (pisos - 1) * 90 + 48, { idx: k, huevo: (n === 2 && k === 2), oculta: n >= 3 });
           return (pisos - 1) * 190 + 120;
+        }
+        // Moneda grande escondida entre dos muros: se entra saltando desde arriba
+        function nicho(x, k) {
+          bloque(x, 0, 40, 120, "b");
+          bloque(x + 110, 0, 40, 120, "b");
+          item("grande", x + 53, 4, { idx: k, oculta: true });
+          if (n >= 4) { enemigo("seta", x - 130); enemigo("seta", x + 210); }
+          if (n >= 5) enemigo("pinchi", x - 180);
+          return 150;
+        }
+        // Moneda grande en una isla lejana: cadena de plataformas con saltos largos
+        function isla(x, k) {
+          var largo = n === 5 ? 165 : 150, i;
+          var cadena = [[0, 90], [220, 180], [440, 270], [440 + 120 + largo, 270], [440 + 120 + largo + 220, 360]];
+          cadena.forEach(function (c) { for (i = 0; i < 3; i++) bloque(x + c[0] + i * 40, c[1], 40, 36, "p"); });
+          var ult = cadena[cadena.length - 1];
+          item("grande", x + ult[0] + 38, ult[1] + 48, { idx: k, oculta: true });
+          return ult[0] + 120;
+        }
+        function secreto(x, k) {
+          if (n < 3) return torreGrande(x, k, (n === 1 ? [3, 4, 5] : [4, 5, 7])[k]);
+          var t = SECRETOS[n][k];
+          if (t === "torre") return torreGrande(x, k, 5 + n);
+          if (t === "isla") return isla(x, k);
+          return nicho(x, k);
         }
 
         var modulos = {
@@ -1454,6 +1743,7 @@
             for (var i = 0; i < k; i++) bloque(x + i * 40, 90, 40, 36, i === q ? "q" : "p");
             filaMonedas(x + 8, 150, k, 40);
             if (r() < 0.25) L.cand.push({ x: x + 40, y: 150 });
+            if (cfg.murci && r() < cfg.murci) enemigo("murci", x + k * 20 - 20);   // Murci cuelga debajo
             return k * 40;
           },
           torre: function (x) {
@@ -1462,6 +1752,7 @@
             filaMonedas(x + 8, 150, 3, 40);
             for (j = 0; j < 3; j++) bloque(x + 190 + j * 40, 180, 40, 36, j === 1 ? "q" : "p");
             L.cand.push({ x: x + 238, y: 230 });
+            if (n >= 3 && cfg.murci && r() < cfg.murci) enemigo("murci", x + 40);
             return 310;
           },
           puente: function (x) {
@@ -1469,6 +1760,7 @@
             for (var i = 0; i < k; i++) bloque(x + i * 40, 90, 40, 36, (i === q1 || i === q2) ? "q" : "p");
             filaMonedas(x + 8, 150, k, 40);
             if (r() < 0.6) enemigo("seta", x + k * 20);
+            if (cfg.murci && r() < cfg.murci) enemigo("murci", x + k * 20 + 60);
             return k * 40;
           },
           monedas: function (x) { for (var i = 0; i < 6; i++) item("moneda", x + i * 38, 30 + Math.sin(i / 5 * Math.PI) * 60); return 230; },
@@ -1476,10 +1768,41 @@
           seta: function (x) { var k = 1 + Math.floor(r() * 3); for (var i = 0; i < k; i++) enemigo("seta", x + 60 + i * 100); return k * 100 + 120; },
           koopa: function (x) { enemigo("koopa", x + 150); return 330; },
           fuego: function (x) { var k = 1 + Math.floor(r() * 2.5); for (var i = 0; i < k; i++) enemigo("fuego", x + 60 + i * 90); return k * 90 + 100; },
+          pinchi: function (x) { var k = 1 + Math.floor(r() * 2); for (var i = 0; i < k; i++) enemigo("pinchi", x + 120 + i * 130); return k * 130 + 200; },
+
+          // LAVA (nivel 5): trozo de suelo de lava que hay que saltar
+          lava: function (x) {
+            var w = 120 + Math.floor(r() * 70);
+            L.lavas.push({ x: x + 80, w: w });
+            for (var i = 1; i <= 3; i++) item("moneda", x + 80 + w * i / 4 - 12, 110 + (i === 2 ? 30 : 0));
+            return w + 160;
+          },
+          // LAGO DE LAVA (nivel 5): lava larga que se cruza saltando por plataformas
+          lago: function (x) {
+            var np = 3 + Math.floor(r() * 2), s = x + 80, pos = s + 40, i, j;
+            for (i = 0; i < np; i++) {
+              for (j = 0; j < 3; j++) bloque(pos + j * 40, 90, 40, 36, (i === 1 && j === 1) ? "q" : "p");
+              item("moneda", pos + 48, 150);
+              pos += 120 + (i < np - 1 ? 90 + Math.floor(r() * 40) : 0);
+            }
+            var w = pos + 40 - s;
+            L.lavas.push({ x: s, w: w });
+            return w + 160;
+          },
+
+          // HORDA: 3 o 4 monstruos juntos
+          horda: function (x) {
+            var k = 3 + Math.floor(r() * 2), i;
+            for (i = 0; i < k; i++) {
+              var t = r();
+              enemigo(t < 0.55 ? "seta" : (t < 0.8 || n < 4) ? "pinchi" : "fuego", x + 60 + i * 80);
+            }
+            return k * 80 + 120;
+          },
 
           // PARKOUR 1: muro altísimo que solo se supera subiendo por plataformas
           muroAlto: function (x) {
-            var np = r() < 0.5 ? 2 : 3, p, i;
+            var np = (n >= 4 ? 3 : 2) + (r() < 0.5 ? 0 : 1), p, i;
             for (p = 0; p < np; p++) {
               for (i = 0; i < 3; i++) bloque(x + p * 190 + i * 40, 90 + p * 90, 40, 36, "p");
               filaMonedas(x + p * 190 + 48, 90 + p * 90 + 50, 1);
@@ -1491,7 +1814,7 @@
           },
           // PARKOUR 2: varios obstáculos seguidos que hay que saltar uno tras otro
           carrera: function (x) {
-            var cnt = 3 + Math.floor(r() * 2), c = x, i;
+            var cnt = 3 + Math.floor(r() * 2) + (n >= 4 ? 1 : 0), c = x, i;
             for (i = 0; i < cnt; i++) {
               var t = r(), w, h;
               if (t < 0.35) { w = 64; h = r() < 0.5 ? 64 : 96; bloque(c, 0, w, h, "tubo"); }
@@ -1499,17 +1822,19 @@
               else { w = 80; h = 80; bloque(c, 0, w, h, "b"); }
               item("moneda", c + w / 2 - 12, h + 25);
               c += w + 120 + Math.floor(r() * 60);
-              if (i === 1 && r() < 0.6) enemigo("seta", c - 100);
+              if (i === 1 && r() < 0.6) enemigo(n >= 3 ? "pinchi" : "seta", c - 100);
             }
             return c - x;
+          },
+          // PARKOUR 3: muro alto y, justo después, una carrera de obstáculos
+          combo: function (x) {
+            var w = modulos.muroAlto(x) + 160;
+            w += modulos.carrera(x + w);
+            return w;
           }
         };
 
-        var tabla = n === 1
-          ? [["tubo",9],["muro",9],["escalera",7],["plataforma",12],["torre",6],["puente",6],["monedas",6],["corazon",2],
-             ["seta",10],["koopa",7],["fuego",5],["muroAlto",8],["carrera",8]]
-          : [["tubo",7],["muro",8],["escalera",6],["plataforma",10],["torre",6],["puente",6],["monedas",5],["corazon",2],
-             ["seta",12],["koopa",10],["fuego",8],["muroAlto",10],["carrera",10]];
+        var tabla = TABLAS[n];
         var total = tabla.reduce(function (a, b) { return a + b[1]; }, 0);
         function elegir() {
           var v = r() * total;
@@ -1522,13 +1847,16 @@
           cont++;
           gi = -1;
           for (k2 = 0; k2 < 3; k2++) if (!gcHecho[k2] && x >= LEN * gcPos[k2]) { gi = k2; break; }
-          if (gi >= 0) { gcHecho[gi] = true; ancho = torreGrande(x, gi); }
+          if (gi >= 0) { gcHecho[gi] = true; ancho = secreto(x, gi); }
           else ancho = modulos[(cont % 7 === 0) ? "corazon" : elegir()](x);
           x += ancho;
-          var hueco = 360 + Math.floor(r() * 100);
-          if (r() < (n === 1 ? 0.5 : 0.65)) {                      // monstruo extra en el camino
-            var te = r();
-            enemigo(te < 0.5 ? "seta" : te < 0.78 ? "koopa" : "fuego", x + 170);
+          var hueco = cfg.gap + Math.floor(r() * 100);
+          if (r() < cfg.pEn) {                                       // monstruo extra en el camino
+            var te = r(), tipoE;
+            if (n === 1) tipoE = te < 0.5 ? "seta" : te < 0.78 ? "koopa" : "fuego";
+            else tipoE = te < 0.38 ? "seta" : te < 0.6 ? "koopa" : te < 0.78 ? "fuego" : "pinchi";
+            if (tipoE === "koopa" && hueco < 360) tipoE = "seta";
+            enemigo(tipoE, x + 170);
           }
           x += hueco;
         }
@@ -1547,15 +1875,17 @@
         detenerJuego();
         if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
         var nombre = personajeElegido || "zipi", c = PJ[nombre], nv = nivelActual || 1;
+        document.querySelector(".escena").classList.toggle("infierno", nv >= 5);
         medir();
         G = {
           n: nv, nombre: nombre, cfg: c, L: construirNivel(nv),
           x: 80, y: 0, vx: 0, vy: 0, w: c.w, h: c.h, suelo: true, dir: 1, agach: false, saltoListo: false,
-          vidas: 4,                 // siempre se empieza con 4 corazones
-          inv: 90, poder: 0, cdFuego: 0, golpesSeta: 0, fin: false, muerto: false, pausa: false,
-          proy: [], bolasJ: [], hudKey: "", tiempo: 0, camY: 0, pctVis: 1
+          vidas: nv === 6 ? 6 : 4,   // siempre 4 corazones (6 contra el jefe)
+          inv: 90, poder: nv === 6 ? 1e9 : 0, cdFuego: 0, golpesSeta: 0, fin: false, muerto: false, pausa: false,
+          proy: [], bolasJ: [], hudKey: "", tiempo: 0, camY: 0, pctVis: 1, dif: 1 + 0.06 * (nv - 1), jefe: nv === 6, lluvia: []
         };
         montar();
+        if (nv === 6) montarJefe(); else { $("boss-hud").style.display = "none"; $("progreso").style.display = ""; }
         $("derrota").style.display = "none";
         $("cartel").style.display = "none";
         ultimo = performance.now();
@@ -1569,12 +1899,14 @@
           s.el = div(s.tipo === "q" ? "s-q" : s.tipo === "tubo" ? "s-tubo" : s.tipo === "p" ? "s-p" : "s-b", s.tipo === "q" ? "?" : "");
         });
         g.L.items.forEach(function (i) {
-          i.el = div(i.tipo === "moneda" ? "moneda" : i.tipo === "grande" ? "grande" : "corazon",
+          i.el = div((i.tipo === "moneda" ? "moneda" : i.tipo === "grande" ? "grande" : "corazon") + (i.oculta ? " oculta" : ""),
                      i.tipo === "corazon" ? "❤️" : i.tipo === "grande" ? "★" : "");
+          if (i.oculta) i.el.style.opacity = 0.08;
         });
-        g.L.metaEl = div("meta", '<div class="mastil"></div><div class="bandera"></div><div class="tira"></div>');
+        g.L.lavas.forEach(function (l) { l.el = div("lava"); });
+        if (!g.jefe) g.L.metaEl = div("meta", '<div class="mastil"></div><div class="bandera"></div><div class="tira"></div>');
         g.L.enemigos.forEach(function (e) {
-          e.el = div("en en-" + e.tipo, '<div class="cu">' + (e.tipo === "seta" ? SVG_SETA : e.tipo === "koopa" ? SVG_KOOPA : SVG_FUEGO) +
+          e.el = div("en en-" + e.tipo, '<div class="cu">' + SVGS[e.tipo] +
                      '</div><div class="nom">' + NOMBRES[e.tipo] + '</div>');
           e.cu = e.el.firstChild;
         });
@@ -1589,7 +1921,9 @@
         var g = G;
         g.L.solidos.forEach(function (s) { colocar(s.el, s.x, s.y, s.w, s.h); });
         g.L.items.forEach(function (i) { colocar(i.el, i.x, i.y, i.w, i.h); });
-        colocar(g.L.metaEl, g.L.meta, 0, 10, 300);
+        g.L.enemigos.forEach(function (e) { colocar(e.el, e.x, e.y, e.w, e.h); });
+        g.L.lavas.forEach(function (l) { colocar(l.el, l.x, -26, l.w, 30); });
+        if (g.L.metaEl) colocar(g.L.metaEl, g.L.meta, 0, 10, 300);
       }
 
       function bucle(t) {
@@ -1604,14 +1938,16 @@
       function paso(d) {
         var g = G;
         if (g.fin || g.muerto || g.pausa) return;
+        if (g.cine) { cinematica(d); return; }
         g.tiempo += d * 16.667;
         jugador(d);
         fuegoJugador(d);
         enemigos(d);
+        if (g.jefe) { jefe(d); if (g.cine) return; }
         proyectiles(d);
         recoger();
         if (g.inv > 0) g.inv -= d;
-        if (g.poder > 0) g.poder -= d;
+        if (g.poder > 0 && !g.jefe) g.poder -= d;
         if (g.x + g.w / 2 >= g.L.meta) ganar();
       }
 
@@ -1621,6 +1957,7 @@
         var izq = K.KeyA || K.ArrowLeft, der = K.KeyD || K.ArrowRight;
         var ag = K.ShiftLeft || K.ShiftRight || K.ArrowDown;
         var sal = K.Space || K.ArrowUp;
+        var estabaAire = !g.suelo;                       // ¿venías cayendo?
 
         if (g.suelo && ag && !g.agach) { g.agach = true; g.h = c.hAg; }
         else if (g.agach && !(g.suelo && ag)) {
@@ -1663,13 +2000,23 @@
           if (lejos(b, g)) continue;
           if (sup(g, b)) {
             if (g.vy <= 0) {
-              if (b.tipo === "q" && ag && g.vy < -7) { romper(b); i--; continue; }   // caer con Shift rompe el bloque
+              if (b.tipo === "q" && ag && estabaAire) {                    // caer con Shift rompe el bloque
+                romper(b);
+                g.y = b.y + b.h;                                           // rebote: sales disparado hacia arriba
+                g.vy = 11; g.suelo = false;
+                i--; continue;
+              }
               g.y = b.y + b.h; g.vy = 0; g.suelo = true;
             } else {
               g.y = b.y - g.h; g.vy = 0;
               if (b.tipo === "q") golpearQ(b);
             }
           }
+        }
+        // Suelo de lava: quita 1 corazón y te hace rebotar para volver al suelo firme
+        if (g.y <= 0.5 && g.L.lavas.length && enLava(g)) {
+          hurt(1);
+          g.vy = 13; g.y = 1; g.suelo = false;
         }
       }
 
@@ -1702,10 +2049,10 @@
         setTimeout(function () { f.remove(); }, 900);
       }
 
-      function hurt() {
+      function hurt(n) {
         var g = G;
         if (g.inv > 0 || g.muerto) return;
-        g.vidas--;
+        g.vidas -= (n || 1);
         g.inv = 70;
         if (g.vidas <= 0) perder();
       }
@@ -1735,7 +2082,7 @@
         var g = G, i, j;
         if (g.cdFuego > 0) g.cdFuego -= d;
         if (g.poder > 0 && K.KeyC && g.cdFuego <= 0) {
-          g.cdFuego = 22;
+          g.cdFuego = g.jefe ? 90 : 22;           // contra el jefe: 1,5 s entre bolas
           var x = g.dir > 0 ? g.x + g.w : g.x - 20, y = g.y + g.h * 0.45;
           var el = div("pr pr-bolaj", SVG_BOLA);
           colocar(el, x, y, 20, 20);
@@ -1743,11 +2090,16 @@
         }
         for (i = g.bolasJ.length - 1; i >= 0; i--) {
           var b = g.bolasJ[i], quitar = false;
+          if (!b) continue;
           b.x += b.vx * d;
           if (Math.abs(b.x - b.x0) > 700 || choca(b)) quitar = true;
           for (j = 0; j < g.L.enemigos.length && !quitar; j++) {
             var e = g.L.enemigos[j];
             if (e.vivo && sup(b, e)) { matar(e); quitar = true; }
+          }
+          if (!quitar && g.jefe && g.boss.estado !== "muerto" && sup(b, g.boss)) {
+            g.boss.vida--; flotante(g.boss.x + 30, g.boss.h + 30, "-1 ❤"); quitar = true;
+            if (g.boss.vida <= 0) derrotarJefe();
           }
           if (quitar) { b.el.remove(); g.bolasJ.splice(i, 1); } else colocar(b.el, b.x, b.y);
         }
@@ -1760,54 +2112,94 @@
         setTimeout(function () { e.el.style.display = "none"; }, 450);
       }
 
-      function proyectil(tipo, x, y, vx) {
-        var el = div("pr pr-" + tipo, tipo === "cap" ? SVG_CAP : SVG_BOLA);
-        colocar(el, x, y, 22, 22);
-        G.proy.push({ tipo: tipo, x: x, y: y, w: 22, h: 22, vx: vx, x0: x, el: el });
+      function proyectil(tipo, x, y, vx, extra) {
+        var svg = tipo === "cap" ? SVG_CAP : tipo === "sombrero" ? SVG_SOMBRERO : tipo === "agua" ? SVG_AGUA : SVG_BOLA;
+        var p = { tipo: tipo, x: x, y: y, w: 22, h: 22, vx: vx, vy: 0, x0: x, dano: 1 };
+        if (extra) for (var k in extra) p[k] = extra[k];
+        p.el = div("pr pr-" + tipo, svg);
+        colocar(p.el, x, y, p.w, p.h);
+        G.proy.push(p);
       }
 
       function enemigos(d) {
-        var g = G, aire = !g.suelo;
+        var g = G, aire = !g.suelo, dif = g.dif;
         for (var k = 0; k < g.L.enemigos.length; k++) {
           var e = g.L.enemigos[k];
           if (!e.vivo) continue;
           if (Math.abs(e.x - g.x) > 900) continue;                 // lejos: no se mueven
 
-          // Matar saltando encima (también al caer con Shift)
-          if (sup(g, e) && g.vy < 0 && g.y > e.y + e.h * 0.4) {
-            matar(e); g.vy = 9.5; g.suelo = false; continue;
+          if (sup(g, e)) {
+            if (e.tipo === "pinchi") {
+              // Los pinchos NO se pueden pisar: duele y te rebota
+              if (g.inv <= 0) { hurt(); g.vy = 8; g.suelo = false; }
+              continue;
+            }
+            // Matar saltando encima (también al caer con Shift)
+            if (g.vy < 0 && g.y > e.y + e.h * 0.4) { matar(e); g.vy = 9.5; g.suelo = false; continue; }
           }
-          if (aire) continue;                                       // con el jugador en el aire, todos quietos
+
+          if (aire) {                                               // con el jugador en el aire, todos quietos y sin atacar
+            if (e.tipo === "koopa" && e.cd < 45) e.cd = 45;         // al aterrizar, Tortu tarda un poco en atacar
+            continue;
+          }
 
           var dx = (g.x + g.w / 2) - (e.x + e.w / 2), dy = g.y - e.y, lado = dx > 0 ? 1 : -1;
           e.cd -= d;
 
           if (e.tipo === "seta") {                                  // Champi
-            if (Math.abs(dx) < 340 && Math.abs(dy) < 160) { e.vx = lado * 3.0; e.dir = lado; } else e.vx = 0;
-            var ox = e.x; e.x += e.vx * d; if (choca(e)) e.x = ox;
+            if (Math.abs(dx) < 340 && Math.abs(dy) < 160) { e.vx = lado * 3.0 * dif; e.dir = lado; } else e.vx = 0;
+            var ox = e.x; e.x += e.vx * d; if (chocaE(e)) e.x = ox;
             if (sup(g, e) && e.cd <= 0 && g.inv <= 0) {
               e.cd = 70;
               g.golpesSeta++;
               if (g.golpesSeta >= 2) { g.golpesSeta = 0; hurt(); } else g.inv = 25;
-              var ox2 = e.x; e.x -= lado * 18; if (choca(e)) e.x = ox2;
+              var ox2 = e.x; e.x -= lado * 18; if (chocaE(e)) e.x = ox2;
             }
           } else if (e.tipo === "koopa") {                          // Tortu
-            if (Math.abs(dx) < 420 && g.y < 150) {
-              e.dir = lado;
+            if (Math.abs(dx) < 420 && Math.abs(dy) < 150) {
+              e.dir = lado;                                         // quieto, mirando hacia ti
               if (e.cd <= 0) {
                 var bajo = Math.random() < 0.5;
                 proyectil("cap", e.dir > 0 ? e.x + e.w : e.x - 22, bajo ? 4 : 82, e.dir * 7);
-                e.cd = 100;
+                e.cd = Math.max(55, 100 - (g.n - 1) * 10);
               }
             } else {
-              e.x += e.dir * 1.7 * d;
-              if (e.x > e.x1) e.dir = -1;
-              if (e.x < e.x0) e.dir = 1;
+              if (e.dir !== 1 && e.dir !== -1) e.dir = 1;
+              e.x += e.dir * 1.7 * d;                               // recorrido de ida y vuelta
+              if (e.x > e.x1) { e.x = e.x1; e.dir = -1; }
+              if (e.x < e.x0) { e.x = e.x0; e.dir = 1; }
               if (e.cd < 40) e.cd = 40;
+            }
+          } else if (e.tipo === "pinchi") {                         // Pinchi: patrulla, no se puede pisar
+            var op = e.x;
+            e.x += e.dir * 2.0 * dif * d;
+            if (e.x > e.x1) { e.x = e.x1; e.dir = -1; }
+            if (e.x < e.x0) { e.x = e.x0; e.dir = 1; }
+            if (chocaE(e)) { e.x = op; e.dir = -e.dir; }
+          } else if (e.tipo === "murci") {                          // Murci: cuelga, se lanza en picado, se aturde
+            if (e.estado === "cuelga") {
+              if (Math.abs(dx) < 200 && g.suelo) {
+                var tx = g.x + g.w / 2 - e.w / 2, ty = g.y + g.h * 0.3;
+                var ax = tx - e.x, ay = ty - e.y, m = Math.sqrt(ax * ax + ay * ay) || 1;
+                e.vx = ax / m * 7 * dif; e.vy = ay / m * 7 * dif;
+                e.estado = "pica";
+              }
+            } else if (e.estado === "pica") {
+              e.x += e.vx * d; e.y += e.vy * d;
+              if (sup(g, e) && g.inv <= 0) { hurt(); matar(e); }
+              else if (e.y <= 0) { e.y = 0; e.estado = "aturdido"; e.cd = 150; }
+              else if (choca(e)) { e.estado = "aturdido"; e.cd = 150; }
+            } else if (e.estado === "aturdido") {                   // aturdido: ahora se le puede pisar
+              if (e.y > 0) e.y = Math.max(0, e.y - 6 * d);
+              if (e.cd <= 0) e.estado = "sube";
+            } else {
+              var bx = e.hx - e.x, by = e.hy - e.y, mb = Math.sqrt(bx * bx + by * by);
+              if (mb < 5) { e.x = e.hx; e.y = e.hy; e.estado = "cuelga"; }
+              else { e.x += bx / mb * 3 * d; e.y += by / mb * 3 * d; }
             }
           } else {                                                  // Rojo
             e.t += d;
-            if (Math.abs(dx) < 450 && Math.abs(dy) < 260) { e.dir = lado; e.x += lado * 3.2 * d; }
+            if (Math.abs(dx) < 450 && Math.abs(dy) < 260) { e.dir = lado; e.x += lado * 3.2 * dif * d; }
             e.y = 52 + Math.sin(e.t / 18) * 8;
             if (Math.abs(dx) < 270) {
               if (e.cd <= 0) { proyectil("bola", lado > 0 ? e.x + e.w : e.x - 22, e.y + 8, lado * 7.5); matar(e); }
@@ -1822,10 +2214,12 @@
         for (var i = g.proy.length - 1; i >= 0; i--) {
           var p = g.proy[i];
           p.x += p.vx * d;
-          var quitar = Math.abs(p.x - p.x0) > 900 || choca(p);
+          var aterriza = false;
+          if (p.tipo === "agua") { p.vy -= 0.35 * d; p.y += p.vy * d; if (p.y <= 0) aterriza = true; }
+          var quitar = aterriza || Math.abs(p.x - p.x0) > 900 || (p.tipo !== "agua" && choca(p));
           if (!quitar && sup(g, p) && g.inv <= 0) {
             if (p.tipo === "bola" && g.poder > 0) flotante(g.x, g.y + g.h + 10, "¡Inmune!");   // el fuego no te daña
-            else hurt();
+            else hurt(p.dano);
             quitar = true;
           }
           if (quitar) { p.el.remove(); g.proy.splice(i, 1); }
@@ -1837,7 +2231,9 @@
         var g = G;
         if (g.fin) return;
         g.fin = true;
-        $("cartel").innerHTML = "¡Nivel completado!<br><small>Tiempo: " + fmt(g.tiempo) + "</small>";
+        var titulo = "¡Nivel completado!";
+        $("fin-titulo").textContent = titulo;
+        $("cartel").innerHTML = titulo + "<br><small>Tiempo: " + fmt(g.tiempo) + "</small>";
         $("cartel").style.display = "block";
         temporizar(pantallaFin, 1800);
       }
@@ -1866,7 +2262,7 @@
 
       function pantallaFin() {
         var f = $("fin");
-        $("fin-tiempo").textContent = "Tiempo: " + fmt(G.tiempo);
+        $("fin-tiempo").textContent = "Tiempo: " + fmt(G.tiempo) + (G.n === 5 ? "   ·   ¡Algo nuevo te espera en el menú de niveles!" : "");
         idxFrase = Math.floor(Math.random() * FRASES.length);
         mostrarFrase();
         programarFrases();
@@ -1879,7 +2275,7 @@
           $("fin-rel").style.width = p + "%";
           $("fin-txt").textContent = p + "%";
         }, function () {
-          if (nivelActual === 1) completarNivel1();            // desbloquea el nivel 2
+          completarNivel(nivelActual);                          // desbloquea el siguiente nivel
           mostrarNiveles();
         }, DURACION_FIN);
       }
@@ -1902,6 +2298,12 @@
         $("cartel").style.display = "none";
         $("huevo").style.display = "none";
         $("tienda-v").style.display = "none";
+        $("pausa-v").style.display = "none";
+        pausaPanel = false;
+        actualizarPausa();
+        document.querySelector(".escena").classList.remove("infierno", "pausado");
+        $("boss-hud").style.display = "none";
+        $("progreso").style.display = "";
         var f = $("fin"); f.style.display = "none"; f.style.opacity = 0;
       }
 
@@ -1919,7 +2321,7 @@
 
         var p = g.pjEl;
         colocar(p, g.x, g.y, g.w, g.h);
-        var est = g.agach ? "agacha" : !g.suelo ? (g.vy > 0 ? "salta" : "cae") : (Math.abs(g.vx) > 0.2 ? "anda" : "");
+        var est = g.cine ? g.estadoCine : g.agach ? "agacha" : !g.suelo ? (g.vy > 0 ? "salta" : "cae") : (Math.abs(g.vx) > 0.2 ? "anda" : "");
         p.className = "pjg " + est + (g.dir < 0 ? " mira-izq" : "") + (g.poder > 0 ? " poder" : "") +
           (g.inv > 0 && Math.floor(g.inv / 5) % 2 ? " parpadeo" : "");
         p.style.setProperty("--d", g.dir);
@@ -1927,10 +2329,21 @@
         for (i = 0; i < g.L.enemigos.length; i++) {
           var e = g.L.enemigos[i];
           if (!e.vivo && e.el.style.display === "none") continue;
+          if (Math.abs(e.x - g.x) > 1500) continue;
           colocar(e.el, e.x, e.y, e.w, e.h);
-          if (e.tipo === "koopa") e.cu.style.transform = e.dir > 0 ? "none" : "scaleX(-1)";
+          if (e.tipo === "koopa" || e.tipo === "pinchi") e.cu.style.transform = e.dir > 0 ? "none" : "scaleX(-1)";
+          if (e.tipo === "murci") e.el.classList.toggle("aletea", e.estado === "pica" || e.estado === "sube");
         }
+        // Monedas grandes escondidas: solo se ven al acercarte
+        g.L.ocultas.forEach(function (it) {
+          if (it.rec) return;
+          var ddx = (it.x + it.w / 2) - (g.x + g.w / 2), ddy = (it.y + it.h / 2) - (g.y + g.h / 2);
+          var dd = Math.sqrt(ddx * ddx + ddy * ddy);
+          it.el.style.opacity = Math.max(0.08, Math.min(1, 1 - (dd - 120) / 220)).toFixed(2);
+        });
         for (i = 0; i < g.proy.length; i++) colocar(g.proy[i].el, g.proy[i].x, g.proy[i].y);
+
+        if (g.jefe) dibujarJefe();
 
         // Barra de progreso suave (sube y baja según avanzas o retrocedes)
         var pct = Math.max(1, Math.min(100, g.x / g.L.meta * 100));
@@ -1939,22 +2352,22 @@
         $("progreso-txt").textContent = Math.round(g.pctVis) + "%";
 
         // HUD
-        var clave = g.vidas + "|" + g.golpesSeta + "|" + monedasTotal + "|" + Math.ceil(Math.max(0, g.poder) / 60) + "|" + Math.floor(g.tiempo / 1000);
+        var clave = g.vidas + "|" + g.golpesSeta + "|" + monedasTotal + "|" + Math.ceil(Math.max(0, g.poder) / 60) + "|" + Math.floor(g.tiempo / 1000) + "|" + (g.jefe ? (g.cdFuego > 0 ? "r" : "l") : "");
         if (clave !== g.hudKey) {
           g.hudKey = clave;
-          var s = "", max = Math.max(4, g.vidas);
+          var s = "", max = Math.max(g.jefe ? 6 : 4, g.vidas);
           for (i = 0; i < max; i++) s += i < g.vidas ? "❤️" : "🖤";
           if (g.golpesSeta) s += " 💢";
           $("hud-vida").textContent = s;
           $("hud-tiempo").textContent = "⏱ " + fmt(g.tiempo);
           $("hud-monedas").textContent = "🪙 " + monedasTotal;
-          $("hud-poder").textContent = g.poder > 0 ? "🔥 Poder " + Math.ceil(g.poder / 60) + "s  (C = bola de fuego)" : "";
+          $("hud-poder").textContent = g.jefe ? (g.cdFuego > 0 ? "🔥 Fuego recargando..." : "🔥 Fuego listo (C)") : (g.poder > 0 ? "🔥 Poder " + Math.ceil(g.poder / 60) + "s  (C = bola de fuego)" : "");
         }
       }
 
       /* ===================== MONEDAS GRANDES EN LA PANTALLA DE NIVELES ===================== */
       function pintarGrandes() {
-        [1, 2].forEach(function (n) {
+        [1, 2, 3, 4, 5].forEach(function (n) {
           var el = $("gc-" + n);
           if (!el) return;
           el.innerHTML = grandes[n].map(function (v) { return '<span class="gc ' + (v ? "on" : "off") + '"></span>'; }).join("");
@@ -1974,20 +2387,22 @@
         var p = pantallaActual();
         $("botones-sup").setAttribute("data-p", p);
         if ((p === "inicio" || p === "carga") && $("tienda-v").style.display === "block") cerrarVentana("tienda-v");
+        if (pausaPanel && p !== "juego") cerrarPausa();
       }, 150);
 
       function abrirVentana(id) {
         ["tienda-v", "codigo-v"].forEach(function (o) { if (o !== id) cerrarVentana(o); });
         $(id).style.display = "block";
         if (id === "tienda-v") {
+          if (!pausaPanel) $("tienda-v").style.left = "";
           $("tienda-monedas").textContent = "🪙 " + monedasTotal;
           $("tienda-msg").textContent = G ? "" : "Los corazones solo se pueden comprar dentro de un nivel.";
-          if (G) G.pausa = true;                          // el juego se pausa mientras miras la tienda
+          actualizarPausa();                              // el juego se pausa mientras miras la tienda
         }
       }
       function cerrarVentana(id) {
         $(id).style.display = "none";
-        if (id === "tienda-v" && G) G.pausa = false;
+        if (id === "tienda-v") actualizarPausa();
       }
       function toggleVentana(id) { if ($(id).style.display === "block") cerrarVentana(id); else abrirVentana(id); }
 
@@ -2028,7 +2443,7 @@
         }
         ["tienda-v", "codigo-v"].forEach(function (id) {
           var v = $(id);
-          if (v.style.display === "block" && !v.contains(e.target) && !e.target.closest("#botones-sup")) cerrarVentana(id);
+          if (v.style.display === "block" && !v.contains(e.target) && !e.target.closest("#botones-sup") && !(pausaPanel && id === "tienda-v")) cerrarVentana(id);
         });
       });
       document.addEventListener("mousemove", function (e) {
@@ -2038,9 +2453,326 @@
       });
       document.addEventListener("mouseup", function () { arrastre = null; });
 
+      /* ===================== LAVA (nivel 5) ===================== */
+      function enLava(o) {
+        var ls = G.L.lavas, cx = o.x + o.w / 2;
+        for (var i = 0; i < ls.length; i++) if (cx > ls[i].x && cx < ls[i].x + ls[i].w) return true;
+        return false;
+      }
+      function chocaE(e) { return choca(e) || (G.L.lavas.length > 0 && enLava(e)); }
+
+      /* ===================== EL PASO FINAL: JEFE LILI ===================== */
+      var SVG_LILI = '<svg viewBox="-10 -8 160 198" preserveAspectRatio="xMidYMax meet">' +
+        '<ellipse cx="116" cy="152" rx="24" ry="9" fill="#4a3320" stroke="#2b1c10" stroke-width="2" transform="rotate(-8 116 152)"/>' +
+        '<rect x="48" y="150" width="18" height="30" rx="7" fill="#7b5a3c"/><rect x="80" y="150" width="18" height="30" rx="7" fill="#7b5a3c"/>' +
+        '<ellipse cx="52" cy="183" rx="24" ry="7" fill="#f2a43a" stroke="#b36a10" stroke-width="2"/><ellipse cx="92" cy="183" rx="24" ry="7" fill="#f2a43a" stroke="#b36a10" stroke-width="2"/>' +
+        '<ellipse cx="72" cy="118" rx="40" ry="50" fill="#7b5a3c" stroke="#4a3320" stroke-width="2"/>' +
+        '<ellipse cx="66" cy="126" rx="25" ry="36" fill="#b8956a"/>' +
+        '<ellipse cx="34" cy="112" rx="9" ry="18" fill="#6b4c30" transform="rotate(15 34 112)"/>' +
+        '<ellipse cx="108" cy="112" rx="9" ry="18" fill="#6b4c30" transform="rotate(-15 108 112)"/>' +
+        '<ellipse cx="68" cy="62" rx="38" ry="31" fill="#7b5a3c" stroke="#4a3320" stroke-width="2"/>' +
+        '<path d="M36 56 C14 44 -8 52 -8 68 C10 70 28 70 44 68Z" fill="#35d6e0" stroke="#0f8f99" stroke-width="2"/>' +
+        '<path d="M44 68 C26 70 6 72 -8 70 C-6 92 24 98 50 86Z" fill="#27bcc7" stroke="#0f8f99" stroke-width="2"/>' +
+        '<path d="M-2 71 Q22 82 46 72" stroke="#0a5f66" stroke-width="2.5" fill="none"/>' +
+        '<circle cx="12" cy="57" r="2" fill="#0a5f66"/><circle cx="22" cy="56" r="2" fill="#0a5f66"/>' +
+        '<ellipse cx="62" cy="48" rx="9" ry="10" fill="#fff" stroke="#222" stroke-width="1.5"/><circle cx="59" cy="50" r="4" fill="#111"/>' +
+        '<path d="M52 38 L72 44" stroke="#111" stroke-width="3" stroke-linecap="round"/>' +
+        '<g class="lili-hat"><ellipse cx="70" cy="34" rx="32" ry="6" fill="#0d0d0d"/><rect x="50" y="-4" width="40" height="38" rx="3" fill="#161616"/>' +
+        '<rect x="50" y="22" width="40" height="8" fill="#d4af37"/><rect x="55" y="0" width="5" height="26" fill="#3a3a3a"/></g></svg>';
+
+      var SVG_SOMBRERO = '<svg viewBox="0 0 44 34"><ellipse cx="22" cy="26" rx="20" ry="6" fill="#0d0d0d"/>' +
+        '<rect x="10" y="4" width="24" height="22" rx="3" fill="#161616"/><rect x="10" y="17" width="24" height="5" fill="#d4af37"/></svg>';
+      var SVG_AGUA = '<svg viewBox="0 0 22 22"><path d="M11 1 Q20 11 17 16 Q14 21 11 21 Q8 21 5 16 Q2 11 11 1Z" fill="#3cc8ff" stroke="#1a7fb0" stroke-width="1.5"/></svg>';
+
+      var SVG_PRINCESA = '<svg viewBox="0 0 70 110">' +
+        '<polygon points="35,52 6,106 64,106" fill="#ff7fb5" stroke="#b03a78" stroke-width="2"/>' +
+        '<path d="M16 96 Q35 88 54 96" stroke="#b03a78" stroke-width="2" fill="none"/>' +
+        '<rect x="14" y="56" width="8" height="24" rx="4" fill="#cdd28a" transform="rotate(25 18 56)"/><rect x="48" y="56" width="8" height="24" rx="4" fill="#cdd28a" transform="rotate(-25 52 56)"/>' +
+        '<path d="M12 40 Q4 14 24 10 Q20 -2 38 6 Q58 0 56 22 Q68 34 58 48 Q58 26 35 22 Q12 26 12 40Z" fill="#b5541a" stroke="#6b2e0a" stroke-width="1.5"/>' +
+        '<ellipse cx="35" cy="36" rx="20" ry="22" fill="#cdd28a" stroke="#7f8450" stroke-width="2"/>' +
+        '<polygon points="22,12 26,2 31,10 36,0 41,10 47,3 49,13" fill="#ffd23f" stroke="#a07c10" stroke-width="1.5" transform="rotate(-12 35 10)"/>' +
+        '<circle cx="27" cy="33" r="5.5" fill="#fff" stroke="#333"/><circle cx="29" cy="35" r="1.8" fill="#111"/>' +
+        '<circle cx="44" cy="30" r="3.6" fill="#fff" stroke="#333"/><circle cx="45" cy="31" r="1.4" fill="#111"/>' +
+        '<path d="M20 26 Q32 20 50 25" stroke="#3a1a08" stroke-width="3.5" fill="none" stroke-linecap="round"/>' +
+        '<ellipse cx="35" cy="43" rx="8" ry="10" fill="#e0a37a" stroke="#a8683c"/><circle cx="39" cy="47" r="1.8" fill="#6b3a1c"/>' +
+        '<path d="M22 56 Q35 49 48 56" stroke="#6b1c1c" stroke-width="2.5" fill="none"/><rect x="33" y="55" width="5" height="6" fill="#fff" stroke="#999" stroke-width=".8"/>' +
+        '<ellipse class="lagrima" cx="26" cy="42" rx="2.4" ry="3.6" fill="#3cc8ff"/><ellipse class="lagrima l2" cx="45" cy="38" rx="2.4" ry="3.6" fill="#3cc8ff"/></svg>';
+
+      var SVG_JAULA = '<svg viewBox="0 0 120 150">' +
+        '<path d="M8 46 Q60 -6 112 46Z" fill="#3a3a44" stroke="#111" stroke-width="3"/><circle cx="60" cy="8" r="6" fill="#999" stroke="#111" stroke-width="2"/>' +
+        '<rect x="6" y="46" width="108" height="8" fill="#3a3a44" stroke="#111" stroke-width="2"/>' +
+        '<g stroke="#666" stroke-width="5"><line x1="14" y1="54" x2="14" y2="136"/><line x1="28" y1="54" x2="28" y2="136"/><line x1="92" y1="54" x2="92" y2="136"/><line x1="106" y1="54" x2="106" y2="136"/></g>' +
+        '<g class="puerta"><rect x="38" y="54" width="44" height="82" fill="none" stroke="#888" stroke-width="4"/>' +
+        '<g stroke="#666" stroke-width="5"><line x1="50" y1="54" x2="50" y2="136"/><line x1="60" y1="54" x2="60" y2="136"/><line x1="70" y1="54" x2="70" y2="136"/></g></g>' +
+        '<rect x="4" y="136" width="112" height="12" rx="3" fill="#2a2a32" stroke="#111" stroke-width="3"/></svg>';
+
+      function pjHTML(nombre) {
+        var c = PJ[nombre];
+        return '<div class="cuerpo" style="width:' + c.vw + 'px;height:' + c.vh + 'px;margin-left:-' + (c.vw / 2) + 'px;bottom:' + c.off + 'px">' +
+          '<div class="vd" style="height:100%">' + dibujarPJ(nombre, 1, c.vb) + '</div>' +
+          '<div class="vi" style="height:100%">' + dibujarPJ(nombre, -1, c.vb) + '</div></div>';
+      }
+      function estadoSprite(el, est, dir) {
+        el.className = "pjg " + est + (dir < 0 ? " mira-izq" : "");
+        el.style.setProperty("--d", dir);
+      }
+
+      function montarJefe() {
+        var g = G, L = g.L;
+        g.jaula = { x: L.LEN / 2 - 60, y: 250, w: 120, h: 150 };
+        g.cadenaEl = div("cadena");
+        g.princesaEl = div("princesa llora", SVG_PRINCESA);
+        g.jaulaEl = div("jaula", SVG_JAULA);
+        g.pX = g.jaula.x + 32; g.pY = g.jaula.y + 14;
+        g.globoEl = div("globo"); g.globoEl.style.display = "none";
+        g.manosEl = div("manos"); g.manosEl.style.display = "none";
+        g.boss = {
+          x: L.LEN - 260, y: 0, w: 100, h: 150, vida: 30, dir: -1, estado: "idle", t: 0,
+          cdG: 120, cdSomb: 420, cdAgua: 240, cdPico: 0, cdEsq: 0, inv: 0, dash: 0, dashDir: 0, flash: 0
+        };
+        var b = g.boss;
+        b.el = div("en lili", '<div class="cu"><div class="cu2">' + SVG_LILI + '</div></div><div class="nom">Lili</div>');
+        b.cu = b.el.firstChild; b.cu2 = b.cu.firstChild;
+        g.llM = 120; g.llC = 500; g.lluvia = [];
+        $("boss-hud").style.display = "block";
+        $("progreso").style.display = "none";
+      }
+
+      // Lili: ataques con tiempos de espera para que no pueda hacer spam
+      function jefe(d) {
+        var g = G, b = g.boss, L = g.L;
+        if (b.estado === "muerto") return;
+        var dx = (g.x + g.w / 2) - (b.x + b.w / 2), lado = dx > 0 ? 1 : -1;
+        ["cdG", "cdSomb", "cdAgua", "cdPico", "cdEsq", "inv", "flash"].forEach(function (k) { if (b[k] > 0) b[k] -= d; });
+        b.t += d;
+
+        // Pisotón: le quita 1 corazón (y tras el golpe tiene un momento de invulnerabilidad)
+        if (sup(g, b) && g.vy < 0 && g.y > b.y + b.h * 0.55 && b.inv <= 0) {
+          b.vida--; b.inv = 75; g.vy = 11; g.suelo = false;
+          flotante(b.x + 30, b.h + 30, "-1 ❤");
+          if (b.vida <= 0) { derrotarJefe(); return; }
+        }
+        lluvia(d);
+
+        var min = 30, max = L.LEN - b.w - 30;
+        if (b.estado === "idle") {
+          b.dir = lado;
+          // Intenta esquivar si te caes encima
+          if (!g.suelo && Math.abs(dx) < 170 && g.vy <= 2 && b.cdEsq <= 0) {
+            b.estado = "esquiva"; b.t = 0; b.cdEsq = 90; b.dash = 22;
+            b.dashDir = -lado;
+            if (b.dashDir < 0 && b.x < 110) b.dashDir = 1;
+            if (b.dashDir > 0 && b.x > max - 110) b.dashDir = -1;
+          } else {
+            if (Math.abs(dx) > 240) b.x += lado * 1.3 * g.dif * d;               // se acerca despacio
+            if (b.cdG <= 0) {
+              if (Math.abs(dx) < 150 && g.suelo && b.cdPico <= 0) { b.estado = "pico"; b.t = 0; }   // te acercaste demasiado
+              else {
+                var op = [];
+                if (b.cdSomb <= 0 && Math.abs(dx) > 220) op.push("sombrero");
+                if (b.cdAgua <= 0 && Math.abs(dx) > 130) op.push("agua");
+                if (op.length) { b.estado = op[Math.floor(Math.random() * op.length)]; b.t = 0; }
+              }
+            }
+          }
+        } else if (b.estado === "esquiva") {
+          b.x += b.dashDir * 7 * d;
+          b.dash -= d;
+          if (b.dash <= 0) b.estado = "idle";
+        } else if (b.estado === "sombrero") {                    // superataque: tira un sombrero lento por el suelo (3 corazones)
+          if (b.t >= 45) {
+            var hx = b.dir < 0 ? b.x - 40 : b.x + b.w;
+            proyectil("sombrero", hx, 0, b.dir * 3.4 * g.dif, { w: 44, h: 34, dano: 3 });
+            b.cdSomb = 600; b.cdG = 120; b.estado = "idle";
+          }
+        } else if (b.estado === "agua") {                        // tercer ataque: 3 chorros de agua en arco (1 corazón)
+          if (b.t >= 40) {
+            var x0 = b.dir < 0 ? b.x - 6 : b.x + b.w + 6, px = g.x + g.w / 2;
+            [-170, 0, 170].forEach(function (off) {
+              var tx = Math.max(20, Math.min(L.LEN - 20, px + off));
+              var vx = Math.max(-8, Math.min(8, (tx - x0) / 60.8));
+              proyectil("agua", x0, 100, vx, { w: 22, h: 22, vy: 9, dano: 1 });
+            });
+            b.cdAgua = 360; b.cdG = 120; b.estado = "idle";
+          }
+        } else if (b.estado === "pico") {                        // se agacha y da un picotazo (1 corazón)
+          if (b.t >= 30) {
+            var x1 = b.dir < 0 ? b.x - 120 : b.x + b.w - 20;
+            if (g.x + g.w > x1 && g.x < x1 + 140 && g.y < 80) hurt(1);
+            b.flash = 14; b.cdPico = 150; b.cdG = 120; b.estado = "idle";
+          }
+        }
+        b.x = Math.max(min, Math.min(max, b.x));
+      }
+
+      // Del cielo caen monedas y corazones (pocos) y desaparecen a los 5 s en el suelo
+      function soltar(tipo) {
+        var g = G, x = 60 + Math.random() * (g.L.LEN - 120);
+        var el = div(tipo === "moneda" ? "moneda" : "corazon", tipo === "corazon" ? "❤️" : "");
+        var y = $("juego").clientHeight - BASE + 20;
+        colocar(el, x, y, 24, 24);
+        g.lluvia.push({ tipo: tipo, x: x, y: y, w: 24, h: 24, vy: -1, suelo: false, edad: 0, el: el });
+      }
+      function lluvia(d) {
+        var g = G, i, it, nM = 0, nC = 0;
+        g.lluvia.forEach(function (o) { if (o.tipo === "moneda") nM++; else nC++; });
+        g.llM -= d; g.llC -= d;
+        if (g.llM <= 0) { g.llM = 150 + Math.random() * 90; if (nM < 4) soltar("moneda"); }
+        if (g.llC <= 0) { g.llC = 520 + Math.random() * 200; if (nC < 1 && g.vidas < 6) soltar("corazon"); }
+        for (i = g.lluvia.length - 1; i >= 0; i--) {
+          it = g.lluvia[i];
+          if (!it.suelo) {
+            it.vy -= 0.25 * d; if (it.vy < -6) it.vy = -6;
+            it.y += it.vy * d;
+            if (it.y <= 0) { it.y = 0; it.suelo = true; }
+          } else {
+            it.edad += d;
+            if (it.edad > 240) it.el.style.opacity = (Math.floor(it.edad / 6) % 2) ? 0.3 : 1;
+            if (it.edad >= 300) { it.el.remove(); g.lluvia.splice(i, 1); continue; }
+          }
+          if (sup(g, it) && (it.tipo === "moneda" || g.vidas < 6)) {
+            if (it.tipo === "moneda") monedasTotal++; else g.vidas++;
+            it.el.remove(); g.lluvia.splice(i, 1); continue;
+          }
+          colocar(it.el, it.x, it.y);
+        }
+      }
+
+      function decir(x, y, txt) { var gl = G.globoEl; gl.textContent = txt; gl.style.display = "block"; colocar(gl, x, y); }
+      function callar() { G.globoEl.style.display = "none"; }
+
+      function derrotarJefe() {
+        var g = G, b = g.boss;
+        b.estado = "muerto";
+        b.el.classList.add("muerto");
+        g.proy.forEach(function (p) { p.el.remove(); }); g.proy = [];
+        g.bolasJ.forEach(function (p) { p.el.remove(); }); g.bolasJ = [];
+        g.lluvia.forEach(function (p) { p.el.remove(); }); g.lluvia = [];
+        g.vx = 0; g.vy = 0; g.y = 0; g.suelo = true; g.agach = false; g.h = g.cfg.h;
+        g.otro = g.nombre === "zipi" ? "zape" : "zipi";
+        g.otroEl = div("pjg", pjHTML(g.otro));
+        g.otroX = -140; g.otroDir = 1; g.otroEst = "";
+        g.estadoCine = "";
+        g.cine = { fase: 0, t: 0, t2: 0 };
+        $("boss-hud").style.display = "none";
+      }
+
+      // Final: el personaje abre la celda, se van de la mano y el otro dice su frase
+      function cinematica(d) {
+        var g = G, c = g.cine, J = g.jaula, L = g.L, o = PJ[g.otro];
+        var cx = J.x + J.w / 2;
+        c.t += d;
+        g.estadoCine = "";
+        g.otroEst = "";
+        if (c.fase === 0) {
+          if (c.t > 80) { g.boss.el.style.display = "none"; c.fase = 1; c.t = 0; }
+        } else if (c.fase === 1) {                              // la celda baja hasta el suelo
+          J.y = Math.max(0, J.y - 3 * d);
+          g.pY = J.y + 14;
+          if (J.y <= 0) {
+            c.fase = 2; c.t = 0;
+            c.lado = (g.x + g.w / 2 < cx) ? -1 : 1;
+            c.meta = cx + c.lado * (J.w / 2 + g.w / 2 + 16) - g.w / 2;
+          }
+        } else if (c.fase === 2) {                              // el personaje camina hasta la celda
+          if (Math.abs(c.meta - g.x) > 4) { g.dir = c.meta > g.x ? 1 : -1; g.x += g.dir * 3.8 * d; g.estadoCine = "anda"; }
+          else { g.dir = -c.lado; c.fase = 3; c.t = 0; }
+        } else if (c.fase === 3) {                              // abre la celda y habla
+          if (c.t > 25) g.jaulaEl.classList.add("abierta");
+          if (c.t > 45) decir(g.x + g.w / 2, g.h + 26, "Ven pichanona, te eché de menos");
+          if (c.t > 90) {
+            g.pY = 0;
+            var meta = g.x - c.lado * 56;
+            if (Math.abs(meta - g.pX) > 3) { g.pX += (meta > g.pX ? 1 : -1) * 2.4 * d; g.princesaEl.classList.add("camina"); }
+            else g.princesaEl.classList.remove("camina");
+          }
+          if (c.t > 270) { callar(); c.fase = 4; c.t = 0; g.princesaEl.classList.remove("llora"); }
+        } else if (c.fase === 4) {                              // se van de la mano
+          g.dir = 1; g.x += 2.8 * d; g.estadoCine = "anda";
+          g.pX = g.x - c.lado * 56; g.pY = 0;
+          g.princesaEl.classList.add("camina");
+          g.manosEl.style.display = "block";
+          if (g.x > L.LEN + 160) { g.manosEl.style.display = "none"; c.fase = 5; c.t = 0; }
+        } else if (c.fase === 5) {                              // aparece el otro personaje
+          if (!c.llego) {
+            g.otroDir = 1; g.otroX += 3.6 * d; g.otroEst = "anda";
+            if (g.otroX >= L.LEN * 0.3) c.llego = true;
+          } else {
+            c.t2 += d;
+            if (c.t2 < 210) decir(g.otroX + o.w / 2, o.h + 26, "Bueno, pues me iré por la Chipiron");
+            else {
+              callar(); g.otroDir = -1; g.otroX -= 3.6 * d; g.otroEst = "anda";
+              if (g.otroX < -160) { c.fase = 6; }
+            }
+          }
+        } else if (c.fase === 6) {
+          c.fase = 7;
+          g.fin = true;
+          $("fin-titulo").textContent = "¡Juego completado!";
+          pantallaFin();
+        }
+      }
+
+      function dibujarJefe() {
+        var g = G, b = g.boss, J = g.jaula, st = "";
+        colocar(g.cadenaEl, J.x + 57, J.y + J.h - 4, 6, 1600);
+        colocar(g.jaulaEl, J.x, J.y, J.w, J.h);
+        colocar(g.princesaEl, g.pX, g.pY, 56, 90);
+        if (b.estado !== "muerto" || b.el.style.display !== "none") {
+          colocar(b.el, b.x, b.y, b.w, b.h);
+          b.cu.style.transform = b.dir > 0 ? "scaleX(-1)" : "none";
+          if (b.estado === "sombrero") st = " alza";
+          else if (b.estado === "agua") st = " hincha";
+          else if (b.estado === "pico") st = " agacha";
+          else if (b.flash > 0) st = " pico";
+          else if (b.estado === "muerto") st = " muerto";
+          b.el.className = "en lili" + st + (b.inv > 0 && Math.floor(b.inv / 5) % 2 ? " parpadeo" : "");
+        }
+        $("boss-relleno").style.width = (Math.max(0, b.vida) / 30 * 100) + "%";
+        $("boss-txt").textContent = "Lili  ❤ " + Math.max(0, b.vida) + " / 30";
+        if (g.cine) {
+          if (g.otroEl) {
+            var o = PJ[g.otro];
+            colocar(g.otroEl, g.otroX, 0, o.w, o.h);
+            estadoSprite(g.otroEl, g.otroEst, g.otroDir);
+          }
+          if (g.manosEl.style.display === "block") colocar(g.manosEl, (g.x + g.w / 2 + g.pX + 28) / 2 - 12, 38, 24, 8);
+        }
+      }
+
+      /* ===================== PAUSA ===================== */
+      var pausaPanel = false;
+      function actualizarPausa() {
+        var on = !!G && (pausaPanel || $("tienda-v").style.display === "block");
+        if (G) G.pausa = on;
+        if (on && !__pausa.on) { __pausa.on = true; __pausa.desde = performance.now(); }
+        else if (!on && __pausa.on) { __pausa.acum += performance.now() - __pausa.desde; __pausa.on = false; }
+        document.querySelector(".escena").classList.toggle("pausado", on);
+      }
+      function abrirPausa() {
+        if (!G || G.fin || G.muerto || G.cine) return;
+        pausaPanel = true;
+        K = {};
+        $("pausa-v").style.display = "block";
+        abrirVentana("tienda-v");                         // al pausar se abre también la tienda
+        $("tienda-v").style.left = "calc(50% - 330px)";
+        actualizarPausa();
+      }
+      function cerrarPausa() {
+        pausaPanel = false;
+        $("pausa-v").style.display = "none";
+        cerrarVentana("tienda-v");
+        actualizarPausa();
+      }
+      function togglePausa() { if (pausaPanel) cerrarPausa(); else abrirPausa(); }
+
       /* ===================== TECLADO ===================== */
       var TECLAS_JUEGO = ["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
       document.addEventListener("keydown", function (e) {
+        if (e.code === "Escape") {                                   // Esc: pausa / continuar
+          if (G && pantallaActual() === "juego" && !G.fin && !G.muerto && !G.cine) { togglePausa(); e.preventDefault(); }
+          return;
+        }
         if (!G || (e.target && e.target.tagName === "INPUT")) return;
         K[e.code] = true;
         if (TECLAS_JUEGO.indexOf(e.code) > -1) e.preventDefault();
@@ -2053,6 +2785,14 @@
       window.addEventListener("blur", function () { K = {}; });
       window.addEventListener("resize", function () { if (G) { medir(); posEstaticos(); } });
 
+      function borrarProgreso() {
+        window.ADMIN = false;
+        reiniciarProgreso();
+        actualizarNiveles();
+        $("codigo-msg").style.color = "#ffd23f";
+        $("codigo-msg").textContent = "Progreso borrado: solo queda desbloqueado el nivel 1.";
+      }
+
       // Funciones que usa el resto de la página
       window.arrancarNivel = arrancarNivel;
       window.detenerJuego = detenerJuego;
@@ -2061,6 +2801,10 @@
       window.toggleVentana = toggleVentana;
       window.comprar = comprar;
       window.entrarCodigo = entrarCodigo;
+      window.abrirPausa = abrirPausa;
+      window.cerrarPausa = cerrarPausa;
+      window.togglePausa = togglePausa;
+      window.borrarProgreso = borrarProgreso;
     })();
 
     // Al cargar la página, comprobar el progreso guardado
