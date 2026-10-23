@@ -2,9 +2,10 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <title>CHIPIONAS BROS</title>
   <style>
+    :root { --vh: 1vh; --vw: 1vw; }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { overflow: hidden; font-family: Verdana, sans-serif; }
 
@@ -12,7 +13,7 @@
     .escena {
       position: relative;
       width: 100%;
-      height: 100vh;
+      height: calc(100 * var(--vh));
       overflow: hidden;
       background: linear-gradient(to bottom,
         #2f86e8 0%, #3f95ee 18%, #55a6f2 35%,
@@ -22,7 +23,7 @@
     /* Sol */
     .sol {
       position: absolute;
-      top: 8vh;
+      top: calc(8 * var(--vh));
       right: 10%;
       width: 110px;
       height: 110px;
@@ -54,10 +55,10 @@
     .montanas {
       position: absolute;
       left: 0;
-      bottom: 17vh;
+      bottom: calc(17 * var(--vh));
       width: 100%;
       aspect-ratio: 16 / 5;
-      max-height: 70vh;
+      max-height: calc(70 * var(--vh));
       pointer-events: none;
     }
     .suelo {
@@ -65,7 +66,7 @@
       left: 0;
       bottom: 0;
       width: 100%;
-      height: 24vh;
+      height: calc(24 * var(--vh));
       pointer-events: none;
     }
     .montanas svg, .suelo svg { width: 100%; height: 100%; display: block; }
@@ -75,9 +76,9 @@
 
     #inicio h1 {
       text-align: center;
-      margin-top: 12vh;
+      margin-top: calc(12 * var(--vh));
       font-family: Impact, Arial Black, sans-serif;
-      font-size: clamp(40px, 9vw, 110px);
+      font-size: clamp(40px, calc(9 * var(--vw)), 110px);
       color: #ffd23f;
       letter-spacing: 4px;
       text-shadow: 4px 4px 0 #d62828, 8px 8px 0 #7a1010;
@@ -85,7 +86,7 @@
 
     #boton-empezar {
       position: absolute;
-      bottom: 6vh;
+      bottom: calc(6 * var(--vh));
       left: 50%;
       transform: translateX(-50%);
       background: #d62828;
@@ -108,9 +109,9 @@
 
     #niveles h2 {
       text-align: center;
-      margin-top: 8vh;
+      margin-top: calc(8 * var(--vh));
       font-family: Impact, Arial Black, sans-serif;
-      font-size: clamp(30px, 5vw, 60px);
+      font-size: clamp(30px, calc(5 * var(--vw)), 60px);
       color: #ffd23f;
       letter-spacing: 3px;
       text-shadow: 3px 3px 0 #d62828, 6px 6px 0 #7a1010;
@@ -121,7 +122,7 @@
       justify-content: center;
       flex-wrap: wrap;
       gap: 50px;
-      margin-top: 6vh;
+      margin-top: calc(6 * var(--vh));
     }
 
     .nivel {
@@ -163,7 +164,7 @@
     /* Aviso rojo */
     #aviso {
       position: absolute;
-      top: 5vh;
+      top: calc(5 * var(--vh));
       left: 50%;
       transform: translateX(-50%);
       background: #c1121f;
@@ -258,13 +259,13 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: 6vh 0;
+      padding: calc(6 * var(--vh)) 0;
     }
     #aviso-pj {
       background: #1e1e2f;
       color: #ffd23f;
       font-family: Impact, Arial Black, sans-serif;
-      font-size: clamp(24px, 4vw, 44px);
+      font-size: clamp(24px, calc(4 * var(--vw)), 44px);
       letter-spacing: 3px;
       padding: 14px 40px;
       border: 4px solid #ffd23f;
@@ -282,7 +283,7 @@
       transition: transform 0.15s, opacity 0.4s, border-color 0.2s;
     }
     .pj:hover { transform: translateY(-6px); }
-    .pj svg { display: block; width: 100%; height: min(38vh, 300px); }
+    .pj svg { display: block; width: 100%; height: min(calc(38 * var(--vh)), 300px); }
     .pj .izq { display: none; }
     .pj:hover .der { display: none; }
     .pj:hover .izq { display: block; }
@@ -436,7 +437,7 @@
     #hud-monedas { font-size: 22px; margin-top: 4px; }
     #hud-poder { font-size: 18px; color: #ffe14d; }
     #progreso {
-      position: absolute; bottom: 3vh; left: 50%; transform: translateX(-50%);
+      position: absolute; bottom: calc(3 * var(--vh)); left: 50%; transform: translateX(-50%);
       width: min(560px, 70%); height: 28px;
       background: #222; border: 3px solid #ffd23f; border-radius: 14px; overflow: hidden; z-index: 8;
     }
@@ -447,7 +448,7 @@
     }
     #cartel {
       display: none; position: absolute; top: 30%; width: 100%; text-align: center; z-index: 9;
-      font-family: Impact, Arial Black, sans-serif; font-size: clamp(36px, 7vw, 80px);
+      font-family: Impact, Arial Black, sans-serif; font-size: clamp(36px, calc(7 * var(--vw)), 80px);
       color: #ffd23f; text-shadow: 4px 4px 0 #d62828, 8px 8px 0 #7a1010;
     }
     #derrota {
@@ -460,9 +461,9 @@
     /* ===== PANTALLA NEGRA FINAL ===== */
     #fin {
       display: none; z-index: 40; background: #000; opacity: 0; transition: opacity .8s;
-      flex-direction: column; align-items: center; justify-content: space-between; padding: 12vh 0 8vh; text-align: center;
+      flex-direction: column; align-items: center; justify-content: space-between; padding: calc(12 * var(--vh)) 0 calc(8 * var(--vh)); text-align: center;
     }
-    #fin-frase { color: #ffd23f; font-family: Impact, Arial Black, sans-serif; font-size: clamp(22px, 3.5vw, 40px); max-width: 80%; letter-spacing: 1px; }
+    #fin-frase { color: #ffd23f; font-family: Impact, Arial Black, sans-serif; font-size: clamp(22px, calc(3.5 * var(--vw)), 40px); max-width: 80%; letter-spacing: 1px; }
     #fin-caja { width: min(600px, 80%); color: #fff; font-weight: bold; }
     #fin-barra { height: 26px; background: #222; border: 3px solid #ffd23f; border-radius: 14px; overflow: hidden; margin-bottom: 8px; }
     #fin-rel { width: 0%; height: 100%; background: linear-gradient(to bottom, #8cf064, #2f8f1f); transition: width .4s ease-out; }
@@ -543,13 +544,13 @@
     #hud-tiempo { font-size: 22px; margin-top: 4px; }
     #huevo {
       display: none; position: absolute; top: 16%; width: 100%; text-align: center; z-index: 9; pointer-events: none;
-      font-family: Impact, Arial Black, sans-serif; font-size: clamp(28px, 5vw, 56px);
+      font-family: Impact, Arial Black, sans-serif; font-size: clamp(28px, calc(5 * var(--vw)), 56px);
       color: #fff; text-shadow: 0 0 12px #ffd23f, 3px 3px 0 #7a1010; letter-spacing: 2px;
     }
     #cartel small { font-size: .5em; color: #fff; text-shadow: 2px 2px 0 #000; }
 
     /* Pantalla final con frases */
-    #fin-titulo { font-family: Impact, Arial Black, sans-serif; font-size: clamp(30px, 5vw, 56px); color: #ffd23f; letter-spacing: 3px; }
+    #fin-titulo { font-family: Impact, Arial Black, sans-serif; font-size: clamp(30px, calc(5 * var(--vw)), 56px); color: #ffd23f; letter-spacing: 3px; }
     #fin-tiempo { color: #fff; font-size: 22px; font-weight: bold; margin-top: 6px; }
     #fin-carrusel { display: flex; align-items: center; justify-content: center; gap: 24px; width: 90%; }
     #fin-carrusel #fin-frase { flex: 1; max-width: 700px; min-height: 90px; display: flex; align-items: center; justify-content: center; }
@@ -589,7 +590,7 @@
     .infierno .suelo { filter: sepia(1) hue-rotate(-25deg) saturate(1.8) brightness(.55); }
 
     /* Castillo de fondo */
-    .castillo { display: none; position: absolute; left: 0; bottom: 17vh; width: 100%; height: 38vh; pointer-events: none; }
+    .castillo { display: none; position: absolute; left: 0; bottom: calc(17 * var(--vh)); width: 100%; height: calc(38 * var(--vh)); pointer-events: none; }
     .infierno .castillo { display: block; }
     .castillo svg { width: 100%; height: 100%; display: block; }
 
@@ -674,6 +675,67 @@
       color: #fff; font-weight: bold; text-align: center; line-height: 18px; font-size: 14px; vertical-align: middle; }
     .vent-cuerpo .item button:disabled { opacity: .55; cursor: default; }
     .pr-rayo svg { filter: drop-shadow(0 0 6px #7ff0ff); }
+    /* ===== VERSIÓN 7: elegir plataforma y modo móvil ===== */
+    #plataforma {
+      position: fixed; inset: 0; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 24px; text-align: center; font-family: Verdana, sans-serif; padding: 16px;
+      background: linear-gradient(to bottom, #2f86e8, #8cc7f8 60%, #c4e4fb);
+    }
+    #plataforma h1 { font-family: Impact, Arial Black, sans-serif; color: #ffd23f; font-size: clamp(28px, 6vw, 64px); letter-spacing: 3px; text-shadow: 3px 3px 0 #d62828, 6px 6px 0 #7a1010; }
+    #plataforma h2 { color: #fff; font-size: clamp(18px, 3vw, 30px); text-shadow: 2px 2px 0 #000; }
+    #plataforma .opciones { display: flex; gap: 26px; flex-wrap: wrap; justify-content: center; }
+    #plataforma button {
+      min-width: 190px; background: #d62828; color: #fff; font-size: 24px; font-weight: bold; padding: 16px 28px;
+      border: 5px solid #ffd23f; border-radius: 10px; box-shadow: 0 6px 0 #7a1010; cursor: pointer;
+    }
+    #plataforma button:hover { background: #ef3b3b; }
+
+    #girar {
+      display: none; position: fixed; inset: 0; z-index: 300; background: #000; color: #fff; flex-direction: column;
+      align-items: center; justify-content: center; gap: 20px; font: bold 20px Verdana, sans-serif; text-align: center; padding: 20px;
+    }
+    #girar .giro { font-size: 70px; animation: girarTel 1.8s ease-in-out infinite; }
+    @keyframes girarTel { 0%, 20% { transform: rotate(0deg); } 60%, 100% { transform: rotate(-90deg); } }
+
+    /* Botones táctiles: 4 círculos grises transparentes abajo a la izquierda (↑ arriba; ← ↓ → en fila) */
+    #tactil { display: none; position: fixed; inset: 0; z-index: 150; pointer-events: none; }
+    #dpad {
+      position: absolute; left: max(12px, env(safe-area-inset-left)); bottom: 12px; display: grid; gap: 4px;
+      --d: clamp(46px, 17vh, 68px); grid-template-columns: repeat(3, var(--d)); grid-template-rows: repeat(2, var(--d));
+    }
+    #acciones { position: absolute; right: max(14px, env(safe-area-inset-right)); bottom: 14px; display: flex; gap: 10px; --d: clamp(46px, 17vh, 68px); }
+    .tb {
+      pointer-events: auto; width: var(--d); height: var(--d); border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center;
+      background: rgba(235,235,235,.32); border: 2px solid rgba(255,255,255,.55); color: #fff; font-size: calc(var(--d) * .5);
+      touch-action: none; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; cursor: pointer;
+    }
+    .tb.on { background: rgba(255,255,255,.6); }
+    .tb svg { width: 52%; height: 52%; fill: rgba(255,255,255,.92); pointer-events: none; }
+    #tb-arriba { grid-column: 2; grid-row: 1; }
+    #tb-izq { grid-column: 1; grid-row: 2; }
+    #tb-abajo { grid-column: 2; grid-row: 2; }
+    #tb-der { grid-column: 3; grid-row: 2; }
+    #tb-abajo svg { transform: rotate(180deg); }
+    #tb-izq svg { transform: rotate(-90deg); }
+    #tb-der svg { transform: rotate(90deg); }
+
+    /* El juego en móvil: mismo juego, interfaz adaptada al dedo */
+    body.movil { touch-action: none; overscroll-behavior: none; -webkit-user-select: none; user-select: none; }
+    body.movil input { -webkit-user-select: text; user-select: text; font-size: 20px; }
+    body.movil .escena { position: absolute; left: 0; top: 0; }
+    body.movil .btn-sup { font-size: 20px; padding: 10px 16px; }
+    body.movil #boton-volver, body.movil #boton-inicio { font-size: 20px; padding: 12px 22px; }
+    body.movil .vent-cab { font-size: 22px; }
+    body.movil .vent-cuerpo { font-size: 18px; }
+    body.movil .vent-cuerpo .item button { font-size: 18px; padding: 10px 14px; }
+    body.movil .vent-cuerpo .btn-grande, body.movil .btn-grande { font-size: 22px; padding: 14px 24px; }
+    body.movil #pausa-v .x { width: 44px; height: 44px; font-size: 22px; }
+    body.movil .nivel { width: 138px; }
+    body.movil .nivel .portada { height: 86px; }
+    body.movil .tarjetas { gap: 14px; }
+    body.movil .nivel .etiqueta { font-size: 16px; padding: 6px; }
+    body.movil .pj { width: 190px; }
+    body.movil #progreso { width: 36%; left: 54%; }
   </style>
 </head>
 <body>
@@ -969,7 +1031,7 @@
         <div id="tienda-monedas">🪙 0</div>
         <div class="item"><span>❤️ 1 corazón</span><button onclick="comprar(1,30)">30 🪙</button></div>
         <div class="item"><span>❤️❤️ 2 corazones</span><button onclick="comprar(2,50)">50 🪙</button></div>
-        <div class="item"><span>🔥 Habilidad de fuego (C)</span><button id="btn-hab-fuego" onclick="comprarHab('fuego')">100 🪙</button></div>
+        <div class="item"><span id="txt-hab-fuego">🔥 Habilidad de fuego (C)</span><button id="btn-hab-fuego" onclick="comprarHab('fuego')">100 🪙</button></div>
         <div class="item"><span id="txt-hab-oculta"><span class="ico-oculta">?</span> Habilidad oculta</span><button id="btn-hab-oculta" onclick="comprarHab('oculta')">250 🪙</button></div>
         <div id="tienda-msg"></div>
       </div>
@@ -992,13 +1054,39 @@
       <div class="vent-cab"><span>⏸ Pausa</span><button class="x" onclick="cerrarPausa()">✕</button></div>
       <div class="vent-cuerpo">
         <div>El juego está en pausa.</div>
-        <div style="font-size:14px;color:#ccc">Pulsa la cruz o la tecla Esc para continuar. Mientras tanto puedes comprar en la tienda.</div>
+        <div id="pausa-txt" style="font-size:14px;color:#ccc">Pulsa la cruz o la tecla Esc para continuar. Mientras tanto puedes comprar en la tienda.</div>
       </div>
     </div>
 
     <!-- Aviso rojo -->
     <div id="aviso">Para acceder a este nivel debes completar el anterior</div>
   </div>
+
+  <!-- ¿DE QUÉ PLATAFORMA ERES? -->
+  <div id="plataforma">
+    <h1>CHIPIONAS BROS</h1>
+    <h2>¿De qué plataforma eres?</h2>
+    <div class="opciones">
+      <button onclick="elegirPlataforma('movil')">📱 Móvil</button>
+      <button onclick="elegirPlataforma('pc')">💻 PC</button>
+    </div>
+  </div>
+
+  <!-- CONTROLES TÁCTILES (solo en móvil) -->
+  <div id="tactil">
+    <div id="dpad">
+      <button class="tb" id="tb-arriba" data-k="Space"><svg viewBox="0 0 24 24"><path d="M12 3 L21 15 H15 V21 H9 V15 H3 Z"/></svg></button>
+      <button class="tb" id="tb-izq" data-k="KeyA"><svg viewBox="0 0 24 24"><path d="M12 3 L21 15 H15 V21 H9 V15 H3 Z"/></svg></button>
+      <button class="tb" id="tb-abajo" data-k="ShiftLeft"><svg viewBox="0 0 24 24"><path d="M12 3 L21 15 H15 V21 H9 V15 H3 Z"/></svg></button>
+      <button class="tb" id="tb-der" data-k="KeyD"><svg viewBox="0 0 24 24"><path d="M12 3 L21 15 H15 V21 H9 V15 H3 Z"/></svg></button>
+    </div>
+    <div id="acciones">
+      <button class="tb" id="tb-fuego" data-k="KeyC" style="display:none">🔥</button>
+      <button class="tb" id="tb-rayo" data-k="KeyV" style="display:none">⚡</button>
+    </div>
+  </div>
+
+  <div id="girar"><div class="giro">📱</div><div>Gira el móvil en horizontal para jugar</div></div>
 
   <script>
     /* ===== PROGRESO CIFRADO ===== */
@@ -1190,7 +1278,7 @@
       for (var i = 0; i < 18; i++) {
         var el = document.createElement("div");
         el.className = "nube";
-        el.style.top = (3 + r() * 30) + "vh";
+        el.style.top = "calc(" + (3 + r() * 30) + " * var(--vh))";
         el.style.opacity = (0.8 + r() * 0.15).toFixed(2);
         contenedor.appendChild(el);
         nubes.push({
@@ -1203,7 +1291,7 @@
 
       function mover() {
         var t = tiempoJuego() / 1000;
-        var ancho = window.innerWidth;
+        var ancho = document.querySelector(".escena").clientWidth;
         for (var i = 0; i < nubes.length; i++) {
           var n = nubes[i];
           var fase = (((t - n.inicio) % CICLO) + CICLO) % CICLO / n.duracion;
@@ -1659,10 +1747,10 @@
       // El suelo del juego es la línea del césped del fondo
       function medir() {
         fondoY(0);
-        var s = document.querySelector(".suelo").getBoundingClientRect();
+        var sEl = document.querySelector(".suelo"), s = sEl.getBoundingClientRect();
         var e = document.querySelector(".escena").getBoundingClientRect();
-        var esc = Math.max(s.width / 1600, s.height / 220);
-        BASE = e.bottom - (s.top + 32 * esc);
+        var esc = Math.max(sEl.offsetWidth / 1600, sEl.offsetHeight / 220);
+        BASE = (e.bottom - s.top) / ESCALA - 32 * esc;
       }
 
       /* ===================== CONSTRUCCIÓN DEL MAPA =====================
@@ -2413,7 +2501,7 @@
           $("hud-vida").textContent = s;
           $("hud-tiempo").textContent = "⏱ " + fmt(g.tiempo);
           $("hud-monedas").textContent = "🪙 " + monedasTotal;
-          $("hud-poder").textContent = (g.jefe ? (g.cdFuego > 0 ? "🔥 Fuego recargando..." : "🔥 Fuego listo (C)") : (g.poder >= 1e8 ? "🔥 Fuego (C)" : (g.poder > 0 ? "🔥 Poder " + Math.ceil(g.poder / 60) + "s  (C = bola de fuego)" : ""))) + (habil.oculta ? "   ⚡ Rayo Aura (V)" : "");
+          $("hud-poder").textContent = (g.jefe ? (g.cdFuego > 0 ? "🔥 Fuego recargando..." : "🔥 Fuego listo (" + KC() + ")") : (g.poder >= 1e8 ? "🔥 Fuego (" + KC() + ")" : (g.poder > 0 ? "🔥 Poder " + Math.ceil(g.poder / 60) + "s  (" + KC() + " = bola de fuego)" : ""))) + (habil.oculta ? "   ⚡ Rayo Aura (" + KV() + ")" : "");
         }
       }
 
@@ -2439,6 +2527,7 @@
         var p = pantallaActual();
         $("botones-sup").setAttribute("data-p", p);
         Musica.poner(pistaDeseada());
+        actualizarTactil(p);
         if ((p === "inicio" || p === "carga") && $("tienda-v").style.display === "block") cerrarVentana("tienda-v");
         if (pausaPanel && p !== "juego") cerrarPausa();
       }, 150);
@@ -2491,7 +2580,7 @@
         var cab = e.target.closest ? e.target.closest(".vent-cab") : null;
         if (cab) {
           var v = cab.parentNode, r = v.getBoundingClientRect();
-          arrastre = { v: v, dx: e.clientX - r.left, dy: e.clientY - r.top };
+          arrastre = { v: v, dx: (e.clientX - r.left) / ESCALA, dy: (e.clientY - r.top) / ESCALA };
           e.preventDefault();
           return;
         }
@@ -2502,8 +2591,7 @@
       });
       document.addEventListener("mousemove", function (e) {
         if (!arrastre) return;
-        arrastre.v.style.left = Math.max(0, Math.min(window.innerWidth - 60, e.clientX - arrastre.dx)) + "px";
-        arrastre.v.style.top = Math.max(0, Math.min(window.innerHeight - 40, e.clientY - arrastre.dy)) + "px";
+        moverVentana(e);
       });
       document.addEventListener("mouseup", function () { arrastre = null; });
 
@@ -2800,7 +2888,7 @@
       /* ===================== PAUSA ===================== */
       var pausaPanel = false;
       function actualizarPausa() {
-        var on = !!G && (pausaPanel || $("tienda-v").style.display === "block");
+        var on = !!G && (pausaPanel || $("tienda-v").style.display === "block" || enRetrato);
         if (G) G.pausa = on;
         if (on && !__pausa.on) { __pausa.on = true; __pausa.desde = performance.now(); }
         else if (!on && __pausa.on) { __pausa.acum += performance.now() - __pausa.desde; __pausa.on = false; }
@@ -2876,10 +2964,11 @@
 
       /* ===================== TIENDA: HABILIDADES ===================== */
       function pintarTienda() {
+        $("txt-hab-fuego").textContent = "🔥 Habilidad de fuego (" + KC() + ")";
         var bf = $("btn-hab-fuego"), bo = $("btn-hab-oculta");
         bf.textContent = habil.fuego ? "✓ Comprada" : "100 🪙"; bf.disabled = habil.fuego;
         bo.textContent = habil.oculta ? "✓ Comprada" : "250 🪙"; bo.disabled = habil.oculta;
-        $("txt-hab-oculta").innerHTML = habil.oculta ? "⚡ Rayo Aura (V)" : '<span class="ico-oculta">?</span> Habilidad oculta';
+        $("txt-hab-oculta").innerHTML = habil.oculta ? "⚡ Rayo Aura (" + KV() + ")" : '<span class="ico-oculta">?</span> Habilidad oculta';
       }
       function comprarHab(tipo) {
         var m = $("tienda-msg"), coste = tipo === "fuego" ? 100 : 250;
@@ -2888,7 +2977,7 @@
         monedasTotal -= coste;
         habil[tipo] = true;
         if (G && tipo === "fuego") G.poder = 1e9;
-        m.textContent = tipo === "fuego" ? "¡Habilidad de fuego conseguida! Pulsa C." : "¡Habilidad desbloqueada: Rayo Aura! Pulsa V.";
+        m.textContent = tipo === "fuego" ? "¡Habilidad de fuego conseguida! Pulsa " + KC() + "." : "¡Habilidad desbloqueada: Rayo Aura! Pulsa " + KV() + ".";
         if (G) G.hudKey = "";
         $("tienda-monedas").textContent = "🪙 " + monedasTotal;
         pintarTienda();
@@ -3077,6 +3166,88 @@
       }
       ["pointerdown", "keydown"].forEach(function (ev) { document.addEventListener(ev, function () { Musica.desbloquear(); }); });
 
+      /* ===================== MODO MÓVIL ===================== */
+      var movil = false, ESCALA = 1, enRetrato = false, ALTO_V = 540;   // en móvil el juego se dibuja a 540 px de alto y se escala a la pantalla
+      function KC() { return movil ? "el botón 🔥" : "C"; }
+      function KV() { return movil ? "el botón ⚡" : "V"; }
+
+      // Ajusta el juego a la pantalla del móvil (siempre en horizontal)
+      function ajustarMovil() {
+        if (!movil) return;
+        var ai = document.activeElement;
+        if (ai && ai.tagName === "INPUT") return;                      // con el teclado abierto no se reescala
+        var W = window.innerWidth, H = window.innerHeight;
+        enRetrato = H > W;
+        $("girar").style.display = enRetrato ? "flex" : "none";
+        if (enRetrato) { actualizarPausa(); return; }
+        ESCALA = H / ALTO_V;
+        var Wv = W / ESCALA, e = document.querySelector(".escena"), r = document.documentElement.style;
+        e.style.width = Wv + "px"; e.style.height = ALTO_V + "px";
+        e.style.transform = "scale(" + ESCALA + ")"; e.style.transformOrigin = "0 0";
+        r.setProperty("--vh", (ALTO_V / 100) + "px"); r.setProperty("--vw", (Wv / 100) + "px");
+        if (G) { medir(); posEstaticos(); }
+        actualizarPausa();
+      }
+
+      function elegirPlataforma(t) {
+        $("plataforma").style.display = "none";
+        if (t !== "movil") return;                                      // PC: todo igual que antes
+        movil = true;
+        document.body.classList.add("movil");
+        try {
+          var de = document.documentElement, p = (de.requestFullscreen || de.webkitRequestFullscreen || function () {}).call(de);
+          if (p && p.catch) p.catch(function () {});
+        } catch (e) {}
+        try { if (screen.orientation && screen.orientation.lock) screen.orientation.lock("landscape").catch(function () {}); } catch (e) {}
+        $("pausa-txt").textContent = "Pulsa la cruz para continuar. Mientras tanto puedes comprar en la tienda.";
+        ajustarMovil();
+      }
+
+      // Botones táctiles: ↑ = Espacio, ↓ = Shift, ← = A, → = D (y 🔥 = C, ⚡ = V)
+      Array.prototype.forEach.call(document.querySelectorAll("#tactil .tb"), function (b) {
+        var code = b.getAttribute("data-k");
+        function bajar(e) { e.preventDefault(); try { b.setPointerCapture(e.pointerId); } catch (_) {} K[code] = true; b.classList.add("on"); }
+        function subir() { K[code] = false; b.classList.remove("on"); }
+        b.addEventListener("pointerdown", bajar);
+        b.addEventListener("pointerup", subir);
+        b.addEventListener("pointercancel", subir);
+        b.addEventListener("lostpointercapture", subir);
+        b.addEventListener("contextmenu", function (e) { e.preventDefault(); });
+      });
+
+      function actualizarTactil(p) {
+        var ver = movil && !enRetrato && p === "juego";
+        $("tactil").style.display = ver ? "block" : "none";
+        if (ver) {
+          $("tb-fuego").style.display = (G && G.poder > 0) ? "flex" : "none";
+          $("tb-rayo").style.display = habil.oculta ? "flex" : "none";
+        }
+      }
+
+      // Arrastrar las ventanas con el dedo
+      function moverVentana(pt) {
+        var W = document.querySelector(".escena").clientWidth, H = document.querySelector(".escena").clientHeight;
+        arrastre.v.style.left = Math.max(0, Math.min(W - 60, pt.clientX / ESCALA - arrastre.dx)) + "px";
+        arrastre.v.style.top = Math.max(0, Math.min(H - 40, pt.clientY / ESCALA - arrastre.dy)) + "px";
+      }
+      document.addEventListener("touchstart", function (e) {
+        if (!movil || !e.touches.length) return;
+        var cab = e.target.closest ? e.target.closest(".vent-cab") : null;
+        if (cab && !e.target.closest("button")) {
+          var v = cab.parentNode, r = v.getBoundingClientRect(), t = e.touches[0];
+          arrastre = { v: v, dx: (t.clientX - r.left) / ESCALA, dy: (t.clientY - r.top) / ESCALA };
+        }
+      }, { passive: true });
+      document.addEventListener("touchmove", function (e) {
+        if (!movil) return;
+        if (arrastre && e.touches.length) moverVentana(e.touches[0]);
+        if (!(e.target.closest && e.target.closest("input"))) e.preventDefault();      // sin scroll ni "tirar para recargar"
+      }, { passive: false });
+      document.addEventListener("touchend", function () { arrastre = null; });
+      document.addEventListener("gesturestart", function (e) { if (movil) e.preventDefault(); });
+      window.addEventListener("orientationchange", function () { setTimeout(ajustarMovil, 300); });
+      document.addEventListener("focusout", function () { setTimeout(ajustarMovil, 100); });
+
       /* ===================== TECLADO ===================== */
       var TECLAS_JUEGO = ["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
       document.addEventListener("keydown", function (e) {
@@ -3094,7 +3265,7 @@
         if (TECLAS_JUEGO.indexOf(e.code) > -1) e.preventDefault();
       });
       window.addEventListener("blur", function () { K = {}; });
-      window.addEventListener("resize", function () { if (G) { medir(); posEstaticos(); } });
+      window.addEventListener("resize", function () { if (movil) ajustarMovil(); else if (G) { medir(); posEstaticos(); } });
 
       function borrarProgreso() {
         window.ADMIN = false;
@@ -3112,6 +3283,7 @@
       window.toggleVentana = toggleVentana;
       window.comprar = comprar;
       window.entrarCodigo = entrarCodigo;
+      window.elegirPlataforma = elegirPlataforma;
       window.comprarHab = comprarHab;
       window.toggleMusica = toggleMusica;
       window.abrirPausa = abrirPausa;
