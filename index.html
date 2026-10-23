@@ -827,13 +827,12 @@
         <!-- NIVEL 4 (bloqueado hasta completar el anterior) -->
         <div class="nivel bloqueado" id="nivel4" onclick="entrarNivel(4)">
           <svg class="portada" viewBox="0 0 260 160" preserveAspectRatio="xMidYMid slice">
-            <defs><linearGradient id="p4Cielo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a0f0f"/><stop offset="0.6" stop-color="#c0391b"/><stop offset="1" stop-color="#ff9a3c"/></linearGradient></defs>
+            <defs><linearGradient id="p4Cielo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5fb3e6"/><stop offset="0.6" stop-color="#cfeaf7"/><stop offset="1" stop-color="#ffffff"/></linearGradient></defs>
             <rect width="260" height="160" fill="url(#p4Cielo)"/>
-            <circle cx="60" cy="45" r="14" fill="#ffd27a" opacity=".8"/>
-            <polygon fill="#2a1410" points="60,160 110,55 140,55 200,160"/>
-            <polygon fill="#ff5a1f" points="110,55 140,55 132,75 118,75"/>
-            <path d="M125 75 L120 110 L130 130" stroke="#ff7a1f" stroke-width="4" fill="none"/>
-            <polygon fill="#1c0d0a" points="0,150 50,120 110,150 170,125 260,150 260,160 0,160"/>
+            <circle cx="215" cy="30" r="14" fill="#fff6c8"/>
+            <polygon fill="#a9c9e6" points="0,125 45,60 90,110 140,45 200,115 260,80 260,160 0,160"/>
+            <polygon fill="#ffffff" points="45,60 32,85 45,78 58,88"/><polygon fill="#ffffff" points="140,45 120,80 140,70 160,84"/>
+            <rect y="135" width="260" height="25" fill="#f4fbff"/><rect y="150" width="260" height="10" fill="#cfe4f2"/>
           </svg>
           <div class="etiqueta">Nivel 4</div>
           <div class="grandes" id="gc-4"></div>
@@ -850,12 +849,13 @@
         <!-- NIVEL 5 (bloqueado hasta completar el anterior) -->
         <div class="nivel bloqueado" id="nivel5" onclick="entrarNivel(5)">
           <svg class="portada" viewBox="0 0 260 160" preserveAspectRatio="xMidYMid slice">
-            <defs><linearGradient id="p5Cielo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5fb3e6"/><stop offset="0.6" stop-color="#cfeaf7"/><stop offset="1" stop-color="#ffffff"/></linearGradient></defs>
+            <defs><linearGradient id="p5Cielo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a0f0f"/><stop offset="0.6" stop-color="#c0391b"/><stop offset="1" stop-color="#ff9a3c"/></linearGradient></defs>
             <rect width="260" height="160" fill="url(#p5Cielo)"/>
-            <circle cx="215" cy="30" r="14" fill="#fff6c8"/>
-            <polygon fill="#a9c9e6" points="0,125 45,60 90,110 140,45 200,115 260,80 260,160 0,160"/>
-            <polygon fill="#ffffff" points="45,60 32,85 45,78 58,88"/><polygon fill="#ffffff" points="140,45 120,80 140,70 160,84"/>
-            <rect y="135" width="260" height="25" fill="#f4fbff"/><rect y="150" width="260" height="10" fill="#cfe4f2"/>
+            <circle cx="60" cy="45" r="14" fill="#ffd27a" opacity=".8"/>
+            <polygon fill="#2a1410" points="60,160 110,55 140,55 200,160"/>
+            <polygon fill="#ff5a1f" points="110,55 140,55 132,75 118,75"/>
+            <path d="M125 75 L120 110 L130 130" stroke="#ff7a1f" stroke-width="4" fill="none"/>
+            <polygon fill="#1c0d0a" points="0,150 50,120 110,150 170,125 260,150 260,160 0,160"/>
           </svg>
           <div class="etiqueta">Nivel 5</div>
           <div class="grandes" id="gc-5"></div>
@@ -1706,6 +1706,7 @@
         var L = { LEN: LEN, meta: LEN - 350, solidos: [], items: [], enemigos: [], cand: [], ocultas: [], lavas: [], maxTop: 0 };
 
         function bloque(x, y, w, h, tipo) {
+          if (tipo === "q") { x -= 4; w += 8; }                  // bloque "?" con la hitbox un poco más grande
           L.solidos.push({ x: x, y: y, w: w, h: h, tipo: tipo, usado: false });
           if (y + h > L.maxTop) L.maxTop = y + h;
         }
@@ -2007,7 +2008,7 @@
         if (mv) g.dir = mv;
 
         if (!sal) g.saltoListo = true;
-        if (sal && g.suelo && g.saltoListo && !g.agach) { g.vy = c.salto; g.suelo = false; g.saltoListo = false; }
+        if (sal && g.suelo && g.saltoListo && !g.agach) { g.vy = c.salto; g.suelo = false; g.saltoListo = false; Sfx.salto(g.nombre); }
 
         // Gravedad. Con Shift en el aire se cae más rápido. No hay daño por caída.
         g.vy -= c.grav * d;
@@ -2029,6 +2030,7 @@
         }
 
         // Vertical
+        var vyAntes = g.vy;
         g.y += g.vy * d;
         g.suelo = false;
         if (g.y <= 0) { g.y = 0; if (g.vy < 0) g.vy = 0; g.suelo = true; }
@@ -2046,7 +2048,11 @@
               g.y = b.y + b.h; g.vy = 0; g.suelo = true;
             } else {
               g.y = b.y - g.h; g.vy = 0;
-              if (b.tipo === "q") golpearQ(b);
+              // golpe desde abajo: cuenta cualquier bloque "?" de esa fila que toques o casi toques
+              for (var qi = 0; qi < s.length; qi++) {
+                var qb = s[qi];
+                if (qb.tipo === "q" && !qb.usado && qb.y === b.y && g.x < qb.x + qb.w + 12 && g.x + g.w > qb.x - 12) golpearQ(qb);
+              }
             }
           }
         }
@@ -2055,12 +2061,17 @@
           hurt(1);
           g.vy = 13; g.y = 1; g.suelo = false;
         }
+        if (g.suelo && estabaAire && vyAntes < -4) Sfx.cae(Math.min(1, -vyAntes / 13));          // sonido de caída
+        if (g.suelo && !g.agach && Math.abs(g.vx) > 0.3) {                                        // pasos
+          g.pasoAcc = (g.pasoAcc || 0) + Math.abs(g.vx) * d;
+          if (g.pasoAcc > 40) { g.pasoAcc = 0; Sfx.paso(g.nombre); }
+        }
       }
 
       function recompensa(b) {
         var r = Math.random();
         if (r < 0.6) flotante(b.x, b.y + 44, "Vacío");
-        else if (r < 0.9) { monedasTotal++; flotante(b.x, b.y + 44, "+1 🪙"); }
+        else if (r < 0.9) { monedasTotal++; Sfx.moneda(); flotante(b.x, b.y + 44, "+1 🪙"); }
         else { G.poder = 3600; flotante(b.x, b.y + 44, "¡PODER! 60s"); }
       }
 
@@ -2069,6 +2080,7 @@
         b.usado = true;
         b.el.className = "s-q usado golpe";
         setTimeout(function () { if (b.el) b.el.classList.remove("golpe"); }, 150);
+        Sfx.bloque();
         recompensa(b);
       }
 
@@ -2077,6 +2089,7 @@
         if (idx > -1) G.L.solidos.splice(idx, 1);
         b.el.classList.add("roto");
         setTimeout(function () { b.el.style.display = "none"; }, 300);
+        Sfx.rompe();
         if (!b.usado) { b.usado = true; recompensa(b); } else flotante(b.x, b.y + 44, "¡Roto!");
       }
 
@@ -2090,6 +2103,7 @@
         var g = G;
         if (g.inv > 0 || g.muerto) return;
         g.vidas -= (n || 1);
+        Sfx.hurt();
         g.inv = 70;
         if (g.vidas <= 0) perder();
       }
@@ -2098,8 +2112,9 @@
         var g = G;
         g.L.items.forEach(function (it) {
           if (it.rec || !sup(g, it)) return;
-          if (it.tipo === "moneda") monedasTotal++;
+          if (it.tipo === "moneda") { monedasTotal++; Sfx.moneda(); }
           else if (it.tipo === "grande") {
+            Sfx.grande();
             grandes[g.n][it.idx] = true;
             flotante(it.x - 30, it.y + 60, "¡Moneda grande!");
             if (it.huevo) {
@@ -2108,7 +2123,7 @@
               h.style.display = "block";
               temporizar(function () { h.style.display = "none"; }, 4500);
             }
-          } else { if (g.vidas >= 6) return; g.vidas++; }          // máximo 6 corazones
+          } else { if (g.vidas >= 6) return; g.vidas++; Sfx.corazon(); }          // máximo 6 corazones
           it.rec = true;
           it.el.style.display = "none";
         });
@@ -2124,6 +2139,7 @@
           var el = div("pr pr-bolaj", SVG_BOLA);
           colocar(el, x, y, 20, 20);
           g.bolasJ.push({ x: x, y: y, w: 20, h: 20, vx: g.dir * 10, x0: x, el: el });
+          Sfx.fuego();
         }
         for (i = g.bolasJ.length - 1; i >= 0; i--) {
           var b = g.bolasJ[i], quitar = false;
@@ -2135,7 +2151,7 @@
             if (e.vivo && sup(b, e)) { matar(e); quitar = true; }
           }
           if (!quitar && g.jefe && g.boss.estado !== "muerto" && sup(b, g.boss)) {
-            g.boss.vida--; flotante(g.boss.x + 30, g.boss.h + 30, "-1 ❤"); quitar = true;
+            g.boss.vida--; Sfx.lili("herido"); flotante(g.boss.x + 30, g.boss.h + 30, "-1 ❤"); quitar = true;
             if (g.boss.vida <= 0) derrotarJefe();
           }
           if (quitar) { b.el.remove(); g.bolasJ.splice(i, 1); } else colocar(b.el, b.x, b.y);
@@ -2168,17 +2184,14 @@
           if (sup(g, e)) {
             if (e.tipo === "pinchi") {
               // Los pinchos NO se pueden pisar: duele y te rebota
-              if (g.inv <= 0) { hurt(); g.vy = 8; g.suelo = false; }
+              if (g.inv <= 0) { Sfx.pinchi(); hurt(); g.vy = 8; g.suelo = false; }
               continue;
             }
             // Matar saltando encima (también al caer con Shift)
-            if (g.vy < 0 && g.y > e.y + e.h * 0.4) { matar(e); g.vy = 9.5; g.suelo = false; continue; }
+            if (g.vy < 0 && g.y > e.y + e.h * 0.4) { matar(e); Sfx.pisa(); g.vy = 9.5; g.suelo = false; continue; }
           }
 
-          if (aire) {                                               // con el jugador en el aire, todos quietos y sin atacar
-            if (e.tipo === "koopa" && e.cd < 45) e.cd = 45;         // al aterrizar, Tortu tarda un poco en atacar
-            continue;
-          }
+          if (aire && e.tipo !== "koopa") continue;                 // con el jugador en el aire todos quedan quietos... menos Tortu, que sigue lanzando
 
           var dx = (g.x + g.w / 2) - (e.x + e.w / 2), dy = g.y - e.y, lado = dx > 0 ? 1 : -1;
           e.cd -= d;
@@ -2188,16 +2201,18 @@
             var ox = e.x; e.x += e.vx * d; if (chocaE(e)) e.x = ox;
             if (sup(g, e) && e.cd <= 0 && g.inv <= 0) {
               e.cd = 70;
+              Sfx.champi();
               g.golpesSeta++;
               if (g.golpesSeta >= 2) { g.golpesSeta = 0; hurt(); } else g.inv = 25;
               var ox2 = e.x; e.x -= lado * 18; if (chocaE(e)) e.x = ox2;
             }
           } else if (e.tipo === "koopa") {                          // Tortu
-            if (Math.abs(dx) < 420 && Math.abs(dy) < 150) {
+            if (Math.abs(dx) < 420 && Math.abs(dy) < (aire ? 320 : 150)) {
               e.dir = lado;                                         // quieto, mirando hacia ti
               if (e.cd <= 0) {
                 var bajo = Math.random() < 0.5;
-                proyectil("cap", e.dir > 0 ? e.x + e.w : e.x - 22, bajo ? 4 : 82, e.dir * 7);
+                proyectil("cap", e.dir > 0 ? e.x + e.w : e.x - 22, aire ? Math.max(4, g.y + g.h * 0.4 - 11) : (bajo ? 4 : 82), e.dir * 7);   // en el aire apunta a tu altura
+                Sfx.tortu();
                 e.cd = Math.max(55, 100 - (g.n - 1) * 10);
               }
             } else {
@@ -2219,7 +2234,7 @@
                 var tx = g.x + g.w / 2 - e.w / 2, ty = g.y + g.h * 0.3;
                 var ax = tx - e.x, ay = ty - e.y, m = Math.sqrt(ax * ax + ay * ay) || 1;
                 e.vx = ax / m * 7 * dif; e.vy = ay / m * 7 * dif;
-                e.estado = "pica";
+                e.estado = "pica"; Sfx.murci();
               }
             } else if (e.estado === "pica") {
               e.x += e.vx * d; e.y += e.vy * d;
@@ -2239,7 +2254,7 @@
             if (Math.abs(dx) < 450 && Math.abs(dy) < 260) { e.dir = lado; e.x += lado * 3.2 * dif * d; }
             e.y = 52 + Math.sin(e.t / 18) * 8;
             if (Math.abs(dx) < 270) {
-              if (e.cd <= 0) { proyectil("bola", lado > 0 ? e.x + e.w : e.x - 22, e.y + 8, lado * 7.5); matar(e); }
+              if (e.cd <= 0) { proyectil("bola", lado > 0 ? e.x + e.w : e.x - 22, e.y + 8, lado * 7.5); Sfx.rojo(); matar(e); }
             } else if (e.cd < 60) e.cd = 60;
           }
         }
@@ -2587,7 +2602,7 @@
 
         // Pisotón: le quita 1 corazón (y tras el golpe tiene un momento de invulnerabilidad)
         if (sup(g, b) && g.vy < 0 && g.y > b.y + b.h * 0.55 && b.inv <= 0) {
-          b.vida--; b.inv = 75; g.vy = 11; g.suelo = false;
+          b.vida--; b.inv = 75; g.vy = 11; g.suelo = false; Sfx.pisa(); Sfx.lili("herido");
           flotante(b.x + 30, b.h + 30, "-1 ❤");
           if (b.vida <= 0) { derrotarJefe(); return; }
         }
@@ -2598,7 +2613,7 @@
           b.dir = lado;
           // Intenta esquivar si te caes encima
           if (!g.suelo && Math.abs(dx) < 170 && g.vy <= 2 && b.cdEsq <= 0) {
-            b.estado = "esquiva"; b.t = 0; b.cdEsq = 90; b.dash = 22;
+            b.estado = "esquiva"; b.t = 0; b.cdEsq = 90; b.dash = 22; Sfx.lili("esquiva");
             b.dashDir = -lado;
             if (b.dashDir < 0 && b.x < 110) b.dashDir = 1;
             if (b.dashDir > 0 && b.x > max - 110) b.dashDir = -1;
@@ -2622,6 +2637,7 @@
           if (b.t >= 45) {
             var hx = b.dir < 0 ? b.x - 40 : b.x + b.w;
             proyectil("sombrero", hx, 0, b.dir * 3.4 * g.dif, { w: 44, h: 34, dano: 3 });
+            Sfx.lili("sombrero");
             b.cdSomb = 600; b.cdG = 120; b.estado = "idle";
           }
         } else if (b.estado === "agua") {                        // tercer ataque: 3 chorros de agua en arco (1 corazón)
@@ -2632,13 +2648,13 @@
               var vx = Math.max(-8, Math.min(8, (tx - x0) / 60.8));
               proyectil("agua", x0, 100, vx, { w: 22, h: 22, vy: 9, dano: 1 });
             });
-            b.cdAgua = 360; b.cdG = 120; b.estado = "idle";
+            b.cdAgua = 360; b.cdG = 120; b.estado = "idle"; Sfx.lili("agua");
           }
         } else if (b.estado === "pico") {                        // se agacha y da un picotazo (1 corazón)
           if (b.t >= 30) {
             var x1 = b.dir < 0 ? b.x - 120 : b.x + b.w - 20;
             if (g.x + g.w > x1 && g.x < x1 + 140 && g.y < 80) hurt(1);
-            b.flash = 14; b.cdPico = 150; b.cdG = 120; b.estado = "idle";
+            b.flash = 14; b.cdPico = 150; Sfx.lili("pico"); b.cdG = 120; b.estado = "idle";
           }
         }
         b.x = Math.max(min, Math.min(max, b.x));
@@ -2670,7 +2686,7 @@
             if (it.edad >= 300) { it.el.remove(); g.lluvia.splice(i, 1); continue; }
           }
           if (sup(g, it) && (it.tipo === "moneda" || g.vidas < 6)) {
-            if (it.tipo === "moneda") monedasTotal++; else g.vidas++;
+            if (it.tipo === "moneda") { monedasTotal++; Sfx.moneda(); } else { g.vidas++; Sfx.corazon(); }
             it.el.remove(); g.lluvia.splice(i, 1); continue;
           }
           colocar(it.el, it.x, it.y);
@@ -2683,6 +2699,7 @@
       function derrotarJefe() {
         var g = G, b = g.boss;
         b.estado = "muerto";
+        Sfx.lili("muerte");
         b.el.classList.add("muerto");
         g.proy.forEach(function (p) { p.el.remove(); }); g.proy = [];
         g.bolasJ.forEach(function (p) { p.el.remove(); }); g.bolasJ = [];
@@ -2835,6 +2852,7 @@
         if (habil.oculta && K.KeyV && g.cdRayo <= 0) {
           g.cdRayo = g.jefe ? 90 : 40;
           g.volea++;
+          Sfx.rayo();
           var x = g.dir > 0 ? g.x + g.w : g.x - 44, c = objetivoCentro(), base = c === null ? g.y + g.h * 0.45 : c - 10;
           [-34, 0, 34].forEach(function (off) {
             var y = Math.max(0, base + off), el = div("pr pr-rayo", SVG_RAYO);
@@ -2849,7 +2867,7 @@
           var quitar = Math.abs(b.x - b.x0) > 1000 || choca(b);
           for (j = 0; j < g.L.enemigos.length; j++) { var e = g.L.enemigos[j]; if (e.vivo && sup(b, e)) matar(e); }
           if (g.jefe && g.boss.estado !== "muerto" && g.boss.volea !== b.v && sup(b, g.boss)) {   // 2 corazones por descarga
-            g.boss.volea = b.v; g.boss.vida -= 2; flotante(g.boss.x + 30, g.boss.h + 30, "-2 ❤");
+            g.boss.volea = b.v; g.boss.vida -= 2; Sfx.lili("herido"); flotante(g.boss.x + 30, g.boss.h + 30, "-2 ❤");
             if (g.boss.vida <= 0) { derrotarJefe(); return; }
           }
           if (quitar) { b.el.remove(); g.rayos.splice(i, 1); } else colocar(b.el, b.x, b.y);
@@ -2980,7 +2998,71 @@
         }
         function silenciar(v) { mute = v; if (master) master.gain.setTargetAtTime(v ? 0 : VOL, ctx.currentTime, 0.05); }
         function pausar(on) { if (!ctx) return; if (on) ctx.suspend(); else if (ctx.state === "suspended") ctx.resume(); }
-        return { poner: poner, desbloquear: desbloquear, silenciar: silenciar, pausar: pausar, esMute: function () { return mute; }, _p: PISTAS, _parse: parse };
+        return { audio: function () { return ctx ? { ctx: ctx, out: master, buf: buf } : null; }, poner: poner, desbloquear: desbloquear, silenciar: silenciar, pausar: pausar, esMute: function () { return mute; }, _p: PISTAS, _parse: parse };
+      })();
+
+      /* ===================== EFECTOS DE SONIDO (generados con código) ===================== */
+      var Sfx = (function () {
+        function A() { return Musica.audio(); }
+        // Tono que cambia de frecuencia (f0 -> f1). vib = [hz, profundidad] opcional
+        function barrido(tipo, f0, f1, dur, vol, retardo, vib) {
+          var a = A(); if (!a) return;
+          var t = a.ctx.currentTime + (retardo || 0), o = a.ctx.createOscillator(), g = a.ctx.createGain();
+          o.type = tipo; o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(Math.max(20, f1), t + dur);
+          g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(vol, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+          if (vib) { var l = a.ctx.createOscillator(), lg = a.ctx.createGain(); l.frequency.value = vib[0]; lg.gain.value = vib[1]; l.connect(lg); lg.connect(o.frequency); l.start(t); l.stop(t + dur + 0.03); }
+          o.connect(g); g.connect(a.out); o.start(t); o.stop(t + dur + 0.03);
+        }
+        // Ruido filtrado (soplidos, golpes, crujidos)
+        function ruido(tipo, fc0, fc1, dur, vol, retardo, q) {
+          var a = A(); if (!a) return;
+          var t = a.ctx.currentTime + (retardo || 0), s = a.ctx.createBufferSource(), f = a.ctx.createBiquadFilter(), g = a.ctx.createGain();
+          s.buffer = a.buf; s.loop = true;
+          f.type = tipo; f.Q.value = q || 1.2; f.frequency.setValueAtTime(fc0, t); f.frequency.exponentialRampToValueAtTime(Math.max(20, fc1), t + dur);
+          g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(vol, t + 0.008); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+          s.connect(f); f.connect(g); g.connect(a.out); s.start(t); s.stop(t + dur + 0.03);
+        }
+        // Voz de Lili: graznido grave y nasal
+        function grazn(f0, f1, dur, vol, retardo) {
+          var a = A(); if (!a) return;
+          var t = a.ctx.currentTime + (retardo || 0), o = a.ctx.createOscillator(), f = a.ctx.createBiquadFilter(), g = a.ctx.createGain();
+          o.type = "sawtooth"; o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(Math.max(30, f1), t + dur);
+          f.type = "bandpass"; f.frequency.value = 750; f.Q.value = 3.5;
+          g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(vol, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+          o.connect(f); f.connect(g); g.connect(a.out); o.start(t); o.stop(t + dur + 0.03);
+        }
+        var ultimoPaso = 0;
+        return {
+          paso: function (n) {                                   // Ivan pesa más: pasos graves; MJ: pasos ligeros
+            var ahora = Date.now(); if (ahora - ultimoPaso < 90) return; ultimoPaso = ahora;
+            if (n === "zipi") { ruido("lowpass", 700, 300, 0.07, 0.5); barrido("sine", 110, 65, 0.07, 0.4); }
+            else { ruido("lowpass", 1200, 500, 0.05, 0.4); barrido("sine", 180, 100, 0.05, 0.25); }
+          },
+          salto: function (n) { if (n === "zipi") barrido("sine", 240, 520, 0.18, 0.45); else barrido("sine", 330, 740, 0.2, 0.4); },
+          cae: function (f) { barrido("sine", 130, 42, 0.22, 0.7 * f + 0.2); ruido("lowpass", 500, 150, 0.15, 0.5 * f + 0.1); },
+          bloque: function () { barrido("triangle", 220, 120, 0.08, 0.5); barrido("sine", 988, 988, 0.25, 0.35, 0.05); barrido("sine", 1319, 1319, 0.3, 0.3, 0.1); },
+          rompe: function () { ruido("bandpass", 1500, 500, 0.3, 0.7, 0, 0.8); barrido("sine", 160, 60, 0.2, 0.5); },
+          moneda: function () { barrido("square", 988, 988, 0.08, 0.2); barrido("square", 1319, 1319, 0.2, 0.2, 0.07); },
+          grande: function () { [523, 659, 784, 1047, 1319].forEach(function (f, i) { barrido("triangle", f, f, 0.25, 0.3, i * 0.07); }); },
+          corazon: function () { barrido("sine", 523, 523, 0.15, 0.35); barrido("sine", 784, 784, 0.25, 0.35, 0.09); },
+          hurt: function () { barrido("square", 440, 160, 0.28, 0.35); ruido("lowpass", 900, 200, 0.2, 0.3); },
+          fuego: function () { ruido("bandpass", 400, 1700, 0.3, 0.7, 0, 0.9); barrido("sawtooth", 240, 110, 0.25, 0.25); },
+          rayo: function () { barrido("sawtooth", 2000, 280, 0.28, 0.35, 0, [38, 120]); barrido("square", 90, 90, 0.2, 0.25); barrido("triangle", 2600, 3400, 0.1, 0.15); },
+          pisa: function () { barrido("sine", 180, 520, 0.08, 0.5); barrido("sine", 520, 260, 0.14, 0.5, 0.08); },
+          champi: function () { barrido("sawtooth", 120, 65, 0.22, 0.45, 0, [18, 10]); ruido("lowpass", 800, 200, 0.12, 0.35); },
+          tortu: function () { ruido("bandpass", 2200, 500, 0.2, 0.55); barrido("triangle", 440, 200, 0.12, 0.4); barrido("square", 1200, 900, 0.03, 0.25); },
+          rojo: function () { ruido("lowpass", 2800, 350, 0.38, 0.65); barrido("sawtooth", 320, 140, 0.3, 0.22); },
+          pinchi: function () { barrido("square", 1500, 1400, 0.1, 0.3); barrido("square", 2100, 2000, 0.12, 0.3, 0.04); ruido("highpass", 6000, 6000, 0.05, 0.35); },
+          murci: function () { barrido("sawtooth", 900, 2300, 0.18, 0.3, 0, [30, 90]); barrido("sawtooth", 2300, 1100, 0.2, 0.28, 0.18, [34, 100]); },
+          lili: function (t) {
+            if (t === "sombrero") { grazn(170, 110, 0.3, 0.5); ruido("bandpass", 900, 300, 0.35, 0.5, 0.05); }
+            else if (t === "pico") { ruido("highpass", 3000, 3000, 0.04, 0.6); grazn(220, 150, 0.2, 0.55, 0.02); }
+            else if (t === "agua") { [500, 700, 560, 880, 640].forEach(function (f, i) { barrido("sine", f, f * 1.5, 0.12, 0.3, i * 0.07); }); grazn(150, 120, 0.25, 0.4); }
+            else if (t === "esquiva") { ruido("bandpass", 1200, 400, 0.18, 0.4); }
+            else if (t === "herido") { grazn(300, 150, 0.3, 0.6); }
+            else { grazn(260, 40, 1.2, 0.65); ruido("lowpass", 600, 100, 1.0, 0.3); }   // muerte
+          }
+        };
       })();
 
       // Qué música toca en cada momento
