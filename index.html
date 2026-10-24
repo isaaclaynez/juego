@@ -697,13 +697,11 @@
     #girar .giro { font-size: 70px; animation: girarTel 1.8s ease-in-out infinite; }
     @keyframes girarTel { 0%, 20% { transform: rotate(0deg); } 60%, 100% { transform: rotate(-90deg); } }
 
-    /* Botones táctiles: 4 círculos grises transparentes abajo a la izquierda (↑ arriba; ← ↓ → en fila) */
+    /* Botones táctiles: ← → abajo a la izquierda; ↑ ↓ abajo a la derecha (junto a 🔥 y ⚡) */
     #tactil { display: none; position: fixed; inset: 0; z-index: 150; pointer-events: none; }
-    #dpad {
-      position: absolute; left: max(12px, env(safe-area-inset-left)); bottom: 12px; display: grid; gap: 4px;
-      --d: clamp(46px, 17vh, 68px); grid-template-columns: repeat(3, var(--d)); grid-template-rows: repeat(2, var(--d));
-    }
-    #acciones { position: absolute; right: max(14px, env(safe-area-inset-right)); bottom: 14px; display: flex; gap: 10px; --d: clamp(46px, 17vh, 68px); }
+    #pad-izq, #pad-der { position: absolute; bottom: 12px; display: grid; gap: 4px; --d: clamp(46px, 17vh, 68px); }
+    #pad-izq { left: max(12px, env(safe-area-inset-left)); grid-template-columns: repeat(2, var(--d)); }
+    #pad-der { right: max(12px, env(safe-area-inset-right)); grid-template-columns: repeat(2, var(--d)); grid-template-rows: repeat(2, var(--d)); }
     .tb {
       pointer-events: auto; width: var(--d); height: var(--d); border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center;
       background: rgba(235,235,235,.32); border: 2px solid rgba(255,255,255,.55); color: #fff; font-size: calc(var(--d) * .5);
@@ -711,10 +709,6 @@
     }
     .tb.on { background: rgba(255,255,255,.6); }
     .tb svg { width: 52%; height: 52%; fill: rgba(255,255,255,.92); pointer-events: none; }
-    #tb-arriba { grid-column: 2; grid-row: 1; }
-    #tb-izq { grid-column: 1; grid-row: 2; }
-    #tb-abajo { grid-column: 2; grid-row: 2; }
-    #tb-der { grid-column: 3; grid-row: 2; }
     #tb-abajo svg { transform: rotate(180deg); }
     #tb-izq svg { transform: rotate(-90deg); }
     #tb-der svg { transform: rotate(90deg); }
@@ -735,7 +729,7 @@
     body.movil .tarjetas { gap: 14px; }
     body.movil .nivel .etiqueta { font-size: 16px; padding: 6px; }
     body.movil .pj { width: 190px; }
-    body.movil #progreso { width: 36%; left: 54%; }
+    body.movil #progreso { width: min(460px, 42%); }
   </style>
 </head>
 <body>
@@ -1072,17 +1066,17 @@
     </div>
   </div>
 
-  <!-- CONTROLES TÁCTILES (solo en móvil) -->
+  <!-- CONTROLES TÁCTILES (solo en móvil): ← → a la izquierda; ↑ ↓ (y 🔥 ⚡) a la derecha -->
   <div id="tactil">
-    <div id="dpad">
-      <button class="tb" id="tb-arriba" data-k="Space"><svg viewBox="0 0 24 24"><path d="M12 3 L21 15 H15 V21 H9 V15 H3 Z"/></svg></button>
+    <div id="pad-izq">
       <button class="tb" id="tb-izq" data-k="KeyA"><svg viewBox="0 0 24 24"><path d="M12 3 L21 15 H15 V21 H9 V15 H3 Z"/></svg></button>
-      <button class="tb" id="tb-abajo" data-k="ShiftLeft"><svg viewBox="0 0 24 24"><path d="M12 3 L21 15 H15 V21 H9 V15 H3 Z"/></svg></button>
       <button class="tb" id="tb-der" data-k="KeyD"><svg viewBox="0 0 24 24"><path d="M12 3 L21 15 H15 V21 H9 V15 H3 Z"/></svg></button>
     </div>
-    <div id="acciones">
-      <button class="tb" id="tb-fuego" data-k="KeyC" style="display:none">🔥</button>
-      <button class="tb" id="tb-rayo" data-k="KeyV" style="display:none">⚡</button>
+    <div id="pad-der">
+      <button class="tb" id="tb-fuego" data-k="KeyC" style="visibility:hidden">🔥</button>
+      <button class="tb" id="tb-arriba" data-k="Space"><svg viewBox="0 0 24 24"><path d="M12 3 L21 15 H15 V21 H9 V15 H3 Z"/></svg></button>
+      <button class="tb" id="tb-rayo" data-k="KeyV" style="visibility:hidden">⚡</button>
+      <button class="tb" id="tb-abajo" data-k="ShiftLeft"><svg viewBox="0 0 24 24"><path d="M12 3 L21 15 H15 V21 H9 V15 H3 Z"/></svg></button>
     </div>
   </div>
 
@@ -1652,15 +1646,16 @@
         "Un buen salto vale más que mil corazones. Pero los corazones también ayudan."
       ];
       var DURACION_FIN = 10000;     // ms que dura la pantalla final (para poder leer las frases)
-      var HASH_ADMIN = "c9903c5";
+      var CODIGOS = { "c9903c5": "niveles", "372f15e8": "rich", "42541f91": "undie", "28176850": "powers", "57948ba5": "skip" };
 
       // ---- Personajes: cada uno con su hitbox y sus físicas ----
       var PJ = {
         zipi: { w: 46, h: 76,  hAg: 50, vel: 5.2, salto: 16, grav: 0.66, vw: 64, vh: 82,  vb: "36 80 128 240", off: -2 },
-        zape: { w: 30, h: 126, hAg: 70, vel: 6.0, salto: 15.2, grav: 0.58, vw: 44, vh: 130, vb: "60 0 110 320",  off: -5 }
+        zape: { w: 28, h: 108, hAg: 60, margen: 5, vel: 6.0, salto: 15.2, grav: 0.58, vw: 44, vh: 130, vb: "60 0 110 320",  off: -5 }
       };
       var NOMBRES = { seta: "Champi", koopa: "Tortu", fuego: "Rojo", pinchi: "Pinchi", murci: "Murci" };
 
+      var inmortal = false;                                   // código "undie"
       var habil = { fuego: false, oculta: false };            // habilidades compradas (hasta recargar la página)
       var monedasTotal = 0;                                  // inventario: solo se pierde al recargar
       var grandes = { 1: [false, false, false], 2: [false, false, false], 3: [false, false, false], 4: [false, false, false], 5: [false, false, false] };   // monedas grandes
@@ -1723,6 +1718,8 @@
         if (w) { el.style.width = w + "px"; el.style.height = h + "px"; }
       }
       function sup(a, b) { return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y; }
+      // Caja con la que te dañan: la de MJ es algo más pequeña que su dibujo (es alto y delgado)
+      function cuerpo(g) { var m = g.cfg.margen || 0; return { x: g.x + m, y: g.y, w: g.w - 2 * m, h: g.h - m * 1.5 }; }
       function lejos(s, o) { return s.x > o.x + 300 || s.x + s.w < o.x - 300; }
       function choca(o) {
         var s = G.L.solidos;
@@ -2189,7 +2186,7 @@
 
       function hurt(n) {
         var g = G;
-        if (g.inv > 0 || g.muerto) return;
+        if (g.inv > 0 || g.muerto || inmortal) return;
         g.vidas -= (n || 1);
         Sfx.hurt();
         g.inv = 70;
@@ -2272,7 +2269,7 @@
           if (sup(g, e)) {
             if (e.tipo === "pinchi") {
               // Los pinchos NO se pueden pisar: duele y te rebota
-              if (g.inv <= 0) { Sfx.pinchi(); hurt(); g.vy = 8; g.suelo = false; }
+              if (g.inv <= 0 && sup(cuerpo(g), e)) { Sfx.pinchi(); hurt(); g.vy = 8; g.suelo = false; }
               continue;
             }
             // Matar saltando encima (también al caer con Shift)
@@ -2287,7 +2284,7 @@
           if (e.tipo === "seta") {                                  // Champi
             if (Math.abs(dx) < 340 && Math.abs(dy) < 160) { e.vx = lado * 3.0 * dif; e.dir = lado; } else e.vx = 0;
             var ox = e.x; e.x += e.vx * d; if (chocaE(e)) e.x = ox;
-            if (sup(g, e) && e.cd <= 0 && g.inv <= 0) {
+            if (sup(cuerpo(g), e) && e.cd <= 0 && g.inv <= 0) {
               e.cd = 70;
               Sfx.champi();
               g.golpesSeta++;
@@ -2326,7 +2323,7 @@
               }
             } else if (e.estado === "pica") {
               e.x += e.vx * d; e.y += e.vy * d;
-              if (sup(g, e) && g.inv <= 0) { hurt(); matar(e); }
+              if (sup(cuerpo(g), e) && g.inv <= 0) { hurt(); matar(e); }
               else if (e.y <= 0) { e.y = 0; e.estado = "aturdido"; e.cd = 150; }
               else if (choca(e)) { e.estado = "aturdido"; e.cd = 150; }
             } else if (e.estado === "aturdido") {                   // aturdido: ahora se le puede pisar
@@ -2357,7 +2354,7 @@
           var aterriza = false;
           if (p.tipo === "agua") { p.vy -= 0.35 * d; p.y += p.vy * d; if (p.y <= 0) aterriza = true; }
           var quitar = aterriza || Math.abs(p.x - p.x0) > 900 || (p.tipo !== "agua" && choca(p));
-          if (!quitar && sup(g, p) && g.inv <= 0) {
+          if (!quitar && sup(cuerpo(g), p) && g.inv <= 0) {
             if (p.tipo === "bola" && g.poder > 0) flotante(g.x, g.y + g.h + 10, "¡Inmune!");   // el fuego no te daña
             else hurt(p.dano);
             quitar = true;
@@ -2492,7 +2489,7 @@
         $("progreso-txt").textContent = Math.round(g.pctVis) + "%";
 
         // HUD
-        var clave = g.vidas + "|" + g.golpesSeta + "|" + monedasTotal + "|" + Math.ceil(Math.max(0, g.poder) / 60) + "|" + Math.floor(g.tiempo / 1000) + "|" + (g.jefe ? (g.cdFuego > 0 ? "r" : "l") : "") + (habil.oculta ? "o" : "");
+        var clave = g.vidas + "|" + g.golpesSeta + "|" + monedasTotal + "|" + Math.ceil(Math.max(0, g.poder) / 60) + "|" + Math.floor(g.tiempo / 1000) + "|" + (g.jefe ? (g.cdFuego > 0 ? "r" : "l") : "") + (habil.oculta ? "o" : "") + (inmortal ? "i" : "");
         if (clave !== g.hudKey) {
           g.hudKey = clave;
           var s = "", max = Math.max(g.jefe ? 6 : 4, g.vidas);
@@ -2501,7 +2498,7 @@
           $("hud-vida").textContent = s;
           $("hud-tiempo").textContent = "⏱ " + fmt(g.tiempo);
           $("hud-monedas").textContent = "🪙 " + monedasTotal;
-          $("hud-poder").textContent = (g.jefe ? (g.cdFuego > 0 ? "🔥 Fuego recargando..." : "🔥 Fuego listo (" + KC() + ")") : (g.poder >= 1e8 ? "🔥 Fuego (" + KC() + ")" : (g.poder > 0 ? "🔥 Poder " + Math.ceil(g.poder / 60) + "s  (" + KC() + " = bola de fuego)" : ""))) + (habil.oculta ? "   ⚡ Rayo Aura (" + KV() + ")" : "");
+          $("hud-poder").textContent = (g.jefe ? (g.cdFuego > 0 ? "🔥 Fuego recargando..." : "🔥 Fuego listo (" + KC() + ")") : (g.poder >= 1e8 ? "🔥 Fuego (" + KC() + ")" : (g.poder > 0 ? "🔥 Poder " + Math.ceil(g.poder / 60) + "s  (" + KC() + " = bola de fuego)" : ""))) + (habil.oculta ? "   ⚡ Rayo Aura (" + KV() + ")" : "") + (inmortal ? "   ♾️ Inmortal" : "");
         }
       }
 
@@ -2561,17 +2558,40 @@
         $("tienda-monedas").textContent = "🪙 " + monedasTotal;
       }
 
-      function entrarCodigo() {
+      // Códigos: el usuario siempre es "admin"
+      function aplicarCodigo(accion) {
         var m = $("codigo-msg");
-        if (firma($("cod-user").value + "|" + $("cod-pass").value + CLAVE) === HASH_ADMIN) {
+        m.style.color = "#5bea5b";
+        if (accion === "niveles") {
           window.ADMIN = true;
-          m.style.color = "#5bea5b";
           m.textContent = "Modo admin activado: todos los niveles desbloqueados.";
           actualizarNiveles();
-        } else {
-          m.style.color = "#ff7a7a";
-          m.textContent = "Usuario o contraseña incorrectos.";
+        } else if (accion === "rich") {
+          monedasTotal += 10000;
+          if (G) G.hudKey = "";
+          $("tienda-monedas").textContent = "🪙 " + monedasTotal;
+          m.textContent = "¡Has recibido 10.000 monedas!";
+        } else if (accion === "undie") {
+          inmortal = !inmortal;
+          if (G) G.hudKey = "";
+          m.textContent = inmortal ? "Inmortalidad ACTIVADA ♾️ (repite el código para quitarla)." : "Inmortalidad desactivada.";
+        } else if (accion === "powers") {
+          habil.fuego = true; habil.oculta = true;
+          if (G) { G.poder = 1e9; G.hudKey = ""; }
+          pintarTienda();
+          m.textContent = "Habilidades desbloqueadas: fuego y Rayo Aura.";
+        } else if (accion === "skip") {
+          if (!G || G.fin || G.muerto || G.cine) { m.style.color = "#ffd23f"; m.textContent = "Entra en un nivel para usar este código."; return; }
+          m.textContent = "Nivel saltado.";
+          cerrarVentana("codigo-v");
+          if (G.jefe) derrotarJefe(); else ganar();
         }
+      }
+      function entrarCodigo() {
+        var m = $("codigo-msg");
+        var accion = ($("cod-user").value === "admin") ? CODIGOS[firma("admin|" + $("cod-pass").value + CLAVE)] : null;
+        if (accion) aplicarCodigo(accion);
+        else { m.style.color = "#ff7a7a"; m.textContent = "Usuario o contraseña incorrectos."; }
       }
 
       // Ventanas movibles: se arrastran desde la barra de arriba; clicar fuera las cierra
@@ -2741,7 +2761,8 @@
         } else if (b.estado === "pico") {                        // se agacha y da un picotazo (1 corazón)
           if (b.t >= 30) {
             var x1 = b.dir < 0 ? b.x - 120 : b.x + b.w - 20;
-            if (g.x + g.w > x1 && g.x < x1 + 140 && g.y < 80) hurt(1);
+            var cb = cuerpo(g);
+            if (cb.x + cb.w > x1 && cb.x < x1 + 140 && g.y < 80) hurt(1);
             b.flash = 14; b.cdPico = 150; Sfx.lili("pico"); b.cdG = 120; b.estado = "idle";
           }
         }
@@ -3206,7 +3227,13 @@
       // Botones táctiles: ↑ = Espacio, ↓ = Shift, ← = A, → = D (y 🔥 = C, ⚡ = V)
       Array.prototype.forEach.call(document.querySelectorAll("#tactil .tb"), function (b) {
         var code = b.getAttribute("data-k");
-        function bajar(e) { e.preventDefault(); try { b.setPointerCapture(e.pointerId); } catch (_) {} K[code] = true; b.classList.add("on"); }
+        function bajar(e) {
+          e.preventDefault();
+          var opuesto = { KeyA: "KeyD", KeyD: "KeyA", Space: "ShiftLeft", ShiftLeft: "Space" }[code];
+          if (opuesto && K[opuesto]) return;                       // no se pueden pulsar dos opuestos a la vez
+          try { b.setPointerCapture(e.pointerId); } catch (_) {}
+          K[code] = true; b.classList.add("on");
+        }
         function subir() { K[code] = false; b.classList.remove("on"); }
         b.addEventListener("pointerdown", bajar);
         b.addEventListener("pointerup", subir);
@@ -3219,8 +3246,8 @@
         var ver = movil && !enRetrato && p === "juego";
         $("tactil").style.display = ver ? "block" : "none";
         if (ver) {
-          $("tb-fuego").style.display = (G && G.poder > 0) ? "flex" : "none";
-          $("tb-rayo").style.display = habil.oculta ? "flex" : "none";
+          $("tb-fuego").style.visibility = (G && G.poder > 0) ? "visible" : "hidden";
+          $("tb-rayo").style.visibility = habil.oculta ? "visible" : "hidden";
         }
       }
 
